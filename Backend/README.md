@@ -11,16 +11,15 @@
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Simple, fast routing engine](https://laravel.com/docs/routing).
+-   [Powerful dependency injection container](https://laravel.com/docs/container).
+-   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+-   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+-   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+-   [Robust background job processing](https://laravel.com/docs/queues).
+-   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
 
 # Laravel API Project
 
@@ -31,15 +30,17 @@ This is a Laravel-based API project for a Flutter **multi vendor** app, using La
 ## Requirements
 
 Before you begin, ensure you have the following installed:
-- PHP >= 8.2
-- MySQL ( or your favorite database management system )
-- Composer
+
+-   PHP >= 8.2
+-   MySQL ( or your favorite database management system )
+-   Composer
 
 ## Setup Instructions
 
 after cloning the repository...
 
 ### 1. Install Dependencies
+
 Run the following command to install PHP dependencies:
 
 ```bash
@@ -47,23 +48,26 @@ composer install
 ```
 
 ### 2. Set Up the Environment
+
 1. Copy the `.env.example` file to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
+
+    ```bash
+    cp .env.example .env
+    ```
 
 2. Update the `.env` file with your local database credentials and any other required environment variables ( the `.env.example` is using SQLite so if you're fine with it just leave it ):
-   
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=your_database_name
-   DB_USERNAME=your_username
-   DB_PASSWORD=your_password
-   ```
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+    ```
 
 ### 3. Generate the Application Key
+
 Run the following command to generate the app key:
 
 ```bash
@@ -71,6 +75,7 @@ php artisan key:generate
 ```
 
 ### 4. Run Migrations and Seed Database (Optional)
+
 To set up the database schema and seed it with sample data:
 
 ```bash
@@ -78,6 +83,7 @@ php artisan migrate --seed
 ```
 
 ### 5. Serve the Application
+
 Run the development server:
 
 ```bash
@@ -91,37 +97,42 @@ The application will be accessible at [http://localhost:8000](http://localhost:8
 If you pull new changes from the repository, make sure to follow these steps:
 
 1. **Update Dependencies**:
-   ```bash
-   composer install
-   npm install
-   ```
+
+    ```bash
+    composer install
+    npm install
+    ```
 
 2. **Run Migrations** (if there are new migrations):
-   ```bash
-   php artisan migrate
-   ```
-   or if you want a fresh database with the seeded sample data:
-   ```bash
-   php artisan migrate:fresh --seed
-   ```
+
+    ```bash
+    php artisan migrate
+    ```
+
+    or if you want a fresh database with the seeded sample data:
+
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
 
 3. **Clear Cache** (optional but recommended):
-   ```bash
-   php artisan config:clear
-   php artisan cache:clear
-   php artisan route:clear
-   ```
+    ```bash
+    php artisan config:clear
+    php artisan cache:clear
+    php artisan route:clear
+    ```
 
 ## Troubleshooting
 
 If you encounter any issues, check:
+
 1. The `.env` file for correct configuration.
 2. Ensure the database is running and accessible.
 3. Clear caches:
-   ```bash
-   php artisan config:clear
-   php artisan cache:clear
-   ```
+    ```bash
+    php artisan config:clear
+    php artisan cache:clear
+    ```
 
 Feel free to reach out for further assistance.
 
@@ -129,22 +140,67 @@ Feel free to reach out for further assistance.
 
 ## Additional Notes
 
-- Ensure that the `storage/` and `bootstrap/cache/` directories are writable:
-  ```bash
-  chmod -R 775 storage bootstrap/cache
-  ```
+-   Ensure that the `storage/` and `bootstrap/cache/` directories are writable:
 
-- For production environments, use the following commands to optimize the application:
-  ```bash
-  php artisan config:cache
-  php artisan route:cache
-  ```
+    ```bash
+    chmod -R 775 storage bootstrap/cache
+    ```
 
-- If deploying to production, run:
-  ```bash
-  composer install --optimize-autoloader --no-dev
-  ```
+-   For production environments, use the following commands to optimize the application:
+
+    ```bash
+    php artisan config:cache
+    php artisan route:cache
+    ```
+
+-   If deploying to production, run:
+
+    ```bash
+    composer install --optimize-autoloader --no-dev
+    ```
+
+-   If you want to try the auth api without csrf token and xsrf cookie:
+
+    update the `bootstrap/app.php` file and uncomment the following code:
+
+    ```php
+     $middleware->validateCsrfTokens(except: [
+               '*'
+           ]);
+    ```
+
+    or you keep the csrf and access the xsrf-token through this route `/sanctum/csrf-cookie` and include it in your `http` header as `X-XSRF-TOKEN`
+
+    #### using Postman
+
+    you can do this in postman using this pre-request script to set the xsrf token to the variable `xsrf-cookie`:
+
+    ```javascript
+    pm.sendRequest(
+        {
+            url: "http://localhost:8000/sanctum/csrf-cookie",
+            method: "GET",
+        },
+        function (error, response, { cookies }) {
+            if (!error) {
+                pm.collectionVariables.set(
+                    "xsrf-cookie",
+                    cookies.get("XSRF-TOKEN")
+                );
+            }
+        }
+    );
+    ```
+
+    then adding the token to your headers as the following:
+
+    ```
+    key: X-XSRF-TOKEN
+    value : {{xsrf-cookie}}
+    ```
+
+    good to go 🎉
 
 ---
 
-Happy coding!
+Happy coding! 🎶✨
