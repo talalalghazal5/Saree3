@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Twilio\Rest\Client;
 
 class RegisteredUserController extends Controller
 {
@@ -20,22 +21,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): Response
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone_number' => ['required', 'numeric', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
+        /* Get twilio credentials from .env */
+        $twilio_auth_token = getenv('TWILIO_AUTH_TOKEN');
+        $twilio_sid = getenv('TWILIO_SID');
+        $twilio_verify_sid = getenv('TWILIO_VERIFY_SID');
+
+        $twilio = new Client($twilio_sid, $twilio_auth_token);
+        $twilio->verify->v2->services($twilio_verify_sid)
+            ->verifications
+            ->create($data['phone_number'], 'sms');
+
+        User::create([
+            'name' => $data['name'],
+            'phone_number' => $data['phone_number'],
+            'password' => Hash::make($data['password']),
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return response()->noContent();
+        return response([
+            'message' => 'SMS message sent successfully',
+            'phone_number' => $data['phone_number']
+        ]);
     }
 }
