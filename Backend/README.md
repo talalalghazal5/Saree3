@@ -55,7 +55,7 @@ composer install
     cp .env.example .env
     ```
 
-2. Update the `.env` file with your local database credentials and any other required environment variables ( the `.env.example` is using SQLite so if you're fine with it just leave it ):
+2. Update the database configuration in the `.env` file with your local database credentials ( the `.env.example` is using SQLite so if you're fine with it just leave it ):
 
     ```env
     DB_CONNECTION=mysql
@@ -65,6 +65,17 @@ composer install
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
     ```
+
+3. Update twilio variables following this tutorial [twilio otp verification with laravel](https://www.twilio.com/en-us/blog/verify-phone-numbers-php-laravel-application-twilio-verify#verifying-phone-number-otp) and add your verified phone number:
+
+    ```env
+    TWILIO_SID="your Twilio sid"
+    TWILIO_AUTH_TOKEN="your Twilio token"
+    TWILIO_VERIFY_SID="your Twilio sync service sid"
+    TWILIO_TRIAL_PHONE_NUMBER="your verified Twilio phone number"
+    ```
+
+4. update any other environment variable to suite your need
 
 ### 3. Generate the Application Key
 
