@@ -48,4 +48,43 @@ class RegisteredUserController extends Controller
             'phone_number' => $data['phone_number']
         ]);
     }
+
+    /**
+     * Handle an incoming verification request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function verify(Request $request)
+    {
+        $data = $request->validate([
+            'phone_number' => ['required', 'string'],
+            'verification_code' => ['required', 'numeric'],
+        ]);
+
+        /* Get credentials from .env */
+        $twilio_auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio_sid = getenv("TWILIO_SID");
+        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
+        $twilio = new Client($twilio_sid, $twilio_auth_token);
+        $verification = $twilio->verify->v2->services($twilio_verify_sid)
+            ->verificationChecks
+            ->create([
+                'Code' => $data['verification_code'],
+                'To' => $data['phone_number']
+            ]);
+
+        if ($verification->valid) {
+            $user = tap(User::where('phone_number', $data['phone_number']))
+                ->update(['phone_verified' => true]);
+            /* Authenticate user */
+            Auth::login($user->first());
+
+            return response(['message' => 'Phone number verified']);
+        }
+
+        return response([
+            'phone_number' => $data['phone_number'],
+            'error' => 'Invalid verification code entered!'
+        ], 409);
+    }
 }
