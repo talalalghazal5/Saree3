@@ -66,7 +66,7 @@ composer install
     DB_PASSWORD=your_password
     ```
 
-3. Update twilio variables following this tutorial [twilio otp verification with laravel](https://www.twilio.com/en-us/blog/verify-phone-numbers-php-laravel-application-twilio-verify#verifying-phone-number-otp) and add your verified phone number:
+3. To use phone number OTP verification update twilio variables following this tutorial [twilio otp verification with laravel](https://www.twilio.com/en-us/blog/verify-phone-numbers-php-laravel-application-twilio-verify#verifying-phone-number-otp) and add your verified phone number:
 
     ```env
     TWILIO_SID="your Twilio sid"
@@ -75,6 +75,12 @@ composer install
     TWILIO_TRIAL_PHONE_NUMBER="your verified Twilio phone number"
     ```
 
+    or use the testing endpoint with `1234` as the verification code:
+
+    ```
+    http://host:port/test/register
+    http://host:port/test/verify
+    ```
 4. update any other environment variable to suite your need
 
 ### 3. Generate the Application Key
