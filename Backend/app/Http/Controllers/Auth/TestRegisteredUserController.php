@@ -21,7 +21,7 @@ class TestRegisteredUserController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'numeric', 'unique:' . User::class],
+            'phone_number' => ['required', 'string', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -49,7 +49,7 @@ class TestRegisteredUserController extends Controller
             'verification_code' => ['required', 'numeric'],
         ]);
 
-        if ($data['verification_code'] === 1234) {
+        if ($data['verification_code'] == 1234) {
             $user = tap(User::where('phone_number', $data['phone_number']))
                 ->update(['phone_verified' => true]);
             /* Authenticate user */
