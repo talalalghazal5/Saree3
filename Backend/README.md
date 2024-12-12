@@ -24,6 +24,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 # Laravel API Project
 
 This is a Laravel-based API project for a Flutter **multi vendor** app, using Laravel Breeze API boilerplate.
+this api offers an easy way to authenticate users and verify their phone number via twilio verify service.
 
 ### Follow these steps to set up the project.
 
@@ -55,7 +56,7 @@ composer install
     cp .env.example .env
     ```
 
-2. Update the `.env` file with your local database credentials and any other required environment variables ( the `.env.example` is using SQLite so if you're fine with it just leave it ):
+2. Update the database configuration in the `.env` file with your local database credentials ( the `.env.example` is using SQLite so if you're fine with it just leave it ):
 
     ```env
     DB_CONNECTION=mysql
@@ -65,6 +66,23 @@ composer install
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
     ```
+
+3. To use phone number OTP verification update twilio variables following this tutorial [twilio otp verification with laravel](https://www.twilio.com/en-us/blog/verify-phone-numbers-php-laravel-application-twilio-verify#verifying-phone-number-otp) and add your verified phone number:
+
+    ```env
+    TWILIO_SID="your Twilio sid"
+    TWILIO_AUTH_TOKEN="your Twilio token"
+    TWILIO_VERIFY_SID="your Twilio sync service sid"
+    TWILIO_TRIAL_PHONE_NUMBER="your verified Twilio phone number"
+    ```
+
+    or use the testing endpoint with `1234` as the verification code:
+
+    ```
+    http://host:port/test/register
+    http://host:port/test/verify
+    ```
+4. update any other environment variable to suite your need
 
 ### 3. Generate the Application Key
 
@@ -173,7 +191,7 @@ Feel free to reach out for further assistance.
 
     #### using Postman
 
-    you can do this in postman using this pre-request script to set the xsrf token to the variable `xsrf-cookie`:
+    you can do this using this pre-request script to set the xsrf token to the variable `xsrf-cookie`, you should add this to the login and register requests although the session token will be invalid after 2 hours so you are going to have to get again:
 
     ```javascript
     pm.sendRequest(
@@ -190,6 +208,12 @@ Feel free to reach out for further assistance.
             }
         }
     );
+    ```
+
+    for the login request you also have to update the token variable because the csrf cookie is regenerated after authenticating the user, you can do this by adding this post-request script to postman:
+    ```
+    var xsrfCookie = pm.cookies.get("XSRF-TOKEN");
+    pm.collectionVariables.set("xsrf-cookie", xsrfCookie);
     ```
 
     then adding the token to your headers as the following:
