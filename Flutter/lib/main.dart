@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saree3/UI/pages/onboarding/page_four.dart';
 import 'package:saree3/UI/pages/onboarding/page_one.dart';
 import 'package:saree3/UI/pages/onboarding/page_three.dart';
 import 'package:saree3/UI/pages/onboarding/page_two.dart';
@@ -23,8 +24,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      // Replace the scaffold here with the interface you want it to appear:
-      home: const PageThree(),
+      initialRoute: '/fourthpage',
+      routes: {
+        '/firstpage' : (context) => const PageOne(),
+        '/secondpage' : (context) => const PageTwo(),
+        '/thirdpage' : (context) => const PageThree(),
+        '/fourthpage' : (context) => const PageFour(),
+      },
     );
   }
 }

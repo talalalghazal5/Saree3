@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:saree3/UI/themes/theme_provider.dart';
 
 class PageOne extends StatelessWidget {
   const PageOne({super.key});
@@ -28,26 +26,24 @@ class PageOne extends StatelessWidget {
               const SizedBox(
                 height: 100,
               ),
-              Text(
-                "We've Got Everything",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'lexend',
-                    color: Theme.of(context).colorScheme.onSurface),
-              ),
+              Text("We've Got Everything",
+                  style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(
                 height: 30,
               ),
               Text.rich(
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 TextSpan(
                   text: 'Choose what you want. \n',
-                  style: const TextStyle(fontFamily: 'lexend', fontSize: 15,),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: 'You can find whatever you need ',
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextSpan(
                       text: 'at a glance',
@@ -57,13 +53,6 @@ class PageOne extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              SwitchListTile(
-                inactiveThumbColor: Theme.of(context).colorScheme.onSurface,
-                title: const Text('Dark mode'),
-                value: Provider.of<ThemeProvider>(context).isDarkMode,
-                onChanged: (value) =>
-                    Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
               ),
             ],
           ),

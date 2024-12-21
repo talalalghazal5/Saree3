@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/constants.dart';
-import 'package:saree3/view/components/auth/otp/otp_text_field.dart';
-import 'package:saree3/view/components/misc/primary_button.dart';
+import 'package:saree3/UI/components/auth/otp/otp_text_field.dart';
+import 'package:saree3/UI/components/misc/primary_button.dart';
 
 class Otp extends StatelessWidget {
   const Otp({super.key});
@@ -29,7 +28,7 @@ class Otp extends StatelessWidget {
                   const Text(
                     'Verify that it\'s you',
                     style: TextStyle(
-                        fontFamily: 'Lexend-',
+                        fontFamily: 'lexend',
                         fontWeight: FontWeight.w400,
                         fontSize: 22,
                         color: Colors.black),

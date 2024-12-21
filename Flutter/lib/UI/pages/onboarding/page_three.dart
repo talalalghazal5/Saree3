@@ -24,29 +24,27 @@ class PageThree extends StatelessWidget {
               const SizedBox(
                 height: 100,
               ),
-              const Text(
-                "It's Never Too Late\n",
-                style: TextStyle(fontSize: 25, fontFamily: 'lexend'),
+              Text(
+                "It's Never Too Late. \n",
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(
                 height: 30,
               ),
-              const Text.rich(
+              Text.rich(
                 softWrap: true,
                 textAlign: TextAlign.center,
                 TextSpan(
                   text: "You don't have to wait. \n",
-                  style: TextStyle(fontFamily: 'lexend', fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
                       text: 'Your orders will be delivered to you ',
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextSpan(
-                      text: 'in a blink of an eye.',
-                      style: TextStyle(
-                        color: Color(0xffFF7F50),
-                      ),
-                    ),
+                        text: 'in a blink of an eye.',
+                        style: Theme.of(context).textTheme.labelSmall),
                   ],
                 ),
               ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/constants.dart';
-import 'package:saree3/view/components/auth/auth_text_field.dart';
-import 'package:saree3/view/components/misc/primary_button.dart';
-import 'package:saree3/view/pages/sign_in_page.dart';
+import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
+import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/UI/pages/sign_up_page.dart';
 
-class SignUpPage extends StatelessWidget{
-  const SignUpPage({super.key});
 
-  static String id = 'SignUpPage';
+class SignInPage extends StatelessWidget{
+  const SignInPage({super.key});
+  static String id = 'SignInPage';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,23 +36,21 @@ class SignUpPage extends StatelessWidget{
                   height: 40,
                 ),
                 Text(
-                  'Sign Up',
+                  'Sign In',
                   style: TextStyle(
                     fontFamily: 'Lexend',
+                    fontWeight: FontWeight.w400,
                     fontSize: 32,
                     color: Colors.black
                   ),
                 ),
               ],
             ),
+
             const SizedBox(
                   height: 40,
                 ),
             
-            AuthTextField(hint: 'Full Name'), 
-            const SizedBox(
-              height: 10,
-            ),
             AuthTextField(hint: 'Phone Number'), 
             const SizedBox(
               height: 10,
@@ -60,30 +59,32 @@ class SignUpPage extends StatelessWidget{
             const SizedBox(
               height: 10,
             ),
-            AuthTextField(hint: 'Confirm Password'), 
+            const Text(
+              'Forgot Password?',
+              style: TextStyle(
+                color: kSecondary
+              ),
+            ),
             const SizedBox(
               height: 30,
             ),
-            // GestureDetector(
-            //       onTap: (){
-            //         Navigator.pushNamed(context, ChatPage.id);
-            //       },),
-            PrimaryButton(text: 'Sign Up',
+            PrimaryButton(text: 'Sign In',
             font: 'Lexend',),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
-                const Text('Already have an account ?  ',
+                const Text('Don\'t have an account ?  ',
                 style: TextStyle(
                   color: Colors.black,
                 ),),
                 GestureDetector(
                   onTap: (){
-                    Navigator.pushNamed(context, SignInPage.id);
+                    Navigator.pushNamed(context,SignUpPage.id);
                   },
-                  child: const Text(' Sign In',
+                  child: const Text(' Sign Up',
                   style: TextStyle(
                     color: kSecondary,
                   ),),

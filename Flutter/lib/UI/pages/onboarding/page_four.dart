@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
-class PageTwo extends StatelessWidget {
-  const PageTwo({super.key});
+class PageFour extends StatelessWidget {
+  const PageFour({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +17,15 @@ class PageTwo extends StatelessWidget {
                 height: 20,
               ),
               Center(
-                child: SvgPicture.asset(
-                  'assets/images/svgs/safe_payment.svg',
-                  width: 300,
-                ),
-              ),
+                  child: SvgPicture.asset(
+                'assets/images/svgs/order_tracking.svg',
+                width: 300,
+              )),
               const SizedBox(
                 height: 100,
               ),
               Text(
-                "Pay Safely",
+                "We Keep You Updated.\n",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(
@@ -36,21 +35,20 @@ class PageTwo extends StatelessWidget {
                 softWrap: true,
                 textAlign: TextAlign.center,
                 TextSpan(
-                  text: 'Rest assured. \n',
+                  text: "You won't miss the spot. \n",
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: 'Your transactions are ',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                        text: 'We keep you ',
+                        style: Theme.of(context).textTheme.bodyMedium),
                     TextSpan(
-                      text: 'secure ',
+                      text: 'up to date ',
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                     TextSpan(
-                      text: 'with our \n advanced payment protection',
+                      text: 'with your order status.',
                       style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    )
                   ],
                 ),
               ),
