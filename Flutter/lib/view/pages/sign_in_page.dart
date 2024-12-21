@@ -21,21 +21,21 @@ class SignInPage extends StatelessWidget{
             const SizedBox(
               height: 100,
             ),
-            Column(
+            const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FaIcon(FontAwesomeIcons.truckFast , 
                 size: 110,
-                color: const Color.fromARGB(255, 49, 49, 49),
+                color: Color.fromARGB(255, 49, 49, 49),
                     shadows: [
-                      const Shadow(color: const Color.fromARGB(64, 0, 0, 0),
-                      offset: const Offset(0, 10),
+                      Shadow(color: Color.fromARGB(64, 0, 0, 0),
+                      offset: Offset(0, 10),
                       blurRadius: 10)
                     ],),
-                const SizedBox(
+                SizedBox(
                   height: 40,
                 ),
-                const Text(
+                Text(
                   'Sign In',
                   style: TextStyle(
                     fontFamily: 'Lexend',
