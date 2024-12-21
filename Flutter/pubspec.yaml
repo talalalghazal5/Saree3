@@ -42,6 +42,7 @@ dependencies:
   geolocator: ^13.0.2
   permission_handler: ^11.3.1
   intl: ^0.20.1
+  flutter_svg: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +68,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
+    - assets/images/svgs/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
