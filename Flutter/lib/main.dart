@@ -5,6 +5,7 @@ import 'package:saree3/UI/pages/onboarding/page_four.dart';
 import 'package:saree3/UI/pages/onboarding/page_one.dart';
 import 'package:saree3/UI/pages/onboarding/page_three.dart';
 import 'package:saree3/UI/pages/onboarding/page_two.dart';
+import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/fourthpage': (context) => const PageFour(),
         '/loginPage': (context) => const SignInPage(),
         '/signupPage': (context) => const SignUpPage(),
+        '/otpPage' : (context) => const Otp(),
       },
     );
   }

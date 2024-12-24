@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:saree3/constants.dart';
 import 'package:saree3/UI/components/auth/otp/otp_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
 
@@ -11,7 +10,7 @@ class Otp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kSurface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Padding(
@@ -61,16 +60,17 @@ class Otp extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Didn\'t get code? '),
                       Text(
                         'resend it',
                         style: TextStyle(
-                          color: kSecondary,
+                          color: Theme.of(context).colorScheme.onSurface,
                           decoration: TextDecoration.underline,
-                          decorationColor: kSecondary,
+                          decorationColor:
+                              Theme.of(context).colorScheme.secondary,
                           decorationThickness: 2,
                         ),
                       ),

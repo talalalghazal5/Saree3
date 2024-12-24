@@ -64,7 +64,9 @@ class SignUpPage extends StatelessWidget {
               ),
               PrimaryButton(
                 text: 'Sign Up',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/otpPage');
+                },
               ),
               const SizedBox(
                 height: 17,
