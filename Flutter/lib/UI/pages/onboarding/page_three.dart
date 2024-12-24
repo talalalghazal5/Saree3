@@ -11,26 +11,26 @@ class PageThree extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
-                height: 20,
+                height: 30,
               ),
               Center(
-                  child: SvgPicture.asset(
-                'assets/images/svgs/fast_delivery.svg',
-                width: 300,
-              )),
+                child: SvgPicture.asset(
+                  'assets/images/svgs/fast_delivery.svg',
+                  width: 300,
+                ),
+              ),
               const SizedBox(
-                height: 100,
+                height: 150,
               ),
               Text(
                 "It's Never Too Late. \n",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              
               Text.rich(
                 softWrap: true,
                 textAlign: TextAlign.center,
@@ -44,7 +44,7 @@ class PageThree extends StatelessWidget {
                     ),
                     TextSpan(
                         text: 'in a blink of an eye.',
-                        style: Theme.of(context).textTheme.labelSmall),
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 18, color: Theme.of(context).colorScheme.primary, wordSpacing: -2),),
                   ],
                 ),
               ),

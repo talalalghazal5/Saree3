@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/constants.dart';
 
-class PrimaryButton extends StatelessWidget {
-  PrimaryButton({super.key, required this.text , required this.font});
-  String? text;
-  String? font;
-
+class PrimaryButton extends MaterialButton {
+  final String text;
+  const PrimaryButton({
+    super.key,
+    required super.onPressed,
+    required this.text,
+  });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kPrimaryColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: double.infinity,
-      height: 60,
-      child: Center(
-        child: Text(text!, style: TextStyle(
-          color: Colors.white,
-          fontFamily: font,
-        ),),
+    return MaterialButton(
+      minWidth: 500,
+      height: 55,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 0,
+      focusElevation: 0,
+      highlightElevation: 0,
+      onPressed: onPressed,
+      color: Theme.of(context).colorScheme.primary,
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.labelSmall,
       ),
     );
   }

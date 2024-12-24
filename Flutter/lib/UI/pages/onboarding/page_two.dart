@@ -11,6 +11,7 @@ class PageTwo extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
@@ -23,7 +24,7 @@ class PageTwo extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 70,
               ),
               Text(
                 "Pay Safely",
@@ -45,7 +46,7 @@ class PageTwo extends StatelessWidget {
                     ),
                     TextSpan(
                       text: 'secure ',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 18, color: Theme.of(context).colorScheme.primary,),
                     ),
                     TextSpan(
                       text: 'with our \n advanced payment protection',

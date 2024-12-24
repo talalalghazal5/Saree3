@@ -41,9 +41,10 @@ class Otp extends StatelessWidget {
                     size: 110,
                     color: Color.fromARGB(255, 49, 49, 49),
                     shadows: [
-                      Shadow(color: Color.fromARGB(64, 0, 0, 0),
-                      offset: Offset(0, 10),
-                      blurRadius: 10)
+                      Shadow(
+                          color: Color.fromARGB(64, 0, 0, 0),
+                          offset: Offset(0, 10),
+                          blurRadius: 10)
                     ],
                   ),
                   const SizedBox(
@@ -69,7 +70,6 @@ class Otp extends StatelessWidget {
                         style: TextStyle(
                           color: kSecondary,
                           decoration: TextDecoration.underline,
-                          
                           decorationColor: kSecondary,
                           decorationThickness: 2,
                         ),
@@ -79,7 +79,10 @@ class Otp extends StatelessWidget {
                   const SizedBox(
                     height: 60,
                   ),
-                  PrimaryButton(text: 'Verify Now', font: 'Lexend'),
+                  PrimaryButton(
+                    text: 'Verify Now',
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ],
