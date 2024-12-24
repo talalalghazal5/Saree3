@@ -1,100 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:saree3/constants.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/UI/pages/sign_in_page.dart';
 
-class SignUpPage extends StatelessWidget{
+class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
-  static String id = 'SignUpPage';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kSurface,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 100,
-            ),
-            const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FaIcon(FontAwesomeIcons.truckFast , 
-                size: 110,
-                color: Color.fromARGB(255, 49, 49, 49),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 100,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.truckFast,
+                    size: 110,
+                    color: Theme.of(context).colorScheme.onSurface,
                     shadows: [
-                      Shadow(color: Color.fromARGB(64, 0, 0, 0),
-                      offset: Offset(0, 10),
-                      blurRadius: 10)
-                    ],),
-                SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontFamily: 'Lexend',
-                    fontSize: 32,
-                    color: Colors.black
+                      Shadow(
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                        offset: const Offset(0, 10),
+                        blurRadius: 10,
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-                  height: 40,
-                ),
-            
-            AuthTextField(hint: 'Full Name'), 
-            const SizedBox(
-              height: 10,
-            ),
-            AuthTextField(hint: 'Phone Number'), 
-            const SizedBox(
-              height: 10,
-            ),
-            AuthTextField(hint: 'Password'), 
-            const SizedBox(
-              height: 10,
-            ),
-            AuthTextField(hint: 'Confirm Password'), 
-            const SizedBox(
-              height: 30,
-            ),
-            // GestureDetector(
-            //       onTap: (){
-            //         Navigator.pushNamed(context, ChatPage.id);
-            //       },),
-            PrimaryButton(text: 'Sign Up',
-            font: 'Lexend',),
-            const SizedBox(height: 30,),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                
-                const Text('Already have an account ?  ',
-                style: TextStyle(
-                  color: Colors.black,
-                ),),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, SignInPage.id);
-                  },
-                  child: const Text(' Sign In',
-                  style: TextStyle(
-                    color: kSecondary,
-                  ),),
-                ),
-              ],
-            ),
-            const Spacer(flex: 3,)
-          ],
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Text(
+                    'Sign Up',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const AuthTextField(hint: 'Full Name'),
+              const SizedBox(
+                height: 15,
+              ),
+              const AuthTextField(hint: 'Phone Number', textInputType: TextInputType.phone,),
+              const SizedBox(
+                height: 15,
+              ),
+              const AuthTextField(hint: 'Password', textInputType: TextInputType.visiblePassword,),
+              const SizedBox(
+                height: 15,
+              ),
+              const AuthTextField(hint: 'Confirm Password', textInputType: TextInputType.visiblePassword,),
+              const SizedBox(
+                height: 30,
+              ),
+              PrimaryButton(
+                text: 'Sign Up',
+                onPressed: () {
+                  Navigator.pushNamed(context, '/otpPage');
+                },
+              ),
+              const SizedBox(
+                height: 17,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Already have an account? ',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/loginPage');
+                    },
+                    child: Text(
+                      'Sign In',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                            decoration: TextDecoration.underline,
+                            decorationColor:
+                                Theme.of(context).colorScheme.secondary,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
-    
   }
 }

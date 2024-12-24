@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/constants.dart';
 
 class AuthTextField extends StatelessWidget {
-  const AuthTextField({super.key, this.hint});
-  final String? hint;
-
+  const AuthTextField({super.key, this.hint = '', this.textInputType = TextInputType.text});
+  final String hint;
+  final TextInputType textInputType;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: textInputType,
       decoration: InputDecoration(
-        label: Text(
-          hint!,
-          style: const TextStyle(color: kInverseTertiary),
+        label: Text(hint),
+        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        labelStyle: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          fontWeight: FontWeight.w300,
         ),
-        hintText: hint,
-        hintStyle: const TextStyle(
-          color: kInverseSecondary,
-        ),
-        enabledBorder: const OutlineInputBorder(
+        floatingLabelStyle:
+            TextStyle(color: Theme.of(context).colorScheme.primary),
+        enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: kInverseTertiary,
+            color: Theme.of(context).colorScheme.inverseSurface,
           ),
         ),
-        focusedBorder: const OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: kInverseTertiary,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.errorContainer,
           ),
         ),
       ),

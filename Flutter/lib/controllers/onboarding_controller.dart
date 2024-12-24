@@ -6,10 +6,10 @@ class OnboardingController extends ChangeNotifier {
   bool isLastPage = false;
 
   void nextPage() {
-    if (currentPage < 3) {
+    if (currentPage < 4) {
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
-        curve: Curves.bounceIn,
+        curve: Curves.easeInExpo,
       );
       currentPage++;
     }
@@ -26,5 +26,4 @@ class OnboardingController extends ChangeNotifier {
     isLastPage = index == 3;
     notifyListeners();
   }
-
 }

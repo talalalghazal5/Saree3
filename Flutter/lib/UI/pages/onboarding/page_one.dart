@@ -12,11 +12,9 @@ class PageOne extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
           padding: const EdgeInsets.all(20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 30,
-              ),
               Center(
                 child: SvgPicture.asset(
                   'assets/images/svgs/choose_products.svg',
@@ -24,35 +22,39 @@ class PageOne extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 70,
               ),
-              Text("We've Got Everything",
-                  style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(
-                height: 30,
-              ),
-              Text.rich(
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                TextSpan(
-                  text: 'Choose what you want. \n',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  children: [
+              Column(
+                children: [
+                  Text(
+                    "We've Got Everything",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Text.rich(
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     TextSpan(
-                      text: 'You can find whatever you need ',
+                      text: 'Choose what you want. \n',
                       style: Theme.of(context).textTheme.bodyMedium,
+                      children: [
+                        TextSpan(
+                          text: 'You can find whatever you need ',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        TextSpan(
+                          text: 'at a glance.',
+                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 18, color: Theme.of(context).colorScheme.primary, wordSpacing: -2),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: 'at a glance',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

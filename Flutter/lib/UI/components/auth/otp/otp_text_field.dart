@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saree3/constants.dart';
 
 class Otptextfield extends StatefulWidget {
   const Otptextfield({super.key});
@@ -41,14 +40,14 @@ class _OtptextfieldState extends State<Otptextfield> {
                   FocusScope.of(context).previousFocus();
                 }
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
-                fillColor: kInverseTertiary,
-                enabledBorder: OutlineInputBorder(
+                fillColor: Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kInversePrimary),
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               style: const TextStyle(
