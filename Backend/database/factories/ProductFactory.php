@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
 use \Bezhanov\Faker\Provider\Commerce;
@@ -30,6 +31,7 @@ class ProductFactory extends Factory
             'stock_quantity' => $this->faker->numberBetween(0, 100),
             'total_rating' => $this->faker->numberBetween(0, 1000),
             'total_review_count' => $this->faker->numberBetween(0, 500),
+            'category_id' => Category::factory()
         ];
     }
 }
