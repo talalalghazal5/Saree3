@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-
+use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     // Get a paginated list of products
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $products = Product::paginate($perPage);
+        
         return response()->json($products);
     }
 
