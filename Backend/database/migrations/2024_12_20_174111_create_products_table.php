@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->unsignedInteger('rating')->default(0);
+            $table->unsignedInteger('price')->default(0);
+            $table->unsignedInteger('stock_quantity')->default(0);
+            $table->unsignedInteger('total_rating')->default(0);
+            $table->unsignedInteger('total_review_count')->default(0);
             $table->timestamps();
         });
     }
