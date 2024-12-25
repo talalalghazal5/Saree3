@@ -18,4 +18,9 @@ class Product extends Model
         'total_rating',
         'total_review_count',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
