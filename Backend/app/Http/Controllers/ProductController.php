@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Services\ProductQueryService;
 use Illuminate\Http\Request;
+
 class ProductController extends Controller
 {
+    protected $productQueryService;
+    public function __construct(ProductQueryService $productQueryService)
+    {
+        $this->productQueryService = $productQueryService;
+    }
+
     // Get a paginated list of products
     public function index(Request $request)
     {
+        $query = $this->productQueryService->query($request);
         $perPage = $request->input('per_page', 10);
-        $products = Product::paginate($perPage);
-        
+        $products = $query->paginate($perPage);
+
         return response()->json($products);
     }
 
