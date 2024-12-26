@@ -16,14 +16,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): Response
     {
-        $user = User::where('phone_number', $request['phone_number']);
-        
+        $user = User::where('phone_number', $request['phone_number'])->first();
+
         /* Authenticate user */
-        Auth::login($user->first());
+        Auth::login($user);
 
         $request->session()->regenerate();
+        $token = $user->createToken($user->phone_number)->plainTextToken;
 
-        return response()->noContent();
+        return response([
+            'token' => $token
+        ]);
     }
 
     /**
@@ -31,11 +34,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): Response
     {
+        //delete all users tokens
+        $request->user()->tokens()->latest()->each(function ($token) {
+            $token->delete();
+        });
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         $request->session()->flush();
- 
+
         return response()->noContent();
     }
 }
