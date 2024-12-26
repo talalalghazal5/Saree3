@@ -17,7 +17,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
-            'parent_category_id' => 'nullable|exists:categories,id',
+            'parent_category_id' => ['nullable', 'exists:categories,id']
         ]);
         $category = Category::create($request->all());
 
@@ -46,7 +46,15 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'sometimes|required|string|max:255|unique:categories,name,' . $id,
             'description' => 'nullable|string',
-            'parent_category_id' => 'nullable|exists:categories,id'
+            'parent_category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($id) {
+                    if ($value == $id) {
+                        $fail('A category cannot be its own parent.');
+                    }
+                }
+            ]
         ]);
         $category->update($request->all());
 
