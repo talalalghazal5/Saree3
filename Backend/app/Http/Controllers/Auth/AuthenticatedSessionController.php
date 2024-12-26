@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): Response
     {
         //delete all users tokens
-        $request->user()->tokens()->latest()->each(function ($token) {
+        Auth::user()->tokens()->each(function ($token) {
             $token->delete();
         });
 
