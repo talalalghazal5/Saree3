@@ -27,10 +27,10 @@ class ProductResource extends JsonResource
             }),
             'rating' => $this->rating,
             'price' => $this->price,
-            'stock_quantity' => $this->stock_quantity,
-            'total_rating' => $this->total_rating,
-            'total_review_count' => $this->total_review_count,
-            'created_at' => $this->created_at,
+            'stockQuantity' => $this->stock_quantity,
+            'totalRating' => $this->total_rating,
+            'totalReviewCount' => $this->total_review_count,
+            'createdAt' => $this->created_at,
         ];
     }
 }
