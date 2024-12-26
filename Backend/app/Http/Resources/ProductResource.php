@@ -19,15 +19,18 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'category_name' => $this->whenLoaded('category', function () {
-                return $this->category->name;
+            'category' => $this->whenLoaded('category', function () {
+                return [
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
+                ];
             }),
             'rating' => $this->rating,
             'price' => $this->price,
             'stock_quantity' => $this->stock_quantity,
             'total_rating' => $this->total_rating,
             'total_review_count' => $this->total_review_count,
-            'created_at'=> $this->created_at,
+            'created_at' => $this->created_at,
         ];
     }
 }

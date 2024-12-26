@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::query()->with(['children', 'products']);
+        $categories = Category::query()->with('children');
         $perPage = $request->input('per_page', 10);
         $categories = $categories->paginate($perPage);
 
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     }
     public function show($id)
     {
-        $category = Category::with(['children','products'])->findOrFail($id);
+        $category = Category::with('children')->findOrFail($id);
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }

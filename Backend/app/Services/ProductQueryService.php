@@ -9,7 +9,8 @@ class ProductQueryService
 {
     public function query(Request $request)
     {
-        $query = Product::query()->with('category');
+        $query = Product::query();
+        $query->with('category');
 
         // Filter by price range
         if ($request->has('min_price')) {
@@ -25,6 +26,12 @@ class ProductQueryService
         }
         if ($request->has('max_rating')) {
             $query->where('rating', '<=', $request->input('max_rating'));
+        }
+
+        // Filter by category 
+        if ($request->has('category_id')) {
+            $categoryIds = explode('-', $request->input('category_id'));
+            $query->whereIn('category_id', $categoryIds);
         }
 
         // Sorting
