@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Services\ProductQueryService;
 use Illuminate\Http\Request;
 
@@ -23,14 +24,14 @@ class ProductController extends Controller
         $perPage = $request->input('per_page', 10);
         $products = $query->paginate($perPage);
 
-        return response()->json($products);
+        return ProductResource::collection($products);
     }
 
     // Store a new product
     public function store(StoreProductRequest $request)
     {
         $product = Product::create($request->validated());
-        return response()->json($product, 201);
+        return new ProductResource($product);
     }
 
     // Show a single product
@@ -45,7 +46,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return response()->json($product);
+        return new ProductResource($product);
     }
 
     // Update an existing product
@@ -61,7 +62,7 @@ class ProductController extends Controller
         }
 
         $product->update($request->validated());
-        return response()->json($product);
+        return new ProductResource($product);
     }
 
     // Delete a product
