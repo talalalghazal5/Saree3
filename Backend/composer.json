@@ -10,6 +10,7 @@
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "mbezhanov/faker-provider-collection": "^2.0",
         "twilio/sdk": "^8.3"
     },
     "require-dev": {
