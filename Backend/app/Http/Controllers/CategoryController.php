@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('children')->get();
-        return response()->json($categories);
+        $categories = Category::query()->with(['children', 'products']);
+        $perPage = $request->input('per_page', 10);
+        $categories = $categories->paginate($perPage);
+
+        return CategoryResource::collection($categories);
     }
     public function store(StoreCategoryRequest $request)
     {
@@ -24,15 +28,16 @@ class CategoryController extends Controller
             $parentCategory->children()->save($category);
         }
 
-        return response()->json($category, 201);
+        return new CategoryResource($category);
     }
     public function show($id)
     {
-        $category = Category::with('children')->find($id);
+        $category = Category::with(['children','products'])->findOrFail($id);
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
-        return response()->json($category);
+
+        return new CategoryResource($category);
     }
     public function update(UpdateCategoryRequest $request, $id)
     {
@@ -53,7 +58,7 @@ class CategoryController extends Controller
             $category->save();
         }
 
-        return response()->json($category);
+        return new CategoryResource($category);
     }
     public function destroy($id)
     {
