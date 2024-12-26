@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -12,13 +14,8 @@ class CategoryController extends Controller
         $categories = Category::with('children')->get();
         return response()->json($categories);
     }
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-            'description' => 'nullable|string',
-            'parent_category_id' => ['nullable', 'exists:categories,id']
-        ]);
         $category = Category::create($request->all());
 
         // If parent_category_id is provided, associate the category with its parent
@@ -37,25 +34,13 @@ class CategoryController extends Controller
         }
         return response()->json($category);
     }
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::find($id);
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255|unique:categories,name,' . $id,
-            'description' => 'nullable|string',
-            'parent_category_id' => [
-                'nullable',
-                'exists:categories,id',
-                function ($attribute, $value, $fail) use ($id) {
-                    if ($value == $id) {
-                        $fail('A category cannot be its own parent.');
-                    }
-                }
-            ]
-        ]);
+        
         $category->update($request->all());
 
         // If parent_category_id is provided, associate the category with its parent
