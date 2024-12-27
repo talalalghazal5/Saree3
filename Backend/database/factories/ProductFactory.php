@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
 use \Bezhanov\Faker\Provider\Commerce;
@@ -30,7 +31,8 @@ class ProductFactory extends Factory
             'price' => convertPriceToCents($this->faker->randomFloat(5, 100, 10000)),
             'stock_quantity' => $this->faker->numberBetween(0, 100),
             'total_review_count' => $this->faker->numberBetween(0, 500),
-            'category_id' => Category::factory()
+            'category_id' => Category::factory(),
+            'vendor_id' => Vendor::factory(),
         ];
     }
 }

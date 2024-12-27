@@ -26,6 +26,7 @@ class UpdateProductRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'category_id' => 'sometimes|required|integer|exists:categories,id',
+            'vendor_id' => 'sometimes|required|exists:vendors,id',
             'total_rating' => 'sometimes|required|integer|min:0',
             'price' => 'sometimes|required|integer|min:0',
             'stock_quantity' => 'sometimes|required|integer|min:0',
@@ -33,7 +34,7 @@ class UpdateProductRequest extends FormRequest
         ];
     }
 
-    
+
     protected function prepareForValidation(): void
     {
         /**
@@ -45,10 +46,11 @@ class UpdateProductRequest extends FormRequest
          */
         $this->merge(array_filter([
             'category_id' => $this->categoryId ?: null,
+            'vendor_id' => $this->vendorId ?: null,
             'total_rating' => convertRatingToPercentage($this->rating) ?: null,
             'stock_quantity' => $this->stockQuantity ?: null,
             'total_review_count' => $this->totalReviewCount ?: null,
-            'price'=> convertPriceToCents($this->price) ?: null,
+            'price' => convertPriceToCents($this->price) ?: null,
         ]));
     }
 }

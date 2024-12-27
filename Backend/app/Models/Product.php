@@ -17,10 +17,16 @@ class Product extends Model
         'price',
         'stock_quantity',
         'total_review_count',
+        'vendor_id'
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

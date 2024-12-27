@@ -25,6 +25,12 @@ class ProductResource extends JsonResource
                     'name' => $this->category->name,
                 ];
             }),
+            'vendor' => $this->whenLoaded('vendor', function () {
+                return [
+                    'id' => $this->vendor->id,
+                    'name' => $this->vendor->name,
+                ];
+            }),
             'rating' => convertRatingToMax5($this->total_rating),
             'price' => convertPriceToDollars($this->price),
             'stockQuantity' => $this->stock_quantity,
