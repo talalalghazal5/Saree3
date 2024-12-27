@@ -14,18 +14,18 @@ class ProductQueryService
 
         // Filter by price range
         if ($request->has('min_price')) {
-            $query->where('price', '>=', $request->input('min_price'));
+            $query->where('price', '>=', convertPriceToCents($request->input('min_price')));
         }
         if ($request->has('max_price')) {
-            $query->where('price', '<=', $request->input('max_price'));
+            $query->where('price', '<=', convertPriceToCents($request->input('max_price')));
         }
 
         // Filter by rating range
         if ($request->has('min_rating')) {
-            $query->where('rating', '>=', $request->input('min_rating'));
+            $query->where('total_rating', '>=', convertRatingToPercentage($request->input('min_rating')));
         }
         if ($request->has('max_rating')) {
-            $query->where('rating', '<=', $request->input('max_rating'));
+            $query->where('total_rating', '<=', convertRatingToPercentage($request->input('max_rating')));
         }
 
         // Filter by category 

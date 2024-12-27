@@ -26,10 +26,9 @@ class ProductFactory extends Factory
         return [
             'name' => $faker->productName,
             'description' => $this->faker->paragraph,
-            'rating' => $this->faker->numberBetween(0, 5),
-            'price' => $this->faker->numberBetween(100, 10000),
+            'total_rating' => convertRatingToPercentage($this->faker->randomFloat(5, 0, 5)),
+            'price' => convertPriceToCents($this->faker->randomFloat(5, 100, 10000)),
             'stock_quantity' => $this->faker->numberBetween(0, 100),
-            'total_rating' => $this->faker->numberBetween(0, 1000),
             'total_review_count' => $this->faker->numberBetween(0, 500),
             'category_id' => Category::factory()
         ];
