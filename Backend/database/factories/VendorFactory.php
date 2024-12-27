@@ -21,7 +21,8 @@ class VendorFactory extends Factory
             'user_id' => User::factory(),
             'name' => $this->faker->company,
             'description' => $this->faker->paragraph,
-            'total_rating' => $this->faker->numberBetween(1,500), //todo update with helper function
+            'total_rating' => convertRatingToPercentage($this->faker->randomFloat(5, 0, 5)),
+            'total_review_count' => $this->faker->numberBetween(0, 500),
             'contact_number' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'email' => $this->faker->companyEmail,

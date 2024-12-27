@@ -15,6 +15,7 @@ class Vendor extends Model
         'name',
         'description',
         'total_rating',
+        'total_review_count',
         'contact_number',
         'address',
         'email',
