@@ -15,7 +15,7 @@ class VendorController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::with('products')->get();
+        $vendors = Vendor::with(['user'])->get();
         return VendorResource::collection($vendors);
     }
 
@@ -33,7 +33,7 @@ class VendorController extends Controller
      */
     public function show(int $id)
     {
-        $vendor = Vendor::with('products')->find($id);
+        $vendor = Vendor::with(['user', 'products'])->find($id);
         if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 404);
         }
