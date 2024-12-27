@@ -25,11 +25,30 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
-            'rating' => 'sometimes|required|integer|min:0',
+            'category_id' => 'sometimes|required|integer|exists:categories,id',
+            'rating_percentage' => 'sometimes|required|integer|min:0',
             'price' => 'sometimes|required|integer|min:0',
             'stock_quantity' => 'sometimes|required|integer|min:0',
-            'total_rating' => 'sometimes|required|integer|min:0',
             'total_review_count' => 'sometimes|required|integer|min:0',
         ];
+    }
+
+    
+    protected function prepareForValidation(): void
+    {
+        /**
+         * $request->input('field_name') ?: null: 
+         * 
+         * Checks if the field is present in the request.
+         *  If the field is not present, it sets it to null,
+         *  which will be filtered out by array_filter
+         */
+        $this->merge(array_filter([
+            'category_id' => $this->categoryId ?: null,
+            'rating_percentage' => convertRatingToPercentage($this->rating) ?: null,
+            'stock_quantity' => $this->stockQuantity ?: null,
+            'total_review_count' => $this->totalReviewCount ?: null,
+            'price'=> convertPriceToCents($this->price) ?: null,
+        ]));
     }
 }

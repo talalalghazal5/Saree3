@@ -12,10 +12,10 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'rating',
+        'category_id',
+        'rating_percentage',
         'price',
         'stock_quantity',
-        'total_rating',
         'total_review_count',
     ];
 

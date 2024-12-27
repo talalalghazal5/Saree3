@@ -25,10 +25,9 @@ class ProductResource extends JsonResource
                     'name' => $this->category->name,
                 ];
             }),
-            'rating' => $this->rating,
-            'price' => $this->price,
+            'rating' => convertRatingToMax5($this->rating_percentage),
+            'price' => convertPriceToDollars($this->price),
             'stockQuantity' => $this->stock_quantity,
-            'totalRating' => $this->total_rating,
             'totalReviewCount' => $this->total_review_count,
             'createdAt' => $this->created_at,
         ];
