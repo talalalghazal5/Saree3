@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,3 +31,6 @@ Route::post('/vendors', [VendorController::class, 'store'])->middleware(['auth:s
 Route::get('/vendors/{id}', [VendorController::class, 'show']);
 Route::put('/vendors/{id}', [VendorController::class, 'update'])->middleware(['auth:sanctum']);
 Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->middleware(['auth:sanctum']);
+
+// Search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
