@@ -24,7 +24,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 # Laravel API Project
 
 This is a Laravel-based API project for a Flutter **multi vendor** app, using Laravel Breeze API boilerplate.
-this api offers an easy way to authenticate users and verify their phone number via twilio verify service.
+this api offers an easy way to authenticate users and verify their phone number via twilio verify service, viewing products, vendors, and categories in simple convenient way.
 
 ### Follow these steps to set up the project.
 
@@ -82,6 +82,7 @@ composer install
     http://host:port/test/register
     http://host:port/test/verify
     ```
+
 4. update any other environment variable to suite your need
 
 ### 3. Generate the Application Key
@@ -100,7 +101,15 @@ To set up the database schema and seed it with sample data:
 php artisan migrate --seed
 ```
 
-### 5. Serve the Application
+### 5. Generate optimized autoload files
+
+Run the following composer command:
+
+```bash
+composer dump-autoload
+```
+
+### 6. Serve the Application
 
 Run the development server:
 
@@ -139,6 +148,14 @@ If you pull new changes from the repository, make sure to follow these steps:
     php artisan cache:clear
     php artisan route:clear
     ```
+
+### 5. Regenerate optimized autoload files
+
+Run the following composer command:
+
+```bash
+composer dump-autoload
+```
 
 ## Troubleshooting
 
@@ -211,6 +228,7 @@ Feel free to reach out for further assistance.
     ```
 
     for the login request you also have to update the token variable because the csrf cookie is regenerated after authenticating the user, you can do this by adding this post-request script to postman:
+
     ```
     var xsrfCookie = pm.cookies.get("XSRF-TOKEN");
     pm.collectionVariables.set("xsrf-cookie", xsrfCookie);
