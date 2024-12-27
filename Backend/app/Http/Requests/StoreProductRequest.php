@@ -26,7 +26,7 @@ class StoreProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
-            'rating_percentage' => 'required|integer|min:0',
+            'total_rating' => 'required|integer|min:0',
             'price' => 'required|integer|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'total_review_count' => 'required|integer|min:0',
@@ -37,7 +37,7 @@ class StoreProductRequest extends FormRequest
     {
         $this->merge([
             'category_id' => $this->categoryId,
-            'rating_percentage' => convertRatingToPercentage($this->rating),
+            'total_rating' => convertRatingToPercentage($this->rating),
             'stock_quantity' => $this->stockQuantity,
             'total_review_count' => $this->totalReviewCount,
             'price' => convertPriceToCents($this->price),

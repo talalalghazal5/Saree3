@@ -13,7 +13,7 @@ class Product extends Model
         'name',
         'description',
         'category_id',
-        'rating_percentage',
+        'total_rating',
         'price',
         'stock_quantity',
         'total_review_count',

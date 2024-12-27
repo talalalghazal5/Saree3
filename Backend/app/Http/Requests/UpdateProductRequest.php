@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'category_id' => 'sometimes|required|integer|exists:categories,id',
-            'rating_percentage' => 'sometimes|required|integer|min:0',
+            'total_rating' => 'sometimes|required|integer|min:0',
             'price' => 'sometimes|required|integer|min:0',
             'stock_quantity' => 'sometimes|required|integer|min:0',
             'total_review_count' => 'sometimes|required|integer|min:0',
@@ -45,7 +45,7 @@ class UpdateProductRequest extends FormRequest
          */
         $this->merge(array_filter([
             'category_id' => $this->categoryId ?: null,
-            'rating_percentage' => convertRatingToPercentage($this->rating) ?: null,
+            'total_rating' => convertRatingToPercentage($this->rating) ?: null,
             'stock_quantity' => $this->stockQuantity ?: null,
             'total_review_count' => $this->totalReviewCount ?: null,
             'price'=> convertPriceToCents($this->price) ?: null,

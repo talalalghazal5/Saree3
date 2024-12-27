@@ -22,10 +22,10 @@ class ProductQueryService
 
         // Filter by rating range
         if ($request->has('min_rating')) {
-            $query->where('rating_percentage', '>=', convertRatingToPercentage($request->input('min_rating')));
+            $query->where('total_rating', '>=', convertRatingToPercentage($request->input('min_rating')));
         }
         if ($request->has('max_rating')) {
-            $query->where('rating_percentage', '<=', convertRatingToPercentage($request->input('max_rating')));
+            $query->where('total_rating', '<=', convertRatingToPercentage($request->input('max_rating')));
         }
 
         // Filter by category 
