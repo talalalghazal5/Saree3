@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVendorRequest;
+use App\Http\Requests\UpdateVendorRequest;
+use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
@@ -12,27 +15,17 @@ class VendorController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::all();
-        return response()->json($vendors);
+        $vendors = Vendor::with('products')->get();
+        return VendorResource::collection($vendors);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVendorRequest $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'vendor_name' => 'required|string|max:255',
-            'vendor_description' => 'nullable|string',
-            'rating' => 'required|integer|min:1|max:5',
-            'contact' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255',
-        ]);
-
-        $vendor = Vendor::create($request->all());
-        return response()->json($vendor, 201);
+        $vendor = Vendor::create($request->validated());
+        return new VendorResource($vendor);
     }
 
     /**
@@ -40,33 +33,25 @@ class VendorController extends Controller
      */
     public function show(int $id)
     {
-        $vendor = Vendor::find($id);
+        $vendor = Vendor::with('products')->find($id);
         if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 404);
         }
-        return response()->json($vendor);
+        return new VendorResource($vendor);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateVendorRequest $request, int $id)
     {
         $vendor = Vendor::find($id);
         if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 404);
         }
-        $request->validate([
-            'vendor_name' => 'sometimes|required|string|max:255',
-            'vendor_description' => 'nullable|string',
-            'rating' => 'sometimes|required|integer|min:1|max:5',
-            'contact' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255',
-        ]);
 
-        $vendor->update($request->all());
-        return response()->json($vendor);
+        $vendor->update($request->validated());
+        return new VendorResource($vendor);
     }
 
     /**
