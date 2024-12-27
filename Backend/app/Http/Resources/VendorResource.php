@@ -16,12 +16,12 @@ class VendorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'user' => new UserResource($this->whenLoaded('user')),
             'name' => $this->name,
             'description' => $this->description,
-            'total_rating' => $this->total_rating,
-            'total_review_count' => $this->total_review_count,
-            'contact_number' => $this->contact_number,
+            'totalRating' => $this->total_rating,
+            'totalReviewCount' => $this->total_review_count,
+            'contactNumber' => $this->contact_number,
             'address' => $this->address,
             'email' => $this->email,
             'products' => ProductResource::collection($this->whenLoaded('products')),
