@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -19,7 +18,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -43,7 +42,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response([
+        return response()->json([
             'message' => 'SMS message sent successfully',
             'phone_number' => $data['phone_number']
         ]);
@@ -79,10 +78,14 @@ class RegisteredUserController extends Controller
             /* Authenticate user */
             Auth::login($user->first());
 
-            return response(['message' => 'Phone number verified']);
+            $token = $user->createToken($user->phone_number)->plainTextToken;
+            return response()->json([
+                'message' => 'Phone number verified',
+                'token' => $token
+            ]);
         }
 
-        return response([
+        return response()->json([
             'phone_number' => $data['phone_number'],
             'error' => 'Invalid verification code entered!'
         ], 409);

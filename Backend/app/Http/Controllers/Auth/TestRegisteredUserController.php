@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -17,7 +17,7 @@ class TestRegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -31,7 +31,7 @@ class TestRegisteredUserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response([
+        return response()->json([
             'message' => 'SMS message sent successfully',
             'phone_number' => $data['phone_number']
         ]);
@@ -51,14 +51,29 @@ class TestRegisteredUserController extends Controller
 
         if ($data['verification_code'] == 1234) {
             $user = tap(User::where('phone_number', $data['phone_number']))
-                ->update(['phone_verified' => true]);
+                ->update(['phone_verified' => true])->first();
+
+            if (!$user) {
+                return response()->json(
+                    [
+                        'message' => 'verification failed, user not found, please check if the phone number is currect and if you are regiesterd'
+                    ],
+                    404
+                );
+            }
+
             /* Authenticate user */
             Auth::login($user->first());
 
-            return response(['message' => 'Phone number verified']);
+            $token = $user->createToken($user->phone_number)->plainTextToken;
+
+            return response()->json([
+                'message' => 'Phone number verified',
+                'token' => $token
+            ]);
         }
 
-        return response([
+        return response()->json([
             'phone_number' => $data['phone_number'],
             'error' => 'Invalid verification code entered!'
         ], 409);

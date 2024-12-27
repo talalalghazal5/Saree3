@@ -17,6 +17,9 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): Response
     {
         $user = User::where('phone_number', $request['phone_number'])->first();
+        if (!$user) {
+            return response('user not found, please register', 404);
+        }
 
         /* Authenticate user */
         Auth::login($user);
@@ -34,6 +37,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): Response
     {
+        
         //delete all users tokens
         Auth::user()->tokens()->each(function ($token) {
             $token->delete();
