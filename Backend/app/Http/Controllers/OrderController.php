@@ -29,7 +29,6 @@ class OrderController extends Controller
         $order = new Order([
             'user_id' => $request->user()->id,
             'total_price' => 0, // This will be calculated 
-            'order_status' => 'pending'
         ]);
         $order->save();
 
@@ -63,7 +62,7 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
-        if ($order->order_status !== 'pending') {
+        if ($order->status !== 'pending') {
             return response()->json(['message' => 'Only pending orders can be updated'], 403);
         }
 
@@ -87,13 +86,11 @@ class OrderController extends Controller
      */
     public function cancel(Request $request, $id)
     {
-        /** @var Order $order description */
         $order = $request->user()->orders()->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
-
-        if ($order->order_status !== 'pending') {
+        if ($order->status !== 'pending') {
             return response()->json(['message' => 'Only pending orders can be canceled'], 403);
         }
 
@@ -106,7 +103,7 @@ class OrderController extends Controller
     }
 
 
-    private function addNewOrderItemToOrder(Order $order, OrderItem $item)
+    private function addNewOrderItemToOrder(Order $order, Array $item)
     {
         $product = Product::find($item['product_id']);
         $orderItem = new OrderItem([
@@ -119,7 +116,7 @@ class OrderController extends Controller
         return $orderItem;
     }
 
-    private function updateOrderItem(OrderItem $oldItem, OrderItem $newItem)
+    private function updateOrderItem(OrderItem $oldItem, Array $newItem)
     {
         $oldItem->quantity = $newItem['quantity'];
         $oldItem->price = $newItem['quantity'] * $oldItem->product->price;
