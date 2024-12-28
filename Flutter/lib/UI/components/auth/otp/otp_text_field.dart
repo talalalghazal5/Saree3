@@ -27,12 +27,12 @@ class _OtptextfieldState extends State<Otptextfield> {
         return Padding(
           padding: const EdgeInsets.all(10),
           child: SizedBox(
-            height: 50,
-            width: 40,
+            height: 60,
+            width: 55,
             child: TextFormField(
               controller: _controllers[index],
               onChanged: (value) {
-                if (value.length == 1) {
+                if (value.isNotEmpty) {
                   if (index < 3) {
                     FocusScope.of(context).nextFocus();
                   }
@@ -50,9 +50,7 @@ class _OtptextfieldState extends State<Otptextfield> {
                   borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
-              style: const TextStyle(
-                fontSize: 20 
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               inputFormatters: [
