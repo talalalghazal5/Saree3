@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -21,7 +23,7 @@ class OrderController extends Controller
     /**
      * Store a newly created Order in the database.
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
         $order = new Order([
             'user_id' => $request->user()->id,
@@ -54,7 +56,7 @@ class OrderController extends Controller
     /**
      * Update the specified Order in the database.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrderRequest $request, $id)
     {
         $order = $request->user()->orders()->find($id);
         if (!$order) {
