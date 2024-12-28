@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/onboarding/onboarding_page.dart';
 import 'package:saree3/UI/pages/onboarding/page_four.dart';
 import 'package:saree3/UI/pages/onboarding/page_one.dart';
@@ -10,12 +11,19 @@ import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late SharedPreferences preferences;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  preferences = await SharedPreferences.getInstance();
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ThemeProvider(),),
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
+        ),
         ChangeNotifierProvider(create: (context) => OnboardingController())
       ],
       child: const MyApp(),
@@ -40,9 +48,10 @@ class MyApp extends StatelessWidget {
         '/secondpage': (context) => const PageTwo(),
         '/thirdpage': (context) => const PageThree(),
         '/fourthpage': (context) => const PageFour(),
-        '/loginPage': (context) => const SignInPage(),
-        '/signupPage': (context) => const SignUpPage(),
-        '/otpPage' : (context) => const Otp(),
+        '/loginPage': (context) =>  SignInPage(),
+        '/signupPage': (context) => SignUpPage(),
+        '/otpPage': (context) => const Otp(),
+        '/homepage': (context) =>const HomePage(),
       },
     );
   }
