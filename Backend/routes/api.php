@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
@@ -33,4 +34,13 @@ Route::put('/vendors/{id}', [VendorController::class, 'update'])->middleware(['a
 Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->middleware(['auth:sanctum']);
 
 // Search
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [SearchController::class, 'search']);
+
+// Order
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::put('/orders/{id}', [OrderController::class, 'update']);
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
+});
