@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Date;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -86,6 +87,7 @@ class OrderController extends Controller
      */
     public function cancel(Request $request, $id)
     {
+        /** @var Order $order description */
         $order = $request->user()->orders()->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
@@ -95,7 +97,11 @@ class OrderController extends Controller
             return response()->json(['message' => 'Only pending orders can be canceled'], 403);
         }
 
-        $order->delete();
+        $order->update([
+            'status'=> 'canceled',
+            'closed_at' => Date::now()
+        ]);
+
         return response()->json(['message' => 'Order canceled successfully'], 200);
     }
 
