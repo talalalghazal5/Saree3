@@ -22,7 +22,16 @@ class AuthenticatedSessionController extends Controller
         }
 
         /* Authenticate user */
-        Auth::login($user);
+        $auth = Auth::attempt([
+            'phone_number' => $user->phone_number,
+            'password' => $request['password']
+        ]);
+
+        if (!$auth) {
+            return response([
+                'message' => 'password or phone number don\'t match'
+            ], 403);
+        }
 
         $request->session()->regenerate();
         $token = $user->createToken($user->phone_number)->plainTextToken;
@@ -37,7 +46,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): Response
     {
-        
         //delete all users tokens
         Auth::user()->tokens()->each(function ($token) {
             $token->delete();
