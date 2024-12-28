@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('total_rating')->default(0);
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('vendor_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('price')->default(0);
             $table->unsignedInteger('stock_quantity')->default(0);
