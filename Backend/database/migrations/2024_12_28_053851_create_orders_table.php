@@ -16,7 +16,7 @@
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
                 $table->unsignedInteger('total_price');
                 $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
-                $table->timestamp('closed_date')->nullable();
+                $table->timestamp('closed_at')->nullable();
                 $table->timestamps();
             });
         }
