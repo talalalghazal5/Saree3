@@ -43,25 +43,33 @@ class HomePageService {
     }
   }
 
-  Future<List<Product>> getProductsByMinPrice(double minPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$minPrice');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
-    } else {
-      throw Exception('An error occurred');
+  Future<List<Product>> getProductsBy({double? minPrice, double? maxPrice, Category? category, String? name}) async {
+    //this is an example query parameters
+    String queryParameters = '';
+    if (minPrice != null) {
+      queryParameters += 'price_gte=$minPrice&';
     }
-  }
+    if (maxPrice != null) {
+      queryParameters += 'price_lte=$maxPrice&';
+    }
+    if (category != null) {
+      queryParameters += 'category_id=${category.id}&';
+    }
+    if (name != null) {
+      queryParameters += 'name_contains=$name&';
+    }
+    if (queryParameters.isNotEmpty) {
+      queryParameters =
+          queryParameters.substring(0, queryParameters.length - 1);
+    }
 
-  Future<List<Product>> getProductsByMaxPrice(double maxPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$maxPrice');
+    Uri productsUrl = Uri.parse('https://api.example.com/products?$queryParameters',);
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
       List<dynamic> productsJson = jsonDecode(response.body);
       return productsJson.map((product) => Product.fromJson(product)).toList();
     } else {
-      throw Exception('An error occurred');
+      throw Exception('An error occurred fetching products');
     }
   }
 }
