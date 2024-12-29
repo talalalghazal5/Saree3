@@ -23,39 +23,39 @@ class _QuantitySelectorButtonState extends State<QuantitySelectorButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 20,
       width: 60,
       child: Row(
         children: [
           GestureDetector(
+            onTap: _decreaseValue,
             child: Container(
               height: 20,
               width: 20,
+              decoration: const BoxDecoration(
+                  color: Color(0xffB2B1B6),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
               child: Center(
                 child: Text(
                   '-',
                   style: TextStyle(color: Color(0xff25242B)),
                 ),
               ),
-              decoration: BoxDecoration(
-                  color: Color(0xffB2B1B6),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20))),
             ),
-            onTap: _decreaseValue,
           ),
-          Container(
+          SizedBox(
           height: 20,
           width: 20,
           child: TextField(
-            style: TextStyle(fontSize: 15
+            style: const TextStyle(fontSize: 15
             ),
             controller: TextEditingController(text: _value.toString()),
             readOnly: true,
             textAlign: TextAlign.center,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               filled: true,
             fillColor:Color(0xffB2B1B6),
               border: OutlineInputBorder(
@@ -67,22 +67,22 @@ class _QuantitySelectorButtonState extends State<QuantitySelectorButton> {
           ),
         ),
           GestureDetector(
+            onTap: _increaseValue,
             child: Container(
               height: 20,
               width: 20,
+              decoration: const BoxDecoration(
+                  color: Color(0xffB2B1B6),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
               child: Center(
                 child: Text(
                   '+',
                   style: TextStyle(color: Color(0xff25242B)),
                 ),
               ),
-              decoration: BoxDecoration(
-                  color: Color(0xffB2B1B6),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
             ),
-            onTap: _increaseValue,
           )
         ],
       ),

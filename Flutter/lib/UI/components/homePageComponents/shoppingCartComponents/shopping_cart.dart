@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
+import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/data/models/product_model.dart';
-import 'package:saree3/ui/components/custom_button.dart';
-import 'package:saree3/ui/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 
 class ShoppingCart extends StatelessWidget {
   ShoppingCart({super.key});
@@ -26,19 +26,21 @@ class ShoppingCart extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('My Cart'),
+              const Text('My Cart'),
               IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: CustomButton(
-                                width: 100, buttonName: 'Clean'),
-                          );
-                        });
-                  },
-                  icon: Icon(Icons.more_horiz))
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content:
+                            PrimaryButton(onPressed: () {}, text: 'Clear Cart'),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.more_horiz),
+              )
             ],
           ),
           Expanded(
@@ -51,13 +53,13 @@ class ShoppingCart extends StatelessWidget {
               },
             ),
           ),
-          Container(
+          const SizedBox(
             height: 50,
-            child: const Center(
+            child: Center(
               child: Text('Total Cost:' r'$'),
             ),
           ),
-          CustomButton(width: double.infinity, buttonName: 'Check Out'),
+          PrimaryButton(onPressed: (){}, text: 'Checkout'),
         ],
       ),
     );

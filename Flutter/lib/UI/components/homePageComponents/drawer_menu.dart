@@ -8,20 +8,20 @@ class DrawerMenu extends StatelessWidget {
     return Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 130, 136, 141)),
               child: Text(
                 'saree3',
               ),
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 130, 136, 141)),
             ),
             IconButton(
-              icon: Icon(Icons.brightness_6),
+              icon: const Icon(Icons.brightness_6),
               onPressed: () {
               },
             ),
             ListTile(
-              title: Text('about'),
+              title: const Text('about'),
               onTap: () {
                 Navigator.pop(context);
               },

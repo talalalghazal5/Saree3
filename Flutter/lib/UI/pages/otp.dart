@@ -63,7 +63,7 @@ class Otp extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Didn\'t get code? '),
+                      const Text('Didn\'t get code? '),
                       Text(
                         'resend it',
                         style: TextStyle(
