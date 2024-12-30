@@ -26,6 +26,14 @@ ThemeData lightTheme = ThemeData(
     ),
     headlineMedium: TextStyle(
       fontSize: 23,
+      fontWeight: FontWeight.w500,
+      color: Color(0xff25242b),
+      fontFamily: 'lexend',
+      fontFamilyFallback: ['sfArabic'],
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
       color: Color(0xff25242b),
       fontFamily: 'lexend',
       fontFamilyFallback: ['sfArabic'],

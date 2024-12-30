@@ -38,7 +38,7 @@ class _QuantitySelectorButtonState extends State<QuantitySelectorButton> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20))),
-              child: Center(
+              child: const Center(
                 child: Text(
                   '-',
                   style: TextStyle(color: Color(0xff25242B)),
@@ -76,7 +76,7 @@ class _QuantitySelectorButtonState extends State<QuantitySelectorButton> {
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
-              child: Center(
+              child: const Center(
                 child: Text(
                   '+',
                   style: TextStyle(color: Color(0xff25242B)),

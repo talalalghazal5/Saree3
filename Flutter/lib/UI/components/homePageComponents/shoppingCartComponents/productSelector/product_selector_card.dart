@@ -14,11 +14,9 @@ class ProductsSelectorCard extends StatelessWidget {
         width: 450,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: const Color(0xffE6E6E8),
         ),
         child: Card(
-          clipBehavior: Clip.none,
-          color: const Color(0xffE6E6E8),
+          color: Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -30,7 +28,7 @@ class ProductsSelectorCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.white),
                   child: Center(
-                    child: Image.asset(productSelector.image),
+                    child:  Text('This is a placeholder', style: Theme.of(context).textTheme.labelSmall,),
                   ),
                 ),
                 Padding(
@@ -45,9 +43,7 @@ class ProductsSelectorCard extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
-                            color: const Color(0xffB5A9F5),
-                            child: Text(productSelector.categoryName)),
+                        Text(productSelector.categoryName),
                         const SizedBox(
                           height: 20,
                         ),
