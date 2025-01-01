@@ -10,39 +10,82 @@ class DrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Drawer(
-      child: ListView(
-        children: [
-          const SizedBox(
-            height: 40,
-          ),
-          ListTile(
-            leading: const CircleAvatar(
-              radius: 30,
-              foregroundImage: NetworkImage('https://placehold.co/500x500.png'),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 40,),
+            ListTile(minVerticalPadding: 50,
+              leading: const CircleAvatar(
+                radius: 30,
+                foregroundImage:
+                    NetworkImage('https://placehold.co/500x500.png'),
+              ),
+              title: Text(
+                'Talal Alghazal',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              onTap: () => Navigator.pushNamed(context, '/settingsPage'),
             ),
-            title: Text(
-              'Talal Alghazal',
-              style: Theme.of(context).textTheme.headlineSmall,
+            Divider(
+              indent: 15,
+              endIndent: 15,
+              color: Theme.of(context).colorScheme.inverseSurface,
             ),
-          ),
-          const SizedBox(height: 20,),
-          Divider(
-            indent: 15,
-            endIndent: 15,
-            color: Theme.of(context).colorScheme.inverseSurface,
-          ),
-          ListTile(trailing: IconButton(onPressed: (){
-            themeProvider.toggleTheme();
-          }, icon: FaIcon(
-            themeProvider.isDarkMode ? FontAwesomeIcons.solidMoon : FontAwesomeIcons.solidSun
-          ))),
-          ListTile(
-            title: const Text('about'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          )
-        ],
+            ListTile(
+              trailing: IconButton(
+                onPressed: () {
+                  themeProvider.toggleTheme();
+                },
+                icon: FaIcon(themeProvider.isDarkMode
+                    ? FontAwesomeIcons.solidMoon
+                    : FontAwesomeIcons.solidSun),
+              ),
+            ),
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.solidHeart,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 20,
+              ),
+              title: Text(
+                'Favorites',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.clockRotateLeft,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 20,
+              ),
+              title: Text(
+                'Order History',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: FaIcon(
+                FontAwesomeIcons.doorOpen,
+                color: Theme.of(context).colorScheme.error.withAlpha(200),
+                size: 20,
+              ),
+              title: Text(
+                'Logout',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.error.withAlpha(200)),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

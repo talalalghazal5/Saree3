@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/info_editing.dart';
 import 'package:saree3/UI/pages/onboarding/onboarding_page.dart';
 import 'package:saree3/UI/pages/otp.dart';
+import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         '/signupPage': (context) => const SignUpPage(),
         '/otpPage': (context) => const Otp(),
         '/homePage': (context) => const HomePage(),
+        '/settingsPage': (context) => const SettingsPage(),
+        '/infoEditingPage': (context) => const InfoEditing(),
       },
     );
   }
