@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class InfoEditing extends StatefulWidget {
   const InfoEditing({super.key});
@@ -9,21 +12,43 @@ class InfoEditing extends StatefulWidget {
 }
 
 class _InfoEditingState extends State<InfoEditing> {
-
   late TextEditingController nameController;
   late TextEditingController locationController;
-
+  late GlobalKey<FormState> formKey;
+  File? selectedImage;
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: 'Talal Alghazal');
-    locationController = TextEditingController();
+    locationController = TextEditingController(text: 'As Suwayda, Syria');
+    formKey = GlobalKey<FormState>();
+  }
+
+  Future _pickImageFromGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        selectedImage = File(image.path);
+      });
+    } else {
+      return;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: FaIcon(
+              FontAwesomeIcons.check,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -34,69 +59,112 @@ class _InfoEditingState extends State<InfoEditing> {
                   CircleAvatar(
                     backgroundColor:
                         Theme.of(context).colorScheme.inverseSurface,
-                    foregroundImage:
-                        const NetworkImage('https://placehold.co/500x500.png'),
+                    foregroundImage: selectedImage != null
+                        ? FileImage(selectedImage!)
+                        : NetworkImage('https://placehold.co/500x500.png'),
                     radius: 70,
                   ),
                   Container(
                     width: 35,
                     height: 35,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Theme.of(context).colorScheme.surface, width: 2)
-                    ),
-                    child: IconButton.filled(onPressed: (){
-                      //TODO: ADD AN IMAGE PICKER TO CHOOSE AN IMAGE.
-                    }, icon: const FaIcon(FontAwesomeIcons.pencil, size: 15,)),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.surface,
+                            width: 2)),
+                    child: IconButton.filled(
+                        onPressed: () {
+                          //TODO: ADD AN IMAGE PICKER TO CHOOSE AN IMAGE.
+                          _pickImageFromGallery();
+                        },
+                        icon: const FaIcon(
+                          FontAwesomeIcons.pencil,
+                          size: 15,
+                        )),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 50,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Theme.of(context).colorScheme.inverseSurface)
-                ),
-                child: TextField(
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    alignLabelWithHint: false,
-                    label: const Text('full name'),
-                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
-                    border: const UnderlineInputBorder(
-                      borderSide: BorderSide.none
+              Form(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .inverseSurface)),
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          alignLabelWithHint: false,
+                          label: const Text('full name'),
+                          labelStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          ),
+                          border: const UnderlineInputBorder(
+                              borderSide: BorderSide.none),
+                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'The name should not be empty';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-              const SizedBox(height: 18,),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Theme.of(context).colorScheme.inverseSurface)
-                ),
-                child: TextField(
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  controller: locationController,
-                  decoration: InputDecoration(
-                    alignLabelWithHint: false,
-                    label: const Text('delivery address'),
-                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),
-                    border: const UnderlineInputBorder(
-                      borderSide: BorderSide.none
+                    const SizedBox(
+                      height: 18,
                     ),
-                  ),
-                  style: Theme.of(context).textTheme.bodyLarge,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.inverseSurface,
+                        ),
+                      ),
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        controller: locationController,
+                        decoration: InputDecoration(
+                          alignLabelWithHint: false,
+                          label: const Text('delivery address'),
+                          labelStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          ),
+                          border: const UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a location address';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),
