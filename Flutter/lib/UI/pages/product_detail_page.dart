@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/data/models/product_model.dart';
+import 'package:saree3/data/models/product.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({super.key, required this.productModel});
-  final ProductModel productModel;
+  const ProductDetailPage({super.key, required this.product});
+  final Product product;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +17,8 @@ class ProductDetailPage extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
-              child: Image.asset(
-                productModel.image,
+              child: Image.network(
+                'https://placehold.co/500x500.png',
                 height: 400,
                 width: double.infinity,
               ),
@@ -26,7 +26,7 @@ class ProductDetailPage extends StatelessWidget {
 
             Row(
               children: [
-                Text(productModel.name),
+                Text(product.name!),
               ],
             ),
             const Row(
@@ -59,7 +59,7 @@ class ProductDetailPage extends StatelessWidget {
             ),
 
             Text(
-              r'$' '${productModel.price.toString()}',
+              r'$' '${product.price.toString()}',
               style: const TextStyle(
                   color: Color(0xffEDA086),
                   fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class ProductDetailPage extends StatelessWidget {
               height: 10,
             ),
             const Text('About this product :'),
-            Text(productModel.description),
+            Text(product.description!),
             const Text('Key Features :'),
             Container(
               child: const Padding(

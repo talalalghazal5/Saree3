@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/data/models/product_model.dart';
+import 'package:saree3/data/models/product.dart';
 
 class ShoppingCart extends StatelessWidget {
-  ShoppingCart({super.key});
-  final List<ProductModel> selectProducts = List.generate(
-    10,
-    (index) => ProductModel(
-        name: "title",
-        price: index * 10,
-        image: '',
-        id: 0,
-        description: 'hi',
-        categoryName: 'laptop'),
-  );
+  const ShoppingCart({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,15 +34,9 @@ class ShoppingCart extends StatelessWidget {
               )
             ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: selectProducts.length,
-              itemBuilder: (context, index) {
-                return ProductsSelectorCard(
-                  productSelector: selectProducts[index],
-                );
-              },
-            ),
+          const Expanded(
+            child: Center(),
+            //Todo: Add the cart items to this widget.
           ),
           const SizedBox(
             height: 50,

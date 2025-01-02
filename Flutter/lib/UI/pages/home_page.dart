@@ -72,16 +72,16 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             child: Column(
               children: [
                 ProductsList(
                   categoryName: 'Electronics',
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 60,
                 ),
                 ProductsList(categoryName: 'Clothes')

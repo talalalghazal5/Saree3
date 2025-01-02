@@ -31,9 +31,9 @@ class HomePageService {
     }
   }
 
-  Future<List<Product>> getProductsByCategory(Category category) async {
+  Future<List<Product>> getProductsByCategory(String categoryName) async {
     Uri productsUrl =
-        Uri.parse('https://api.example.com/products/${category.id}');
+        Uri.parse('https://api.example.com/products/$categoryName'); 
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
       List<dynamic> productsJson = jsonDecode(response.body);

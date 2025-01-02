@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:saree3/data/models/product_model.dart';
+import 'package:saree3/data/models/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final ProductModel product;
+  final Product product;
   const ProductCard({super.key, required this.product});
 
   @override
@@ -49,7 +49,7 @@ class ProductCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                product.name,
+                product.name!,
                 style: Theme.of(context).textTheme.bodyLarge
               ),
             ),
