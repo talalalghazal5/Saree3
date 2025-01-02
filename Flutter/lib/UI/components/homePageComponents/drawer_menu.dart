@@ -31,16 +31,7 @@ class DrawerMenu extends StatelessWidget {
               endIndent: 15,
               color: Theme.of(context).colorScheme.inverseSurface,
             ),
-            ListTile(
-              trailing: IconButton(
-                onPressed: () {
-                  themeProvider.toggleTheme();
-                },
-                icon: FaIcon(themeProvider.isDarkMode
-                    ? FontAwesomeIcons.solidMoon
-                    : FontAwesomeIcons.solidSun),
-              ),
-            ),
+          
             ListTile(
               leading: FaIcon(
                 FontAwesomeIcons.solidHeart,
