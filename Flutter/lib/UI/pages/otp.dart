@@ -35,24 +35,23 @@ class Otp extends StatelessWidget {
                   const SizedBox(
                     height: 70,
                   ),
-                  const FaIcon(
+                  FaIcon(
                     FontAwesomeIcons.unlock,
                     size: 110,
-                    color: Color.fromARGB(255, 49, 49, 49),
+                    color: Theme.of(context).colorScheme.onSurface,
                     shadows: [
                       Shadow(
-                          color: Color.fromARGB(64, 0, 0, 0),
-                          offset: Offset(0, 10),
-                          blurRadius: 10)
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                        offset: const Offset(0, 10),
+                        blurRadius: 10,
+                      ),
                     ],
                   ),
                   const SizedBox(
                     height: 70,
                   ),
-                  const Text(
-                    'Enter the 4 digit code we just sent to you',
-                    style: TextStyle(fontSize: 15),
-                  ),
+                  Text('Enter the 4 digit code we just sent you',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   const SizedBox(
                     height: 20,
                   ),
@@ -63,15 +62,21 @@ class Otp extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Didn\'t get code? '),
                       Text(
-                        'resend it',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          decoration: TextDecoration.underline,
-                          decorationColor:
-                              Theme.of(context).colorScheme.secondary,
-                          decorationThickness: 2,
+                        'Didn\'t get code? ',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          'resend it',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                decoration: TextDecoration.underline,
+                              ),
                         ),
                       ),
                     ],
@@ -81,7 +86,9 @@ class Otp extends StatelessWidget {
                   ),
                   PrimaryButton(
                     text: 'Verify Now',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/homepage');
+                    },
                   ),
                 ],
               ),

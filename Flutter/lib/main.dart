@@ -9,8 +9,13 @@ import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late SharedPreferences preferences;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  preferences = await SharedPreferences.getInstance();
   runApp(
     MultiProvider(
       providers: [

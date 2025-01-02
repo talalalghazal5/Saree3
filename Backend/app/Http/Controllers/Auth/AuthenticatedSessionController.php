@@ -17,9 +17,21 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): Response
     {
         $user = User::where('phone_number', $request['phone_number'])->first();
+        if (!$user) {
+            return response('user not found, please register', 404);
+        }
 
         /* Authenticate user */
-        Auth::login($user);
+        $auth = Auth::attempt([
+            'phone_number' => $user->phone_number,
+            'password' => $request['password']
+        ]);
+
+        if (!$auth) {
+            return response([
+                'message' => 'password or phone number don\'t match'
+            ], 403);
+        }
 
         $request->session()->regenerate();
         $token = $user->createToken($user->phone_number)->plainTextToken;

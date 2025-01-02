@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     protected $productQueryService;
+
     public function __construct(ProductQueryService $productQueryService)
     {
         $this->productQueryService = $productQueryService;
@@ -37,7 +38,7 @@ class ProductController extends Controller
     // Show a single product
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::with(['vendor', 'category'])->find($id);
 
         if (!$product) {
             return response()->json([

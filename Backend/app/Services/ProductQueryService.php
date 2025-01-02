@@ -10,7 +10,7 @@ class ProductQueryService
     public function query(Request $request)
     {
         $query = Product::query();
-        $query->with('category');
+        $query->with(['vendor', 'category']);
 
         // Filter by price range
         if ($request->has('min_price')) {
