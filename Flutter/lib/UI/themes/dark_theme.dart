@@ -30,7 +30,13 @@ ThemeData darkTheme = ThemeData(
       fontFamily: 'lexend',
       fontFamilyFallback: ['sfArabic'],
     ),
-
+    headlineSmall: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      color: Color(0xffFFFFF7),
+      fontFamily: 'lexend',
+      fontFamilyFallback: ['sfArabic'],
+    ),
 // =========== B O D Y =================
     bodyLarge: TextStyle(
       fontSize: 18,
