@@ -16,18 +16,18 @@ class CategoriesList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(
-              strokeCap: StrokeCap.round,
+            return const LinearProgressIndicator(
+              
             );
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-              scrollDirection: Axis.horizontal,
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 2, crossAxisSpacing: 2),
+              padding: EdgeInsets.all(10),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 var categories = snapshot.data;
-                var category = categories![index];
+                Category category = categories![index];
                 return Container(
-                  margin: const EdgeInsets.only(right: 10),
                   child: Column(
                     children: [
                       Container(

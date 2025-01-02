@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:saree3/UI/components/homePageComponents/categories_list.dart';
 import 'package:saree3/UI/components/homePageComponents/drawer_menu.dart';
 import 'package:saree3/UI/components/homePageComponents/products_list.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/my_shopping_cart.dart';
@@ -72,19 +73,24 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: const SingleChildScrollView(
+      body:  SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                ProductsList(
+                const SizedBox(height: 10,),
+                SizedBox(
+                  height: 150,
+                  child: CategoriesList(),
+                  ),
+                const ProductsList(
                   categoryName: 'Electronics',
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
-                ProductsList(categoryName: 'Clothes')
+                const ProductsList(categoryName: 'Clothes'),
               ],
             ),
           ),

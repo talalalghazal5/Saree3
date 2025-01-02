@@ -26,6 +26,9 @@ class HomePageService {
       return categoriesJson
           .map((category) => Category.fromJson(category))
           .toList();
+      } else {
+        throw Exception('Data not found');
+      }
     } else {
       throw Exception('An error occurred');
     }
