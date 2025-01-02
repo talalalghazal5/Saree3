@@ -61,7 +61,7 @@ class _InfoEditingState extends State<InfoEditing> {
                         Theme.of(context).colorScheme.inverseSurface,
                     foregroundImage: selectedImage != null
                         ? FileImage(selectedImage!)
-                        : NetworkImage('https://placehold.co/500x500.png'),
+                        : const NetworkImage('https://placehold.co/500x500.png'),
                     radius: 70,
                   ),
                   Container(
