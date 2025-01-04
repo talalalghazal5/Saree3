@@ -17,12 +17,14 @@ class _MyTabBarState extends State<MyTabBar> {
   CategoryProvider? categoryProvider;
 
   List<Tab> _myTabBuilder() {
-    if (categoryProvider == null || categoryProvider!.categories.isEmpty) {
-      return [Tab(text: '')];
-    }
-    return List.generate(categoryProvider!.categories.length, (index) {
-      return Tab(text: categoryProvider!.categories[index].name);
+    print(widget.tabController.length);
+    if (widget.tabController.length == 0) {
+      return [];
+    } else {
+    return List.generate(widget.tabController.length, (index) {
+      return Tab(text: categoryProvider!.categories[index].name,);
     });
+    }
   }
 
   @override
@@ -41,14 +43,13 @@ class _MyTabBarState extends State<MyTabBar> {
     return Container(
       color: Theme.of(context).colorScheme.surface,
       child: TabBar(
-        unselectedLabelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.inverseSurface,
-        ),
+        unselectedLabelStyle:  Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.w400),
         labelColor: Theme.of(context).colorScheme.primary,
+        labelStyle: Theme.of(context).textTheme.labelMedium,
         unselectedLabelColor: Theme.of(context).colorScheme.inverseSurface,
         dividerColor: Colors.transparent,
         controller: widget.tabController,
-        indicatorColor: Theme.of(context).colorScheme.inversePrimary,
+        indicatorColor: Theme.of(context).colorScheme.primary,
         tabs: _myTabBuilder(),
       ),
     );

@@ -28,7 +28,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!
-                  .copyWith(color: Theme.of(context).colorScheme.primary)),
+                  .copyWith(color: Theme.of(context).colorScheme.primary.withAlpha(200))),
           InkWell(
             onTap: () => openLocationSearchBar(),
             child: Row(

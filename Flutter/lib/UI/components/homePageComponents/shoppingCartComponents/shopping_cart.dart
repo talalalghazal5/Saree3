@@ -24,9 +24,8 @@ class ShoppingCart extends StatelessWidget {
               )
             ],
           ),
-          const Expanded(
-            child: Center(),
-            //Todo: Add the cart items to this widget.
+          Column(
+            
           ),
           const SizedBox(
             height: 50,

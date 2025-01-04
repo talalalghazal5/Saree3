@@ -24,7 +24,9 @@ void main() async {
           create: (context) => ThemeProvider(),
         ),
         ChangeNotifierProvider(create: (context) => OnboardingController()),
-        ChangeNotifierProvider(create: (context) => CategoryProvider(),)
+        ChangeNotifierProvider(
+          create: (context) => CategoryProvider(),
+        )
       ],
       child: const MyApp(),
     ),
