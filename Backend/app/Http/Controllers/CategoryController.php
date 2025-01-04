@@ -6,13 +6,19 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Services\CategoryQueryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    protected $categoryQueryService;
+
+    public function __construct(CategoryQueryService $categoryQueryService) {
+        $this->categoryQueryService = $categoryQueryService;
+    }
     public function index(Request $request)
     {
-        $categories = Category::query()->with(['children', 'parent']);
+        $categories = $this->categoryQueryService->query($request);
         $perPage = $request->input('per_page', 10);
         $categories = $categories->paginate($perPage);
 
