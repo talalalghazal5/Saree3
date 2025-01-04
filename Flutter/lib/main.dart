@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/fourthpage': (context) => const PageFour(),
         '/loginPage': (context) =>  SignInPage(),
         '/signupPage': (context) => SignUpPage(),
-        '/otpPage': (context) => const Otp(),
+        '/otpPage': (context) => Otp(),
         '/homepage': (context) =>const HomePage(),
       },
     );
