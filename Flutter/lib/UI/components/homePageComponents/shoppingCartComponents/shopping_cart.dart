@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/data/models/product.dart';
 
 class ShoppingCart extends StatelessWidget {
   const ShoppingCart({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,15 +18,7 @@ class ShoppingCart extends StatelessWidget {
               const Text('My Cart'),
               IconButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content:
-                            PrimaryButton(onPressed: () {}, text: 'Clear Cart'),
-                      );
-                    },
-                  );
+                  const DropdownMenu(dropdownMenuEntries: [DropdownMenuEntry(value: 'clear', label: 'Clear cart')], );
                 },
                 icon: const Icon(Icons.more_horiz),
               )
@@ -44,7 +34,7 @@ class ShoppingCart extends StatelessWidget {
               child: Text('Total Cost:' r'$'),
             ),
           ),
-          PrimaryButton(onPressed: (){}, text: 'Checkout'),
+          PrimaryButton(onPressed: () {}, text: 'Checkout'),
         ],
       ),
     );

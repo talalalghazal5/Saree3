@@ -5,8 +5,11 @@ import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/category.dart';
 
 class HomePageService {
+
+  final Uri baseUrl = Uri.parse('https://94c5-185-134-133-74.ngrok-free.app/api');
+
   Future<List<Product>> getProducts() async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products');
+    Uri productsUrl = Uri.parse('$baseUrl/products');
     var response = await get(productsUrl);
 
     if (response.statusCode == 200) {
@@ -17,30 +20,48 @@ class HomePageService {
     }
   }
 
-  Future<List<Category>> getCategories() async {
-    Uri categoriesUrl = Uri.parse('https://api.example.com/categories');
+  Future<List<Category>> getCategories({int count = 20}) async {
+    Uri categoriesUrl =
+        Uri.parse('$baseUrl/categories');
     var response = await get(categoriesUrl);
 
-    if (response.statusCode == 200) {
-      List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((category) => Category.fromJson(category))
-          .toList();
+    try {
+      Map<String, dynamic> categoriesJson = jsonDecode(response.body);
+      if (categoriesJson.containsKey('data')) {
+        List<dynamic> categoriesList = categoriesJson['data'];
+        var list = categoriesList
+            .map((category) => Category.fromJson(category))
+            .toList();
+        if (list.length > count) {
+          return list.sublist(0, count + 1);
+        }
+        return list;
       } else {
         throw Exception('Data not found');
       }
-    } else {
-      throw Exception('An error occurred');
+    } catch (e) {
+      throw Exception(response.statusCode);
     }
+      
+     
   }
 
-  Future<List<Product>> getProductsByCategory(String categoryName) async {
-    Uri productsUrl =
-        Uri.parse('https://api.example.com/products/$categoryName'); 
+  Future<List<Product>> getProductsByCategory(int id) async {
+    Uri productsUrl = Uri.parse(
+      '$baseUrl/products?category_id=$id',
+    );
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
+      Map<String, dynamic> categoriesJson = jsonDecode(response.body);
+      if (categoriesJson.containsKey('data')) {
+        List<dynamic> categoriesList = categoriesJson['data'];
+        print(categoriesList);
+        return categoriesList
+            .map((product) => Product.fromJson(product))
+            .toList();
+      } else {
+        throw Exception('data not found');
+      }
     } else {
       throw Exception('An error occurred');
     }
