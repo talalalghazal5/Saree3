@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:saree3/UI/components/homePageComponents/categories_list.dart';
+import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/drawer_menu.dart';
-import 'package:saree3/UI/components/homePageComponents/products_by_categories_builder.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/shopping_cart.dart';
+import 'package:saree3/UI/components/homePageComponents/my_current_location.dart';
+import 'package:saree3/UI/components/homePageComponents/my_sliver_app_bar.dart';
+import 'package:saree3/UI/components/homePageComponents/my_tab_bar.dart';
+import 'package:saree3/UI/components/homePageComponents/product_card.dart';
+import 'package:saree3/controllers/category_provider.dart';
+import 'package:saree3/data/models/category.dart';
+import 'package:saree3/data/models/product.dart';
+import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,12 +19,71 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late ScrollController scrollController;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  late final CategoryProvider categoryProvider;
+  HomePageService homePageService = HomePageService();
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    categoryProvider = Provider.of<CategoryProvider>(context);
+    int tabLength = categoryProvider.categories.isEmpty
+        ? 1
+        : categoryProvider.categories.length;
+    _tabController = TabController(
+      length: tabLength,
+      vsync: this,
+    );
+  }
+
+  List<Widget> _getFoodInThisCategory(List<Category> categories) {
+    if (categories.isEmpty) {
+      return [Center(
+        
+      )];
+    }
+    return categories.map((category) {
+      return FutureBuilder(
+        future: homePageService.getProductsByCategory(category.id!),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            if (snapshot.error is SocketException) {
+              return Text(
+                'Connection failed, please try again later or check you internet connection',
+                style: Theme.of(context).textTheme.bodySmall,
+              );
+            }
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (!snapshot.hasData) {
+            return Center(
+              child: Text(
+                '',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            );
+          }
+          return ListView.builder(
+            controller: _scrollController,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final Product product = snapshot.data![index];
+              return ProductCard(product: product);
+            },
+          );
+        },
+      );
+    }).toList();
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -27,83 +92,34 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        shadowColor: Colors.transparent,
-        title: Expanded(
-          child: TextField(
-            cursorColor: Theme.of(context).colorScheme.onSurface,
-            decoration: InputDecoration(
-              suffix: FaIcon(
-                FontAwesomeIcons.magnifyingGlass,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-              filled: true,
-              fillColor:
-                  Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 10,
-              ),
-              hintText: 'Search for products, vendors..',
-              hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withAlpha(200)),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-        ),
-        centerTitle: true,
-        titleSpacing: 4,
-        leading: IconButton(
-          onPressed: () {
-            scaffoldKey.currentState!.openDrawer();
-          },
-          icon: FaIcon(
-            FontAwesomeIcons.bars,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        actions: [
-          IconButton(
-            padding: const EdgeInsets.all(18),
-            onPressed: () {
-              scaffoldKey.currentState!
-                  .showBottomSheet((context) => const ShoppingCart());
-            },
-            icon: FaIcon(
-              FontAwesomeIcons.cartShopping,
-              color: Theme.of(context).colorScheme.onSurface,
+      drawer: const DrawerMenu(),
+      body: NestedScrollView(
+        controller: _scrollController,
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          MySliverAppBar(
+            scaffoldKey: scaffoldKey,
+            title: MyTabBar(tabController: _tabController),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MyCurrentLocation(),
+                Divider(
+                  indent: 20,
+                  endIndent: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ],
             ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        controller: scrollController,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Stack(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 100,
-                child: const CategoriesList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ProductsByCategoriesBuilder(),
-              
-            ],
+        body: Consumer<CategoryProvider>(
+          builder: (context, provider, child) => TabBarView(
+            controller: _tabController,
+            children: _getFoodInThisCategory(provider.categories),
           ),
         ),
       ),
-      drawer: const DrawerMenu(),
     );
   }
 }
