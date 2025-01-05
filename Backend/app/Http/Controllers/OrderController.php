@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -21,7 +22,7 @@ class OrderController extends Controller
             ->where(['cleared_at' => null])
             ->get();
 
-        return response()->json($orders);
+        return response()->json(OrderResource::collection($orders));
     }
 
     /**
@@ -41,7 +42,7 @@ class OrderController extends Controller
             $totalPrice += $orderItem->price;
         }
         $order->update(['total_price' => $totalPrice]);
-        return response()->json($order, 201);
+        return response()->json(new OrderResource($order), 201);
     }
 
     /**
@@ -53,7 +54,7 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
-        return response()->json($order);
+        return response()->json(new OrderResource($order), 200);
     }
 
     /**
@@ -61,7 +62,6 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, $id)
     {
-        /** @var Order $order  */
         $order = $request->user()->orders()->with('orderItems.product')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
@@ -71,7 +71,7 @@ class OrderController extends Controller
         }
 
         // Update order items and recalculate total price 
-        
+
         $totalPrice = 0;
         // Get the list of product IDs from the request
         $updatedProductIds = collect($request->items)->pluck('product_id')->toArray();
@@ -100,7 +100,7 @@ class OrderController extends Controller
         // Update the total price of the order
         $order->update(['total_price' => $totalPrice]);
 
-        return response()->json($order, 200);
+        return response()->json(new OrderResource($order), 200);
     }
 
     /**
