@@ -17,7 +17,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'userId' => $this->user_id,
-            'totalPrice' => $this->total_price,
+            'totalPrice' => convertPriceToDollars($this->total_price),
             'orderStatus' => $this->order_status,
             'createdAt'=> $this->created_at,
             'closedAt' => $this->closed_at,
