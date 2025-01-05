@@ -61,7 +61,8 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, $id)
     {
-        $order = $request->user()->orders()->find($id);
+        /** @var Order $order  */
+        $order = $request->user()->orders()->with('orderItems.product')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -70,18 +71,36 @@ class OrderController extends Controller
         }
 
         // Update order items and recalculate total price 
+        
         $totalPrice = 0;
+        // Get the list of product IDs from the request
+        $updatedProductIds = collect($request->items)->pluck('product_id')->toArray();
+
+        // Delete items that are in the order but not in the request
+        $order->orderItems()
+            ->whereNotIn('product_id', $updatedProductIds)
+            ->delete();
+
+        // Update or create order items
         foreach ($request->items as $item) {
-            $orderItem = OrderItem::where('order_id', $order->id)->where('product_id', $item['product_id'])->first();
+            $orderItem = $order->orderItems()->where('product_id', $item['product_id'])->first();
+
             if ($orderItem) {
+                // Update existing order item
                 $orderItem = $this->updateOrderItem($orderItem, $item);
             } else {
+                // Add new order item
                 $orderItem = $this->addNewOrderItemToOrder($order, $item);
             }
+
             $totalPrice += $orderItem->price;
         }
+        $order->load('orderItems.product');
+
+        // Update the total price of the order
         $order->update(['total_price' => $totalPrice]);
-        return response()->json($order);
+
+        return response()->json($order, 200);
     }
 
     /**
