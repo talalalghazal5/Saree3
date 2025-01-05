@@ -17,7 +17,10 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = $request->user()->orders()->with('orderItems.product')->get();
+        $orders = $request->user()->orders()->with('orderItems.product')
+            ->where(['cleared_at' => null])
+            ->get();
+
         return response()->json($orders);
     }
 
@@ -95,7 +98,7 @@ class OrderController extends Controller
         }
 
         $order->update([
-            'status'=> 'canceled',
+            'status' => 'canceled',
             'closed_at' => Date::now()
         ]);
 
@@ -103,7 +106,7 @@ class OrderController extends Controller
     }
 
 
-    private function addNewOrderItemToOrder(Order $order, Array $item)
+    private function addNewOrderItemToOrder(Order $order, array $item)
     {
         $product = Product::find($item['product_id']);
         $orderItem = new OrderItem([
@@ -116,11 +119,21 @@ class OrderController extends Controller
         return $orderItem;
     }
 
-    private function updateOrderItem(OrderItem $oldItem, Array $newItem)
+    private function updateOrderItem(OrderItem $oldItem, array $newItem)
     {
         $oldItem->quantity = $newItem['quantity'];
         $oldItem->price = $newItem['quantity'] * $oldItem->product->price;
         $oldItem->save();
         return $oldItem;
+    }
+
+    /**
+     * Clears the user history by giving a value to cleared_at column
+     */
+    public function clearHistory(Request $request)
+    {
+        $request->user()->orders()->update(['cleared_at' => now()]);
+
+        return response()->json(['message' => 'Order history cleared successfully'], 200);
     }
 }
