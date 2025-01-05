@@ -17,6 +17,7 @@
                 $table->unsignedInteger('total_price');
                 $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
                 $table->timestamp('closed_at')->nullable();
+                $table->timestamp('cleared_at')->nullable()->after('closed_at');
                 $table->timestamps();
             });
         }
