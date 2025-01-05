@@ -13,30 +13,30 @@ class ProductQueryService
         $query->with(['vendor', 'category']);
 
         // Filter by price range
-        if ($request->has('min_price')) {
-            $query->where('price', '>=', convertPriceToCents($request->input('min_price')));
+        if ($request->has('minPrice') && $request->input('minPrice') != '') {
+            $query->where('price', '>=', convertPriceToCents($request->input('minPrice')));
         }
-        if ($request->has('max_price')) {
-            $query->where('price', '<=', convertPriceToCents($request->input('max_price')));
+        if ($request->has('maxPrice') && $request->input('maxPrice') != '') {
+            $query->where('price', '<=', convertPriceToCents($request->input('maxPrice')));
         }
 
         // Filter by rating range
-        if ($request->has('min_rating')) {
-            $query->where('total_rating', '>=', convertRatingToPercentage($request->input('min_rating')));
+        if ($request->has('minRating') && $request->input('minRating') != '') {
+            $query->where('total_rating', '>=', convertRatingToPercentage($request->input('minRating')));
         }
-        if ($request->has('max_rating')) {
-            $query->where('total_rating', '<=', convertRatingToPercentage($request->input('max_rating')));
+        if ($request->has('maxRatin') && $request->input('maxRating') != '') {
+            $query->where('total_rating', '<=', convertRatingToPercentage($request->input('maxRatin')));
         }
 
         // Filter by category 
-        if ($request->has('category_id')) {
-            $categoryIds = explode('-', $request->input('category_id'));
-            $query->whereIn('category_id', $categoryIds);
+        if ($request->has('categoryId') && $request->input('categoryId') != '') {
+            $categoryIds = explode('-', $request->input('categoryId'));
+            $query->whereIn('categoryId', $categoryIds);
         }
 
         // Sorting
-        if ($request->has('sort_by') && $request->has('sort_order')) {
-            $query->orderBy($request->input('sort_by'), $request->input('sort_order'));
+        if ($request->has('sortBy') && $request->has('sortOrder') && $request->input('sortBy') != '' && $request->input('sortOrder') != '') {
+            $query->orderBy($request->input('sortBy'), $request->input('sortOrder'));
         }
 
         return $query;

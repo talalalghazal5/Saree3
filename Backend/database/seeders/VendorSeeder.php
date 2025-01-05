@@ -13,6 +13,6 @@ class VendorSeeder extends Seeder
      */
     public function run(): void
     {
-        Vendor::factory()->count(10)->create(); // Adjust the count as needed
+        Vendor::factory()->count(10)->create();
     }
 }
