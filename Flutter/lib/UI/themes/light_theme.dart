@@ -13,7 +13,7 @@ ThemeData lightTheme = ThemeData(
     error: Color(0xffDE2C2C),
     errorContainer: Color(0xffB71212),
     onError: Color(0xffFFFFF7),
-    inverseSurface: Color(0xffB2B1B6),
+    inverseSurface: Color.fromARGB(255, 151, 150, 155),
   ),
   textTheme: const TextTheme(
 // =========== H E A D L I N E =========
@@ -26,6 +26,14 @@ ThemeData lightTheme = ThemeData(
     ),
     headlineMedium: TextStyle(
       fontSize: 23,
+      fontWeight: FontWeight.w500,
+      color: Color(0xff25242b),
+      fontFamily: 'lexend',
+      fontFamilyFallback: ['sfArabic'],
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
       color: Color(0xff25242b),
       fontFamily: 'lexend',
       fontFamilyFallback: ['sfArabic'],

@@ -1,11 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+<<<<<<< HEAD
 import 'package:validate_phone_number/validate_phone_number.dart';
 import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/services/auth_services.dart';
+=======
+>>>>>>> origin/main
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -22,7 +24,6 @@ class SignUpPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
@@ -74,51 +75,10 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  ValidatePhoneNumber(
-                    label: const Text('Phone Number'),
-                    labelStyle: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.inverseSurface,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
+                  AuthTextField(
+                    textInputType: TextInputType.phone,
                     controller: _phoneController,
-                    onCountrySelected: (phoneCode, countryCode) {
-                      print(
-                        'Country selected: $countryCode, Phone code: $phoneCode',
-                      );
-                    },
-                    onTapOutside: (value) => FocusScope.of(context).unfocus(),
+                    hint: 'Phone Number',
                   ),
                   const SizedBox(
                     height: 15,
