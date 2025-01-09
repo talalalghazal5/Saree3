@@ -5,9 +5,9 @@ import 'package:http/http.dart';
 import 'package:saree3/main.dart';
 
 class AuthServices {
-  Uri baseUrl = Uri.parse('https://383a-149-102-244-100.ngrok-free.app');
+  Uri baseUrl = Uri.parse('https://cee8-149-22-80-110.ngrok-free.app');
 
-  Future<void> register({
+  Future<Map<String, dynamic>> register({
     required String name,
     required String phone_number,
     required String password,
@@ -29,12 +29,18 @@ class AuthServices {
         headers: headers,
       );
       print("regiseterd user: ${response.body}");
+      var responseBody = jsonDecode(response.body);
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode ': response.statusCode
+      };
+      return responseData;
     } on SocketException catch (e) {
-      throw e.message;
+      return {'message': e.message};
     }
   }
 
-  Future<void> signIn({
+  Future<Map<String, dynamic>> signIn({
     required String phone_number,
     required String password,
   }) async {
@@ -45,11 +51,27 @@ class AuthServices {
       "password": password,
     };
 
-    await post(Uri.parse("$baseUrl/login"), body: body, headers: headers);
+    try {
+      var response =
+          await post(Uri.parse("$baseUrl/login"), body: body, headers: headers);
+      print('---------------- Logging in: ${response.body} ------------------');
+      var responseBody = jsonDecode(response.body);
+      var token = responseBody['token'];
+      await preferences.setString('userToken', token ?? '');
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode': response.statusCode,
+      };
+      return responseData;
+    } on Exception catch (e) {
+      return {'message': e.toString()};
+    }
   }
 
-  Future<void> verify(
-      {required String verification_code, required String phone_number}) async {
+  Future<Map<String, dynamic>> verify({
+    required String verification_code,
+    required String phone_number,
+  }) async {
     Map<String, String> headers = {
       "Accept": "application/json",
     };
@@ -68,12 +90,28 @@ class AuthServices {
 
       print('----- Verified: ${response.body} ------');
       var responseBody = jsonDecode(response.body);
-      var token = responseBody['token'];
+      var token = responseBody['token'] ?? '';
       await preferences.setString('userToken', token);
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode': response.statusCode
+      };
       print(
-          '----------------- M Y  T O K E N  I S: $token ----------------------------');
+        '----------------- M Y  T O K E N  I S: $token ----------------------------',
+      );
+      return responseData;
     } on Exception catch (e) {
-      print(e.toString());
+      return {'message': e.toString()};
+      // print(e.toString());
     }
+  }
+
+  Future<void> logout() async {
+    try {
+  await post(Uri.parse('$baseUrl/logout'));
+  preferences.setString('userToken', '');
+} on Exception catch (e) {
+  print(e.toString());
+}
   }
 }

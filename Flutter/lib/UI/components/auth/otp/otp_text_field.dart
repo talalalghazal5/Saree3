@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Otptextfield extends StatefulWidget {
-  Otptextfield({super.key, required this.onChanged});
+  const Otptextfield({super.key, required this.onChanged});
   final ValueChanged<String> onChanged;
   @override
   _OtptextfieldState createState() => _OtptextfieldState();

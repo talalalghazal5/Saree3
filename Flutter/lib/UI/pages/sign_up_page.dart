@@ -6,7 +6,10 @@ import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({super.key});
+
+  final void Function()? onTap;
+
+  const SignUpPage({super.key, this.onTap});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -122,42 +125,48 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  PrimaryButton(
-                    text: 'Sign Up',
-                    onPressed: () {
-                      try {
-                        if (formKey.currentState!.validate()) {
-                          setState(() {
-                            isLoading = true;
-                          });
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : PrimaryButton(
+                          text: 'Sign Up',
+                          onPressed: () async {
+                            try {
+                              if (formKey.currentState!.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
 
-                          AuthServices().register(
-                            name: _nameController.text,
-                            phone_number: _phoneController.text,
-                            password: _passwordController.text,
-                            password_confirmation:
-                                _confirmPasswordController.text,
-                          );
-                          
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return Otp(
-                              phoneNumber: _phoneController.text,
-                            );
-                          }));
-                        }
-                      } catch (e) {
-                      } finally {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    },
-                  ),
-                  if (isLoading)
-                    Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                                var registerData =
+                                    await AuthServices().register(
+                                  name: _nameController.text,
+                                  phone_number: _phoneController.text,
+                                  password: _passwordController.text,
+                                  password_confirmation:
+                                      _confirmPasswordController.text,
+                                );
+                                if (registerData != {}) {
+                                  ScaffoldMessenger.of(context.mounted ? context : context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(registerData['message']),
+                                    ),
+                                  );
+                                }
+                                
+                                  Navigator.push(
+                                      context.mounted ? context : context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Otp(
+                                      phoneNumber: _phoneController.text,
+                                    );
+                                  }));
+                              }
+                            } finally {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          },
+                        ),
                 ],
               ),
             ),
@@ -173,9 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/loginPage');
-                  },
+                  onTap: widget.onTap,
                   child: Text(
                     'Sign In',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(

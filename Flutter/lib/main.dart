@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/info_editing.dart';
+import 'package:saree3/UI/pages/login_or_register.dart';
 import 'package:saree3/UI/pages/onboarding/onboarding_page.dart';
 import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/UI/pages/settings_page.dart';
@@ -45,16 +46,17 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/signinCheck',
+      initialRoute: '/loginOrRegister',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
-        '/loginPage': (context) => SignInPage(),
-        '/signupPage': (context) => SignUpPage(),
+        '/loginPage': (context) => const SignInPage(),
+        '/signupPage': (context) => const SignUpPage(),
         '/otpPage': (context) => Otp(),
         '/homePage': (context) => const HomePage(),
         '/settingsPage': (context) => const SettingsPage(),
         '/infoEditingPage': (context) => const InfoEditing(),
-        '/signinCheck' : (context) => const SigninCheck()
+        '/signinCheck' : (context) => const SigninCheck(),
+        '/loginOrRegister' : (context) => const LoginOrRegister(),
       },
     );
   }

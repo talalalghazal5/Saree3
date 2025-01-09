@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
@@ -6,11 +7,23 @@ import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/services/auth_services.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage({super.key});
+class SignInPage extends StatefulWidget {
+  final void Function()? onTap;
+
+  const SignInPage({super.key, this.onTap});
+
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   final TextEditingController _phoneController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +62,7 @@ class SignInPage extends StatelessWidget {
               height: 60,
             ),
             Form(
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -56,6 +70,12 @@ class SignInPage extends StatelessWidget {
                     textInputType: TextInputType.phone,
                     controller: _phoneController,
                     hint: 'Phone Number',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 15,
@@ -64,6 +84,14 @@ class SignInPage extends StatelessWidget {
                     controller: _passwordController,
                     hint: 'Password',
                     textInputType: TextInputType.visiblePassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      } else if (value.length < 8) {
+                        return 'Password must be at least 8 characters';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 13,
@@ -86,18 +114,51 @@ class SignInPage extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            PrimaryButton(
-              onPressed: () {
-                AuthServices().signIn(
-                  phone_number: _phoneController.text,
-                  password: _passwordController.text,
-                );
-                Navigator.push(context,MaterialPageRoute(builder: (context){
-                  return SigninCheck();
-                }));
-              },
-              text: 'Sign In',
-            ),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : PrimaryButton(
+                    onPressed: () async {
+                      try {
+                        if (formKey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          print('validated ======');
+                          var signInData = await AuthServices().signIn(
+                            phone_number: _phoneController.text,
+                            password: _passwordController.text,
+                          );
+
+                          if (signInData != {}) {
+                            ScaffoldMessenger.of(
+                                    context.mounted ? context : context)
+                                .showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  signInData['statusCode'] == 404
+                                      ? 'Account not found, please try registering or logging in with existing account'
+                                      : signInData['statusCode'] == 403
+                                          ? 'Incorrect phone number or password, try again'
+                                          : signInData['message'],
+                                ),
+                              ),
+                            );
+                            if (signInData['statusCode'] == 200) {
+                              Navigator.pushReplacement(
+                                context.mounted ? context : context,
+                                CupertinoPageRoute(builder: (context) => const HomePage(),)
+                              );
+                            }
+                          }
+                        }
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
+                    text: 'Sign In',
+                  ),
             const SizedBox(
               height: 27,
             ),
@@ -110,9 +171,7 @@ class SignInPage extends StatelessWidget {
                       ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/signupPage');
-                  },
+                  onTap: widget.onTap,
                   child: Text(
                     'Sign up',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
