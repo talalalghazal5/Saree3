@@ -158,12 +158,17 @@ class OrderController extends Controller
      */
     public function cancel(Request $request, $id)
     {
-        $order = $request->user()->orders()->find($id);
+        $order = $request->user()->orders()->with('orderItems.product')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
         if ($order->status !== 'pending') {
             return response()->json(['message' => 'Only pending orders can be canceled'], 403);
+        }
+
+        // Restore stock for all items in the order
+        foreach ($order->orderItems as $orderItem) {
+            $orderItem->product->increment('stock_quantity', $orderItem->quantity);
         }
 
         $order->update([
