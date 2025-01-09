@@ -1,11 +1,16 @@
-import 'package:http/http.dart' as http;
+import 'dart:io';
+
+import 'package:http/http.dart';
 
 class AuthServices {
-  Future<void> register(
-      {required String name,
-      required String phone_number,
-      required String password,
-      required String password_confirmation}) async {
+  Uri baseUrl = Uri.parse('https://383a-149-102-244-100.ngrok-free.app');
+
+  Future<void> register({
+    required String name,
+    required String phone_number,
+    required String password,
+    required String password_confirmation,
+  }) async {
     Map<String, String> headers = {"accept": "application/json"};
 
     Object body = {
@@ -15,8 +20,13 @@ class AuthServices {
       "password_confirmation": password_confirmation,
     };
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/test/register"),
-        body: body, headers: headers);
+    try {
+      var response = await post(Uri.parse("$baseUrl/test/register"),
+          body: body, headers: headers);
+      print("regiseterd user: ${response.body}");
+    } on SocketException catch (e) {
+      throw e.message;
+    }
   }
 
   Future<void> signIn({
@@ -30,8 +40,7 @@ class AuthServices {
       "password": password,
     };
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/login"),
-        body: body, headers: headers);
+    await post(Uri.parse("$baseUrl/login"), body: body, headers: headers);
   }
 
   Future<void> verify(
@@ -44,8 +53,17 @@ class AuthServices {
       "phone_number": phone_number,
       "verification_code": verification_code
     };
+    print(body);
+    try {
+      var response = await post(
+        Uri.parse("$baseUrl/test/verify"),
+        body: body,
+        headers: headers,
+      );
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/test/verify"),
-        body: body, headers: headers);
+      print('----- Verified: ${response.body} ------');
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 }

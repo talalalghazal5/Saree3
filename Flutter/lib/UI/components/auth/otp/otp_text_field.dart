@@ -12,10 +12,10 @@ class _OtptextfieldState extends State<Otptextfield> {
   final List<TextEditingController> _controllers =
       List.generate(4, (index) => TextEditingController());
 
-  String result = "";
   void otpChanged() {
+    String result = "";
     for (var controller in _controllers) {
-      result = result + controller.text;
+      result = result +controller.text;
     }
     widget.onChanged(result);
   }

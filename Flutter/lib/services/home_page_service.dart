@@ -5,7 +5,7 @@ import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/category.dart';
 
 class HomePageService {
-  final Uri baseUrl = Uri.parse('https://c77f-169-150-218-130.ngrok-free.app/api');
+  final Uri baseUrl = Uri.parse('https://383a-149-102-244-100.ngrok-free.app/api');
 
   Future<List<Product>> getProducts() async {
     Uri productsUrl = Uri.parse('$baseUrl/products');
