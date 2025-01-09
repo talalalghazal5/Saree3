@@ -18,7 +18,7 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'userId' => $this->user_id,
             'totalPrice' => convertPriceToDollars($this->total_price),
-            'orderStatus' => $this->order_status,
+            'orderStatus' => $this->status,
             'createdAt'=> $this->created_at,
             'closedAt' => $this->closed_at,
             'orderItems' => OrderItemResource::collection($this->whenLoaded('orderItems'))

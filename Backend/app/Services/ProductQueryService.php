@@ -31,7 +31,7 @@ class ProductQueryService
         // Filter by category 
         if ($request->has('categoryId') && $request->input('categoryId') != '') {
             $categoryIds = explode('-', $request->input('categoryId'));
-            $query->whereIn('categoryId', $categoryIds);
+            $query->whereIn('category_id', $categoryIds);
         }
 
         // Sorting
