@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/otp_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/main.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class Otp extends StatelessWidget {
@@ -96,7 +97,6 @@ String? phoneNumber;
                             phone_number: phoneNumber!,
                             );
                       // Navigator.pushNamed(context, '/homePage');
-
                     },
                   ),
                 ],

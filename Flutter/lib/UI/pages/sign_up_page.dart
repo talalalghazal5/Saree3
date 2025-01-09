@@ -138,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             password_confirmation:
                                 _confirmPasswordController.text,
                           );
-
+                          
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return Otp(
@@ -154,6 +154,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     },
                   ),
+                  if (isLoading)
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
                 ],
               ),
             ),

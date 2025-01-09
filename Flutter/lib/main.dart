@@ -7,6 +7,7 @@ import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
+import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/signupPage',
+      initialRoute: '/signinCheck',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => SignInPage(),
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/homePage': (context) => const HomePage(),
         '/settingsPage': (context) => const SettingsPage(),
         '/infoEditingPage': (context) => const InfoEditing(),
+        '/signinCheck' : (context) => const SigninCheck()
       },
     );
   }

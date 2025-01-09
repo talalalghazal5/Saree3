@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:saree3/main.dart';
 
 class AuthServices {
   Uri baseUrl = Uri.parse('https://383a-149-102-244-100.ngrok-free.app');
@@ -21,8 +23,11 @@ class AuthServices {
     };
 
     try {
-      var response = await post(Uri.parse("$baseUrl/test/register"),
-          body: body, headers: headers);
+      var response = await post(
+        Uri.parse("$baseUrl/test/register"),
+        body: body,
+        headers: headers,
+      );
       print("regiseterd user: ${response.body}");
     } on SocketException catch (e) {
       throw e.message;
@@ -62,6 +67,11 @@ class AuthServices {
       );
 
       print('----- Verified: ${response.body} ------');
+      var responseBody = jsonDecode(response.body);
+      var token = responseBody['token'];
+      await preferences.setString('userToken', token);
+      print(
+          '----------------- M Y  T O K E N  I S: $token ----------------------------');
     } on Exception catch (e) {
       print(e.toString());
     }

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class SignInPage extends StatelessWidget {
@@ -92,7 +93,7 @@ class SignInPage extends StatelessWidget {
                   password: _passwordController.text,
                 );
                 Navigator.push(context,MaterialPageRoute(builder: (context){
-                  return HomePage();
+                  return SigninCheck();
                 }));
               },
               text: 'Sign In',
