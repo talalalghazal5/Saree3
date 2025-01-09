@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Date;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -30,20 +31,50 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $order = new Order([
-            'user_id' => $request->user()->id,
-            'total_price' => 0, // This will be calculated 
-        ]);
-        $order->save();
+        DB::beginTransaction(); // Start a transaction
 
-        $totalPrice = 0;
-        foreach ($request->items as $item) {
-            $orderItem = $this->addNewOrderItemToOrder($order, $item);
-            $totalPrice += $orderItem->price;
+        try {
+            $order = new Order([
+                'user_id' => $request->user()->id,
+                'status' => 'pending',
+                'total_price' => 0, // This will be calculated
+            ]);
+            $order->save();
+
+            $totalPrice = 0;
+            foreach ($request->items as $item) {
+                $product = Product::find($item['product_id']);
+                if (!$product) {
+                    throw new \Exception("Product with ID {$item['product_id']} not found.");
+                }
+
+                if (!$this->validateSufficientStock($product, $item['quantity'])) {
+                    throw new \Exception("Insufficient stock for product {$product->name}.");
+                }
+
+                $orderItem = $this->addNewOrderItemToOrder($order, $item);
+                $totalPrice += $orderItem->price;
+
+                // Deduct stock
+                $product->decrement('stock_quantity', $item['quantity']);
+            }
+
+            // Update the total price
+            $order->update(['total_price' => $totalPrice]);
+
+            DB::commit(); // Commit the transaction
+
+            return response()->json(new OrderResource($order), 201);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Roll back the transaction
+
+            return response()->json([
+                'error' => 'Order creation failed',
+                'message' => $e->getMessage(),
+            ], 400);
         }
-        $order->update(['total_price' => $totalPrice]);
-        return response()->json(new OrderResource($order), 201);
     }
+
 
     /**
      * Display the specified Order.
