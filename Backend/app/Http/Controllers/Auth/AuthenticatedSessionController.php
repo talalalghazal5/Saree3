@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request): JsonResponse
     {
         $user = User::where('phone_number', $request['phone_number'])->first();
         if (!$user) {
-            return response('user not found, please register', 404);
+            return response()->json([
+                'error' => 'User not registered',
+                'message' => 'user not found, please register'
+            ], 404);
         }
 
         /* Authenticate user */
@@ -28,7 +32,8 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         if (!$auth) {
-            return response([
+            return response()->json([
+                'error'=>'Authentication failed',
                 'message' => 'password or phone number don\'t match'
             ], 403);
         }
@@ -36,7 +41,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $token = $user->createToken($user->phone_number)->plainTextToken;
 
-        return response([
+        return response()->json([
+            'message' => 'Successfully logged in',
             'token' => $token
         ]);
     }
