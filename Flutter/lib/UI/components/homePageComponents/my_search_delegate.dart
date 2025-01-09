@@ -17,10 +17,6 @@ class MySearchDelegate extends SearchDelegate {
     ];
   }
 
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    return super.appBarTheme(context);
-  }
 
   @override
   Widget? buildLeading(BuildContext context) {
@@ -37,11 +33,11 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return IconButton(onPressed: () {}, icon: Icon(Icons.cancel));
+    return IconButton(onPressed: () {}, icon: const Icon(Icons.cancel));
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return IconButton(onPressed: () {}, icon: Icon(Icons.chevron_left));
+    return IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_left));
   }
 }

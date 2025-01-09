@@ -43,7 +43,7 @@ class ProductsSelectorCard extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(productSelector.category!.name!),
+                        Text(productSelector.categoryName!),
                         const SizedBox(
                           height: 20,
                         ),

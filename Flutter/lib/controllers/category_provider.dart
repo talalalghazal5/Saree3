@@ -8,24 +8,29 @@ import 'package:saree3/services/home_page_service.dart';
 
 class CategoryProvider extends ChangeNotifier {
   HomePageService homePageService = HomePageService();
-  List<Category> _categories = [];
+  List<Category> _categories = [
+    Category(id: 1, name: 'earum'),
+    Category(id: 2, name: 'nihil'),
+    Category(id: 3, name: 'harum'),
+    Category(id: 4, name: 'qui'),
+    Category(id: 5, name: 'natus'),
+  ];
   List<Product> _productsByCategory = [];
 
   List<Category> get categories => _categories;
   List<Product> get products => _productsByCategory;
 
-  Future<void> fetchCategories() async {
+  Future<List<Category>> fetchCategories() async {
     try {
-      List<Category> fetchedCategories =
-          await HomePageService().getCategories(count: 6);
+      List<Category> fetchedCategories = await HomePageService().getCategories(count: 5);
+
       print(fetchedCategories);
       _categories = fetchedCategories;
-      await saveList(categories);
-      print(preferences.getString('categories'));
-      notifyListeners();
     } catch (e) {
-      return;
+      print(e.hashCode);
     }
+      notifyListeners();
+      return _categories;
   }
 
   Future<void> filterProductsByCategory(Category category) async {

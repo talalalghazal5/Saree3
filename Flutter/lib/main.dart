@@ -17,6 +17,7 @@ late SharedPreferences preferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await SharedPreferences.getInstance();
+  CategoryProvider().fetchCategories();
   runApp(
     MultiProvider(
       providers: [

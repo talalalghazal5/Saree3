@@ -17,7 +17,7 @@ class AppBarTextField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Search', style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).colorScheme.inverseSurface,),),
-            SizedBox(width: 15,),
+            const SizedBox(width: 15,),
             FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20, color: Theme.of(context).colorScheme.surfaceContainer),
           ],
         ));

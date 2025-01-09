@@ -22,7 +22,7 @@ class MySliverAppBar extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Theme.of(context).colorScheme.inverseSurface,
       foregroundColor: Theme.of(context).colorScheme.inverseSurface,
-      title: AppBarTextField(),
+      title: const AppBarTextField(),
       centerTitle: true,
       expandedHeight: 350,
       collapsedHeight: 150,

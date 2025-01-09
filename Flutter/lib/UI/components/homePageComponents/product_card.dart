@@ -16,8 +16,10 @@ class ProductCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(10)),
+                color:
+                    Theme.of(context).colorScheme.inverseSurface.withAlpha(40),
+                borderRadius: BorderRadius.circular(10),
+              ),
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
@@ -27,17 +29,24 @@ class ProductCard extends StatelessWidget {
                       children: [
                         Text(
                           product.name!,
-                          style: Theme.of(context).textTheme.bodyMedium
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           '\$${product.price}',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
                         ),
                         const SizedBox(
                           height: 15,
                         ),
                         Text(
                           product.description!,
+                          overflow: TextOverflow.ellipsis,
                           style:
                               Theme.of(context).textTheme.bodySmall!.copyWith(
                                     color: Theme.of(context)

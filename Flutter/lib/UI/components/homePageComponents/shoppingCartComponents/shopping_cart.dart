@@ -24,7 +24,7 @@ class ShoppingCart extends StatelessWidget {
               )
             ],
           ),
-          Column(
+          const Column(
             
           ),
           const SizedBox(

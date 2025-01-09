@@ -59,7 +59,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             title: Text(
               'Enter your location:',
               style: Theme.of(context).textTheme.bodySmall,
