@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/data/models/product_model.dart';
 
 class ShoppingCart extends StatelessWidget {
-  ShoppingCart({super.key});
-  final List<ProductModel> selectProducts = List.generate(
-    10,
-    (index) => ProductModel(
-        name: "title",
-        price: index * 10,
-        image: '',
-        id: 0,
-        description: 'hi',
-        categoryName: 'laptop'),
-  );
+  const ShoppingCart({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,29 +18,14 @@ class ShoppingCart extends StatelessWidget {
               const Text('My Cart'),
               IconButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content:
-                            PrimaryButton(onPressed: () {}, text: 'Clear Cart'),
-                      );
-                    },
-                  );
+                  const DropdownMenu(dropdownMenuEntries: [DropdownMenuEntry(value: 'clear', label: 'Clear cart')], );
                 },
                 icon: const Icon(Icons.more_horiz),
               )
             ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: selectProducts.length,
-              itemBuilder: (context, index) {
-                return ProductsSelectorCard(
-                  productSelector: selectProducts[index],
-                );
-              },
-            ),
+          const Column(
+            
           ),
           const SizedBox(
             height: 50,
@@ -59,7 +33,7 @@ class ShoppingCart extends StatelessWidget {
               child: Text('Total Cost:' r'$'),
             ),
           ),
-          PrimaryButton(onPressed: (){}, text: 'Checkout'),
+          PrimaryButton(onPressed: () {}, text: 'Checkout'),
         ],
       ),
     );

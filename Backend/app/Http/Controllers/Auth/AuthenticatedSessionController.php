@@ -7,7 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
@@ -35,7 +34,7 @@ class AuthenticatedSessionController extends Controller
             return response()->json([
                 'error'=>'Authentication failed',
                 'message' => 'password or phone number don\'t match'
-            ], 403);
+            ], 401);
         }
 
         $request->session()->regenerate();
@@ -44,13 +43,13 @@ class AuthenticatedSessionController extends Controller
         return response()->json([
             'message' => 'Successfully logged in',
             'token' => $token
-        ]);
+        ], 200);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
         //delete all users tokens
         Auth::user()->tokens()->each(function ($token) {
@@ -62,6 +61,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
         $request->session()->flush();
 
-        return response()->noContent();
+        return response()->json([], 204);
     }
 }

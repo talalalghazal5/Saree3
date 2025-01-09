@@ -34,7 +34,7 @@ class TestRegisteredUserController extends Controller
         return response()->json([
             'message' => 'SMS message sent successfully',
             'phone_number' => $data['phone_number']
-        ]);
+        ], 201);
     }
 
     /**

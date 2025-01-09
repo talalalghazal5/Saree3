@@ -5,7 +5,7 @@ ThemeData darkTheme = ThemeData(
     surface: Color(0xff25242b),
     onSurface: Color(0xffFFFFF7),
     surfaceContainer: Color(0xff626165),
-    primary: Color(0xff3D21DB),
+    primary: Color.fromARGB(255, 77, 48, 241),
     onPrimary: Color(0xffFFFFF7),
     secondary: Color(0xff240CAA),
     onSecondary: Color(0xffFFFFF7),

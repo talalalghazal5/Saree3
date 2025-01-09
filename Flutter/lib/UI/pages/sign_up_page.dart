@@ -2,16 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/UI/pages/otp.dart';
+import 'package:saree3/services/auth_services.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+
+  final void Function()? onTap;
+
+  const SignUpPage({super.key, this.onTap});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _phoneController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  SignUpPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,14 +125,48 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  PrimaryButton(
-                    text: 'Sign Up',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/otpPage');
-                      }
-                    },
-                  ),
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : PrimaryButton(
+                          text: 'Sign Up',
+                          onPressed: () async {
+                            try {
+                              if (formKey.currentState!.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                var registerData =
+                                    await AuthServices().register(
+                                  name: _nameController.text,
+                                  phone_number: _phoneController.text,
+                                  password: _passwordController.text,
+                                  password_confirmation:
+                                      _confirmPasswordController.text,
+                                );
+                                if (registerData != {}) {
+                                  ScaffoldMessenger.of(context.mounted ? context : context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(registerData['message']),
+                                    ),
+                                  );
+                                }
+                                
+                                  Navigator.push(
+                                      context.mounted ? context : context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Otp(
+                                      phoneNumber: _phoneController.text,
+                                    );
+                                  }));
+                              }
+                            } finally {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          },
+                        ),
                 ],
               ),
             ),
@@ -131,9 +182,7 @@ class SignUpPage extends StatelessWidget {
                       ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/loginPage');
-                  },
+                  onTap: widget.onTap,
                   child: Text(
                     'Sign In',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(

@@ -1,69 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:saree3/data/models/product_model.dart';
+import 'package:saree3/data/models/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final ProductModel product;
-  const ProductCard({super.key, required this.product});
+  final Product product;
+  final Function() onTap;
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 250,
-      margin: const EdgeInsets.only(right: 15),
-      child: Card(
-        color: Theme.of(context).colorScheme.inverseSurface.withAlpha(50),
-        margin: const EdgeInsets.all(0),
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Container(
+              decoration: BoxDecoration(
+                color:
+                    Theme.of(context).colorScheme.inverseSurface.withAlpha(40),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Stack(
+              padding: const EdgeInsets.all(10),
+              child: Row(
                 children: [
-                  Image.network(
-                    'https://placehold.co/600x400.png',
-                    height: 150.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name!,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          '\$${product.price}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          product.description!,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inverseSurface,
+                                  ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.heart, color: Colors.red),
-                      onPressed: () {},
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      'https://placehold.co/500x500.png',
+                      width: 100,
                     ),
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                product.name,
-                style: Theme.of(context).textTheme.bodyLarge
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '\$${product.price}',
-                style: Theme.of(context).textTheme.labelMedium,
-
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        Divider(
+          indent: 20,
+          endIndent: 20,
+          color: Theme.of(context).colorScheme.inverseSurface,
+        )
+      ],
     );
   }
 }

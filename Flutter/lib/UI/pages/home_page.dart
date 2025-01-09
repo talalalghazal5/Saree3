@@ -1,8 +1,21 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/drawer_menu.dart';
-import 'package:saree3/UI/components/homePageComponents/products_list.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/my_shopping_cart.dart';
+import 'package:saree3/UI/components/homePageComponents/empty_section.dart';
+import 'package:saree3/UI/components/homePageComponents/my_current_location.dart';
+import 'package:saree3/UI/components/homePageComponents/my_description_box.dart';
+import 'package:saree3/UI/components/homePageComponents/my_sliver_app_bar.dart';
+import 'package:saree3/UI/components/homePageComponents/my_tab_bar.dart';
+import 'package:saree3/UI/components/homePageComponents/product_card.dart';
+import 'package:saree3/UI/pages/product_detail_page.dart';
+import 'package:saree3/controllers/category_provider.dart';
+import 'package:saree3/data/models/category.dart';
+import 'package:saree3/data/models/product.dart';
+import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,86 +24,101 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  List<Category>? categories;
+  CategoryProvider? categoryProvider;
+  HomePageService homePageService = HomePageService();
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _tabController = TabController(length: 5, vsync: this);
+  }
+
+  List<Widget> _getProductsInThisCategory(List<Category> categories) {
+    return categories.map(
+      (category) {
+        return FutureBuilder(
+          future: homePageService.getProductsByCategory(category.id!),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              if (snapshot.error is SocketException ||
+                  snapshot.error is ClientException) {
+                return Text(
+                  'Connection failed, please try again later or check you internet connection',
+                  style: Theme.of(context).textTheme.bodySmall,
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.data!.isEmpty) {
+              return const Center(child: EmptySection());
+            }
+            return ListView.builder(
+              controller: _scrollController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final Product product = snapshot.data![index];
+                return ProductCard(
+                  product: product,
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => ProductDetailPage(product: product),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    ).toList();
+  }
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  late int length;
   @override
   Widget build(BuildContext context) {
+    categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        
-        surfaceTintColor: null,
-        title: Expanded(
-          child: TextField(
-            cursorColor: Theme.of(context).colorScheme.onSurface,
-            decoration: InputDecoration(
-              suffix: FaIcon(
-                FontAwesomeIcons.magnifyingGlass,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-              filled: true,
-              fillColor:
-                  Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 10,
-              ),
-              hintText: 'Search for products, vendors..',
-              hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withAlpha(200)),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
+      drawer: const DrawerMenu(),
+      body: NestedScrollView(
+        controller: _scrollController,
+        floatHeaderSlivers: false,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          MySliverAppBar(
+            scaffoldKey: scaffoldKey,
+            title: MyTabBar(
+              tabController: _tabController,
+              categories: categoryProvider!.categories,
             ),
-          ),
-        ),
-        centerTitle: true,
-        titleSpacing: 4,
-        leading: IconButton(
-          onPressed: () {
-            scaffoldKey.currentState!.openDrawer();
-          },
-          icon: FaIcon(
-            FontAwesomeIcons.bars,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        actions: [
-          IconButton(
-            padding: const EdgeInsets.all(18),
-            onPressed: () {
-              scaffoldKey.currentState!.showBottomSheet((context) => MyShoppingCart());
-            },
-            icon: FaIcon(
-              FontAwesomeIcons.cartShopping,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ProductsList(
-                  categoryName: 'Electronics',
-                ),
-                const SizedBox(
-                  height: 60,
-                ),
-                ProductsList(categoryName: 'Clothes')
+                MyCurrentLocation(),
+                SizedBox(height: 8),
+                MyDescriptionBox(),
               ],
             ),
           ),
+        ],
+        body: Consumer<CategoryProvider>(
+          builder: (context, categories, child) {
+            return TabBarView(
+              controller: _tabController,
+              children: _getProductsInThisCategory(categories.categories)
+            );
+          },
         ),
       ),
-      drawer: const DrawerMenu(),
     );
   }
 }
