@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/services/auth_services.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -84,7 +86,15 @@ class SignInPage extends StatelessWidget {
               height: 40,
             ),
             PrimaryButton(
-              onPressed: () {},
+              onPressed: () {
+                AuthServices().signIn(
+                  phone_number: _phoneController.text,
+                  password: _passwordController.text,
+                );
+                Navigator.push(context,MaterialPageRoute(builder: (context){
+                  return HomePage();
+                }));
+              },
               text: 'Sign In',
             ),
             const SizedBox(

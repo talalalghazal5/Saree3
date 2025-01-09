@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => SignInPage(),
         '/signupPage': (context) => SignUpPage(),
-        '/otpPage': (context) => const Otp(),
+        '/otpPage': (context) => Otp(),
         '/homePage': (context) => const HomePage(),
         '/settingsPage': (context) => const SettingsPage(),
         '/infoEditingPage': (context) => const InfoEditing(),

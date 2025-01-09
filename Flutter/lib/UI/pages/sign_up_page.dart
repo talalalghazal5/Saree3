@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+<<<<<<< HEAD
+import 'package:validate_phone_number/validate_phone_number.dart';
+import 'package:saree3/UI/pages/otp.dart';
+import 'package:saree3/services/auth_services.dart';
+=======
+>>>>>>> origin/main
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -112,7 +118,17 @@ class SignUpPage extends StatelessWidget {
                     text: 'Sign Up',
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/otpPage');
+                        AuthServices().register(
+                            name: _nameController.text,
+                            phone_number: _phoneController.text,
+                            password: _passwordController.text,
+                            password_confirmation:
+                                _confirmPasswordController.text);
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return Otp(phoneNumber: _phoneController.text,);
+                        }
+                        ));
                       }
                     },
                   ),

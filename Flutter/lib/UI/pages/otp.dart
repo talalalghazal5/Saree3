@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/otp_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/services/auth_services.dart';
 
 class Otp extends StatelessWidget {
-  const Otp({super.key});
+   Otp({super.key, this.phoneNumber});
   static String id = 'Otp';
-
+  static String otp = 'Otp';
+String? phoneNumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +57,9 @@ class Otp extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Otptextfield(),
+                  Otptextfield(onChanged : (value){
+                    otp = value;
+                  }),
                   const SizedBox(
                     height: 20,
                   ),
@@ -87,7 +91,12 @@ class Otp extends StatelessWidget {
                   PrimaryButton(
                     text: 'Verify Now',
                     onPressed: () {
+                      AuthServices().verify(
+                            verification_code: otp,
+                            phone_number: phoneNumber!,
+                            );
                       Navigator.pushNamed(context, '/homepage');
+
                     },
                   ),
                 ],
