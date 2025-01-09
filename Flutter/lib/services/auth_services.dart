@@ -1,11 +1,18 @@
-import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart';
+import 'package:saree3/main.dart';
 
 class AuthServices {
-  Future<void> register(
-      {required String name,
-      required String phone_number,
-      required String password,
-      required String password_confirmation}) async {
+  Uri baseUrl = Uri.parse('https://cee8-149-22-80-110.ngrok-free.app');
+
+  Future<Map<String, dynamic>> register({
+    required String name,
+    required String phone_number,
+    required String password,
+    required String password_confirmation,
+  }) async {
     Map<String, String> headers = {"accept": "application/json"};
 
     Object body = {
@@ -15,11 +22,25 @@ class AuthServices {
       "password_confirmation": password_confirmation,
     };
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/test/register"),
-        body: body, headers: headers);
+    try {
+      var response = await post(
+        Uri.parse("$baseUrl/test/register"),
+        body: body,
+        headers: headers,
+      );
+      print("regiseterd user: ${response.body}");
+      var responseBody = jsonDecode(response.body);
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode ': response.statusCode
+      };
+      return responseData;
+    } on SocketException catch (e) {
+      return {'message': e.message};
+    }
   }
 
-  Future<void> signIn({
+  Future<Map<String, dynamic>> signIn({
     required String phone_number,
     required String password,
   }) async {
@@ -30,12 +51,27 @@ class AuthServices {
       "password": password,
     };
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/login"),
-        body: body, headers: headers);
+    try {
+      var response =
+          await post(Uri.parse("$baseUrl/login"), body: body, headers: headers);
+      print('---------------- Logging in: ${response.body} ------------------');
+      var responseBody = jsonDecode(response.body);
+      var token = responseBody['token'];
+      await preferences.setString('userToken', token ?? '');
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode': response.statusCode,
+      };
+      return responseData;
+    } on Exception catch (e) {
+      return {'message': e.toString()};
+    }
   }
 
-  Future<void> verify(
-      {required String verification_code, required String phone_number}) async {
+  Future<Map<String, dynamic>> verify({
+    required String verification_code,
+    required String phone_number,
+  }) async {
     Map<String, String> headers = {
       "Accept": "application/json",
     };
@@ -44,8 +80,38 @@ class AuthServices {
       "phone_number": phone_number,
       "verification_code": verification_code
     };
+    print(body);
+    try {
+      var response = await post(
+        Uri.parse("$baseUrl/test/verify"),
+        body: body,
+        headers: headers,
+      );
 
-    await http.post(Uri.parse("http://192.168.248.230:8000/test/verify"),
-        body: body, headers: headers);
+      print('----- Verified: ${response.body} ------');
+      var responseBody = jsonDecode(response.body);
+      var token = responseBody['token'] ?? '';
+      await preferences.setString('userToken', token);
+      var responseData = {
+        'message': responseBody['message'],
+        'statusCode': response.statusCode
+      };
+      print(
+        '----------------- M Y  T O K E N  I S: $token ----------------------------',
+      );
+      return responseData;
+    } on Exception catch (e) {
+      return {'message': e.toString()};
+      // print(e.toString());
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+  await post(Uri.parse('$baseUrl/logout'));
+  preferences.setString('userToken', '');
+} on Exception catch (e) {
+  print(e.toString());
+}
   }
 }
