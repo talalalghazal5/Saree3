@@ -8,6 +8,7 @@ import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
+import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,13 +17,17 @@ late SharedPreferences preferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await SharedPreferences.getInstance();
+  CategoryProvider().fetchCategories();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => OnboardingController())
+        ChangeNotifierProvider(create: (context) => OnboardingController()),
+        ChangeNotifierProvider(
+          create: (context) => CategoryProvider(),
+        )
       ],
       child: const MyApp(),
     ),
@@ -39,7 +44,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/loginPage',
+      initialRoute: '/homePage',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => SignInPage(),

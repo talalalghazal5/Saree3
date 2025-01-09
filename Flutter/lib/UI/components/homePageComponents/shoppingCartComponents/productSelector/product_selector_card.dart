@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector_button.dart';
-import 'package:saree3/data/models/product_model.dart';
+import 'package:saree3/data/models/product.dart';
 
 class ProductsSelectorCard extends StatelessWidget {
   ProductsSelectorCard({super.key, required this.productSelector});
-  ProductModel productSelector;
+  Product productSelector;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,11 +39,11 @@ class ProductsSelectorCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(productSelector.name),
+                        Text(productSelector.name!),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(productSelector.categoryName),
+                        Text(productSelector.categoryName!),
                         const SizedBox(
                           height: 20,
                         ),

@@ -5,41 +5,57 @@ import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/category.dart';
 
 class HomePageService {
+  final Uri baseUrl = Uri.parse('https://c77f-169-150-218-130.ngrok-free.app/api');
+
   Future<List<Product>> getProducts() async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products');
+    Uri productsUrl = Uri.parse('$baseUrl/products');
     var response = await get(productsUrl);
-
-    if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
-    } else {
-      throw Exception('An error occurred');
-    }
-  }
-
-  Future<List<Category>> getCategories() async {
-    Uri categoriesUrl = Uri.parse('https://api.example.com/categories');
-    var response = await get(categoriesUrl);
-
     if (response.statusCode == 200) {
       List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((category) => Category.fromJson(category))
-          .toList();
+
+      return categoriesJson.map((product) => Product.fromJson(product)).toList();
     } else {
       throw Exception('An error occurred');
     }
   }
 
-  Future<List<Product>> getProductsByCategory(Category category) async {
-    Uri productsUrl =
-        Uri.parse('https://api.example.com/products/${category.id}');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
-    } else {
-      throw Exception('An error occurred');
+  Future<List<Category>> getCategories({int count = 20}) async {
+    Uri categoriesUrl = Uri.parse('$baseUrl/categories?hasProducts');
+    var response = await get(categoriesUrl);
+
+    try {
+      Map<String, dynamic> categoriesJson = jsonDecode(response.body);
+      if (categoriesJson.containsKey('data')) {
+        List<dynamic> categoriesList = categoriesJson['data'];
+        var list = categoriesList
+            .map((category) => Category.fromJson(category))
+            .toList();
+        if (list.length > count) {
+          return list.sublist(0, count);
+        }
+        return list;
+      } else {
+        throw Exception('Data not found');
+      }
+    } catch (e) {
+      throw Exception(response.statusCode);
+    }
+  }
+
+  Future<List<Product>> getProductsByCategory(int id) async {
+    Uri productsUrl = Uri.parse(
+      '$baseUrl/products?category_id=$id',
+    );
+    try {
+      var response = await get(productsUrl);
+      print(response.body);
+      Map<String, dynamic> categoriesJson = jsonDecode(response.body);
+      List<dynamic> categoriesList = categoriesJson['data'];
+      print(categoriesList);
+      var x = categoriesList.map((product) => Product.fromJson(product));
+      return x.toList();
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -47,8 +63,8 @@ class HomePageService {
     Uri productsUrl = Uri.parse('https://api.example.com/products/$minPrice');
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
+      List<dynamic> categoriesJson = jsonDecode(response.body);
+      return categoriesJson.map((product) => Product.fromJson(product)).toList();
     } else {
       throw Exception('An error occurred');
     }
@@ -58,8 +74,8 @@ class HomePageService {
     Uri productsUrl = Uri.parse('https://api.example.com/products/$maxPrice');
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
-      List<dynamic> productsJson = jsonDecode(response.body);
-      return productsJson.map((product) => Product.fromJson(product)).toList();
+      List<dynamic> categoriesJson = jsonDecode(response.body);
+      return categoriesJson.map((product) => Product.fromJson(product)).toList();
     } else {
       throw Exception('An error occurred');
     }
