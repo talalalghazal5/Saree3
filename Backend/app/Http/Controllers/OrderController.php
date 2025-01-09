@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = $request->user()->orders()->with('orderItems.product')
-            ->where(['cleared_at' => null])
+            ->where('cleared_at', null)
             ->get();
 
         return response()->json(OrderResource::collection($orders));
