@@ -101,34 +101,53 @@ class OrderController extends Controller
             return response()->json(['message' => 'Only pending orders can be updated'], 403);
         }
 
-        // Update order items and recalculate total price 
-
         $totalPrice = 0;
         // Get the list of product IDs from the request
         $updatedProductIds = collect($request->items)->pluck('product_id')->toArray();
 
-        // Delete items that are in the order but not in the request
+        // Restore stock for items not in the updated list
         $order->orderItems()
             ->whereNotIn('product_id', $updatedProductIds)
-            ->delete();
+            ->get()
+            ->each(function ($orderItem) {
+                $orderItem->product->increment('stock_quantity', $orderItem->quantity);
+                $orderItem->delete();
+            });
 
         // Update or create order items
         foreach ($request->items as $item) {
+            $product = Product::find($item['product_id']);
+            if (!$product) {
+                return $this->productNotFoundResponse($item['product_id']);
+            }
+
             $orderItem = $order->orderItems()->where('product_id', $item['product_id'])->first();
 
             if ($orderItem) {
-                // Update existing order item
+                // Calculate the stock difference
+                $stockDifference = $orderItem->quantity - $item['quantity'];
+
+                // Validate stock BEFORE modifying it
+                if ($stockDifference < 0 && !$this->validateSufficientStock($product, $stockDifference)) {
+                    return $this->insufficientStockResponse($product);
+                }
+
+                // Adjust stock based on the new quantity
+                $product->increment('stock_quantity', $stockDifference);
                 $orderItem = $this->updateOrderItem($orderItem, $item);
             } else {
-                // Add new order item
+                if (!$this->validateSufficientStock($product, $item['quantity'])) {
+                    return $this->insufficientStockResponse($product);
+                }
+
                 $orderItem = $this->addNewOrderItemToOrder($order, $item);
+                $product->decrement('stock_quantity', $item['quantity']);
             }
 
             $totalPrice += $orderItem->price;
         }
-        $order->load('orderItems.product');
 
-        // Update the total price of the order
+        $order->load('orderItems.product');
         $order->update(['total_price' => $totalPrice]);
 
         return response()->json(new OrderResource($order), 200);
@@ -185,5 +204,26 @@ class OrderController extends Controller
         $request->user()->orders()->update(['cleared_at' => now()]);
 
         return response()->json(['message' => 'Order history cleared successfully'], 200);
+    }
+
+    private function validateSufficientStock(Product $product, int $quantity)
+    {
+        return $product->stock_quantity >= $quantity;
+    }
+
+    private function insufficientStockResponse(Product $product)
+    {
+        return response()->json([
+            'error' => 'Insufficient Stock',
+            'message' => "The requested quantity for {$product->name} is not available.",
+        ], 400);
+    }
+
+    private function productNotFoundResponse($productId)
+    {
+        return response()->json([
+            'error' => 'Product Not Found',
+            'message' => "Product with ID {$productId} does not exist.",
+        ], 404);
     }
 }
