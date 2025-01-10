@@ -81,7 +81,7 @@ class OrderController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $order = $request->user()->orders()->with('orderItems.product')->find($id);
+        $order = $request->user()->orders()->with(['orderItems.product', 'delivery'])->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -149,6 +149,9 @@ class OrderController extends Controller
 
         $order->load('orderItems.product');
         $order->update(['total_price' => $totalPrice]);
+        if ($order->has('delivery')) {
+            $order->delivery()->update(['status' => $order->id]);
+        }
 
         return response()->json(new OrderResource($order), 200);
     }
