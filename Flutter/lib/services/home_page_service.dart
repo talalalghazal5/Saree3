@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/category.dart';
+import 'package:saree3/data/models/vendor.dart';
 
 class HomePageService {
-  final Uri baseUrl = Uri.parse('http://26.30.106.26:1234/api');
+  final Uri baseUrl =
+      Uri.parse('https://9f8b-149-22-84-145.ngrok-free.app/api');
 
   Future<List<Product>> getProducts() async {
     Uri productsUrl = Uri.parse('$baseUrl/products');
@@ -13,7 +15,9 @@ class HomePageService {
     if (response.statusCode == 200) {
       List<dynamic> categoriesJson = jsonDecode(response.body);
 
-      return categoriesJson.map((product) => Product.fromJson(product)).toList();
+      return categoriesJson
+          .map((product) => Product.fromJson(product))
+          .toList();
     } else {
       throw Exception('An error occurred');
     }
@@ -65,7 +69,9 @@ class HomePageService {
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
       List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson.map((product) => Product.fromJson(product)).toList();
+      return categoriesJson
+          .map((product) => Product.fromJson(product))
+          .toList();
     } else {
       throw Exception('An error occurred');
     }
@@ -76,9 +82,50 @@ class HomePageService {
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
       List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson.map((product) => Product.fromJson(product)).toList();
+      return categoriesJson
+          .map((product) => Product.fromJson(product))
+          .toList();
     } else {
       throw Exception('An error occurred');
     }
+  }
+
+  Future<Map<String, dynamic>> search(String query) async {
+    Uri searchUrl = Uri.parse('$baseUrl/search?searchQuery=$query');
+
+    var response = await get(searchUrl);
+    try {
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        print(responseBody);
+        var result = responseBody['data'];
+        List<dynamic> productsJson = result['products'];
+        List<Product> productsResult = productsJson
+            .map(
+              (product) => Product.fromJson(product),
+            )
+            .toList();
+
+        List<dynamic> vendorsJson = result['vendors'];
+        List<Vendor> vendorsResult =
+            vendorsJson.map((vendor) => Vendor.fromJson(vendor)).toList();
+
+        List<dynamic> categoriesJson = result['categories'];
+        List<Category> categoriesResult = categoriesJson
+            .map((category) => Category.fromJson(category))
+            .toList();
+
+        var searchResult = {
+          'products': productsResult,
+          'vendors': vendorsResult,
+          'categories': categoriesResult,
+        };
+
+        return searchResult;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return {};
   }
 }
