@@ -7,6 +7,7 @@ use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
 use \Bezhanov\Faker\Provider\Commerce;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -24,6 +25,10 @@ class ProductFactory extends Factory
         $faker = FakerFactory::create();
         $faker->addProvider(new Commerce($faker));
 
+        // Assuming you have a dataset of images in the 'public/products' folder
+        // If you have a directory containing image files, you can select one randomly.
+        $imageFile = $this->getRandomImagePath();
+
         return [
             'name' => $faker->productName,
             'description' => $this->faker->paragraph,
@@ -33,6 +38,25 @@ class ProductFactory extends Factory
             'total_review_count' => $this->faker->numberBetween(0, 500),
             'category_id' => Category::factory(),
             'vendor_id' => Vendor::factory(),
+            'image_path' => $imageFile,
         ];
+    }
+
+    /**
+     * Get a random image from the products folder (assuming the images are in storage/app/public/products).
+     */
+    private function getRandomImagePath()
+    {
+        // Get a list of all images in the public/products folder (you can adjust the folder path)
+        $imageFiles = Storage::disk('public')->files('products');
+
+        if (empty($imageFiles)) {
+            return null;
+        }
+
+        // Pick a random image file from the array
+        $imageFile = $imageFiles[array_rand($imageFiles)];
+
+        return $imageFile; // Store image path relative to public disk
     }
 }
