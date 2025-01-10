@@ -19,18 +19,10 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'category' => $this->whenLoaded('category', function () {
-                return [
-                    'id' => $this->category->id,
-                    'name' => $this->category->name,
-                ];
-            }),
-            'vendor' => $this->whenLoaded('vendor', function () {
-                return [
-                    'id' => $this->vendor->id,
-                    'name' => $this->vendor->name,
-                ];
-            }),
+            'categoryId'=> $this->whenLoaded('category', $this->category->id),
+            'categoryName'=> $this->whenLoaded('category', $this->category->name),
+            'vendorId'=> $this->whenLoaded('vendor', $this->vendor->id),
+            'vendorName'=> $this->whenLoaded('vendor', $this->vendor->name),
             'rating' => convertRatingToMax5($this->total_rating),
             'price' => convertPriceToDollars($this->price),
             'stockQuantity' => $this->stock_quantity,
