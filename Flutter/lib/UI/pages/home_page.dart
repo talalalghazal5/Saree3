@@ -58,8 +58,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               return const Center(child: EmptySection());
             }
             return ListView.builder(
+              addRepaintBoundaries: true,
               controller: _scrollController,
-              physics: const NeverScrollableScrollPhysics(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final Product product = snapshot.data![index];
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       key: scaffoldKey,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       drawer: const DrawerMenu(),
       body: NestedScrollView(
         controller: _scrollController,

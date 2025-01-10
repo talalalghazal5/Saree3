@@ -81,6 +81,8 @@ class AuthServices {
       };
     } on SocketException catch (_) {
       return {'message': 'Failed to connect, please try again later'};
+    } on ClientException catch (_) {
+      return {'message' : 'No internet connection, please try again'};
     }
   }
 
