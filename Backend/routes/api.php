@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DeliveryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -43,5 +44,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/myorders/{id}', [OrderController::class, 'show']);
     Route::put('/myorders/{id}', [OrderController::class, 'update']);
     Route::post('/myorders/{id}/cancel', [OrderController::class, 'cancel']);
-    Route::post('/myorders/clearhistory', [OrderController::class, 'clearHistory']);
+    Route::post('/myorders/clearHistory', [OrderController::class, 'clearHistory']);
+});
+
+// Delivery
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/deliveries', [DeliveryController::class, 'index']);
+    Route::get('/deliveries/{id}', [DeliveryController::class, 'show']);
+    Route::post('/deliveries', [DeliveryController::class, 'store']);
+    Route::patch('/deliveries/{id}/onTheWay', [DeliveryController::class, 'markAsOnTheWay']);
+    Route::patch('/deliveries/{id}/complete', [DeliveryController::class, 'completeDelivery']);
+    Route::patch('/deliveries/{id}/cancel', [DeliveryController::class, 'cancelDelivery']);
+    Route::patch('/deliveries/{id}/reset', [DeliveryController::class, 'resetToPending']);
 });
