@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Services\ProductQueryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -31,7 +32,17 @@ class ProductController extends Controller
     // Store a new product
     public function store(StoreProductRequest $request)
     {
-        $product = Product::create($request->validated());
+        $validated = $request->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image_path'] = $imagePath;
+        }
+
+        // Create the product
+        $product = Product::create($validated);
+
         return new ProductResource($product);
     }
 
@@ -62,7 +73,20 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $product->update($request->validated());
+        $validated = $request->validated();
+
+        // Handle image upload (if present)
+        if ($request->hasFile('image')) {
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image_path'] = $imagePath;
+        }
+
+        // Update the product
+        $product->update($validated);
+
         return new ProductResource($product);
     }
 
@@ -78,7 +102,12 @@ class ProductController extends Controller
             ], 404);
         }
 
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+
         $product->delete();
+
         return response()->json([
             'message' => 'Product deleted successfully'
         ], 200);
