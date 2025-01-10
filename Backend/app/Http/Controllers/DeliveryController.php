@@ -105,16 +105,29 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivered delivery cannot be canceled.'], 400);
         }
 
-        // Update delivery and associated order state
-        $delivery->update(['state' => 'canceled']);
-        $delivery->order->update([
-            'status' => 'canceled',
-            'closed_at' => now()
-        ]);
+        // Fetch the associated order
+        $order = $delivery->order;
+
+        if (!$order) {
+            return response()->json(['message' => 'Associated order not found'], 404);
+        }
+
+        // Call the order cancellation method
+        $orderController = app(OrderController::class);
+        $response = $orderController->cancel(request(), $order->id);
+
+        if ($response->getStatusCode() === 200) {
+            // Update delivery state after order cancellation
+            $delivery->update(['state' => 'canceled']);
+            return response()->json([
+                'message' => 'Delivery and associated order canceled successfully.',
+            ], 200);
+        }
 
         return response()->json([
-            'message' => 'Delivery canceled successfully.'
-        ], 200);
+            'message' => 'Failed to cancel associated order.',
+            'details' => json_decode($response->getContent(), true),
+        ], $response->getStatusCode());
     }
 
     /**
