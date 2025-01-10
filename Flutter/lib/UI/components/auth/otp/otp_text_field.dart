@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Otptextfield extends StatefulWidget {
-  Otptextfield({super.key, required this.onChanged});
+  const Otptextfield({super.key, required this.onChanged});
   final ValueChanged<String> onChanged;
   @override
   _OtptextfieldState createState() => _OtptextfieldState();
@@ -12,10 +12,10 @@ class _OtptextfieldState extends State<Otptextfield> {
   final List<TextEditingController> _controllers =
       List.generate(4, (index) => TextEditingController());
 
-  String result = "";
   void otpChanged() {
+    String result = "";
     for (var controller in _controllers) {
-      result = result + controller.text;
+      result = result +controller.text;
     }
     widget.onChanged(result);
   }

@@ -61,21 +61,15 @@ class TestRegisteredUserController extends Controller
                     404
                 );
             }
-
-            /* Authenticate user */
-            Auth::login($user->first());
-
-            $token = $user->createToken($user->phone_number)->plainTextToken;
-
             return response()->json([
                 'message' => 'Phone number verified',
-                'token' => $token
-            ]);
+            ], 200);
         }
 
         return response()->json([
             'phone_number' => $data['phone_number'],
-            'error' => 'Invalid verification code entered!'
+            'error' => 'Invalid OTP',
+            'message' => 'Invalid verification code entered!'
         ], 409);
     }
 }

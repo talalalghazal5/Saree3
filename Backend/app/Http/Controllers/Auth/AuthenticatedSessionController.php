@@ -18,7 +18,10 @@ class AuthenticatedSessionController extends Controller
     {
         $user = User::where('phone_number', $request['phone_number'])->first();
         if (!$user) {
-            return response()->json(['message' => 'user not found, please register'], 404);
+            return response()->json([
+                'error' => 'User not registered',
+                'message' => 'user not found, please register'
+            ], 404);
         }
 
         /* Authenticate user */
@@ -29,6 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         if (!$auth) {
             return response()->json([
+                'error'=>'Authentication failed',
                 'message' => 'password or phone number don\'t match'
             ], 401);
         }
@@ -37,7 +41,7 @@ class AuthenticatedSessionController extends Controller
         $token = $user->createToken($user->phone_number)->plainTextToken;
 
         return response()->json([
-            'message'=> 'Successfully logged in',
+            'message' => 'Successfully logged in',
             'token' => $token
         ], 200);
     }

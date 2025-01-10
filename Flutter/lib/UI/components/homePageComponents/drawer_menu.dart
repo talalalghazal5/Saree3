@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
+import 'package:saree3/main.dart';
+import 'package:saree3/services/auth_services.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
@@ -71,8 +73,10 @@ class DrawerMenu extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.error.withAlpha(200)),
               ),
-              onTap: () {
-                Navigator.pop(context);
+              onTap: () async {
+                await AuthServices().logout();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logged out successfully')));
+                Navigator.popAndPushNamed(context, '/loginPage');
               },
             ),
           ],
