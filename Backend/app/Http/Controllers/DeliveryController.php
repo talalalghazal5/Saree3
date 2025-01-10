@@ -120,9 +120,26 @@ class DeliveryController extends Controller
     /**
      * Reset a delivery to "pending".
      */
-    public function update(Request $request, Delivery $delivery)
+    public function resetToPending(Request $request, $id)
     {
-        //
+        $delivery = Delivery::find($id);
+
+        if (!$delivery) {
+            return response()->json(['message' => 'Delivery not found'], 404);
+        }
+
+        if ($delivery->state === 'delivered') {
+            return response()->json(['message' => 'Delivered delivery cannot be reset to pending.'], 400);
+        }
+
+        // Update delivery and associated order state
+        $delivery->update(['state' => 'pending']);
+        $delivery->order->update(['status' => 'pending']);
+
+        return response()->json([
+            'message' => 'Delivery reset to pending successfully.',
+            'delivery' => $delivery,
+        ], 200);
     }
 
     /**
