@@ -63,8 +63,7 @@ class SignInPage extends StatelessWidget {
                     ),
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                     hintStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                        color: Theme.of(context).colorScheme.onSurface),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
