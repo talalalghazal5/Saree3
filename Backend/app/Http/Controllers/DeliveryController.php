@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDeliveryRequest;
 use App\Models\Delivery;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -11,14 +12,9 @@ class DeliveryController extends Controller
     /**
      * Create a new delivery for a specific order.
      */
-    public function store(Request $request)
+    public function store(StoreDeliveryRequest $request)
     {
-        $validated = $request->validate([
-            'order_id' => 'required|exists:orders,id|unique:deliveries,order_id',
-            'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:15',
-            'expected_delivery_time' => 'required|date|after:now',
-        ]);
+        $validated = $request->validated();
 
         // Fetch the order to check its status
         $order = Order::find($validated['order_id']);
@@ -71,7 +67,7 @@ class DeliveryController extends Controller
     /**
      * Mark a delivery as "delivered".
      */
-    public function completeDelivery(Request $request, $id)
+    public function completeDelivery($id)
     {
         $delivery = Delivery::find($id);
 
@@ -99,7 +95,7 @@ class DeliveryController extends Controller
     /**
      * Cancel a delivery.
      */
-    public function cancelDelivery(Request $request, $id)
+    public function cancelDelivery($id)
     {
         $delivery = Delivery::find($id);
 
@@ -127,7 +123,7 @@ class DeliveryController extends Controller
     /**
      * Reset a delivery to "pending".
      */
-    public function resetToPending(Request $request, $id)
+    public function resetToPending($id)
     {
         $delivery = Delivery::find($id);
 
