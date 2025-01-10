@@ -178,12 +178,4 @@ class DeliveryController extends Controller
 
         return response()->json(['deliveries' => $deliveries], 200);
     }
-
-    /**
-     * Delete a delivery.
-     */
-    public function destroy(Delivery $delivery)
-    {
-        //
-    }
 }
