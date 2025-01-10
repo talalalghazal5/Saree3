@@ -144,7 +144,43 @@ class DeliveryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Show the details of a specific delivery for the current user's orders.
+     */
+    public function show(Request $request, $id)
+    {
+        $userId = $request->user()->id;
+
+        $delivery = Delivery::with('order')
+            ->whereHas('order', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->find($id);
+
+        if (!$delivery) {
+            return response()->json(['message' => 'Delivery not found'], 404);
+        }
+
+        return response()->json(['delivery' => $delivery], 200);
+    }
+
+    /**
+     * List all deliveries for the current user's orders.
+     */
+    public function index(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $deliveries = Delivery::with('order')
+            ->whereHas('order', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->get();
+
+        return response()->json(['deliveries' => $deliveries], 200);
+    }
+
+    /**
+     * Delete a delivery.
      */
     public function destroy(Delivery $delivery)
     {
