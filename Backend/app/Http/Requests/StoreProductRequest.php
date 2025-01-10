@@ -11,7 +11,6 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //todo add authorization for admin/owner only
         return true;
     }
 
@@ -31,6 +30,7 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|integer|min:0',
             'stock_quantity' => 'required|integer|min:0',
             'total_review_count' => 'required|integer|min:0',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
@@ -44,6 +44,5 @@ class StoreProductRequest extends FormRequest
             'total_review_count' => $this->totalReviewCount,
             'price' => convertPriceToCents($this->price),
         ]);
-        
     }
 }

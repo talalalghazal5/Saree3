@@ -11,7 +11,6 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //todo add authorization for admin/owner only
         return true;
     }
 
@@ -31,9 +30,9 @@ class UpdateProductRequest extends FormRequest
             'price' => 'sometimes|required|integer|min:0',
             'stock_quantity' => 'sometimes|required|integer|min:0',
             'total_review_count' => 'sometimes|required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
-
 
     protected function prepareForValidation(): void
     {
