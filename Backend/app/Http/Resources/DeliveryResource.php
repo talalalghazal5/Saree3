@@ -14,13 +14,19 @@ class DeliveryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $deliveryState = $this->state;
+        if($deliveryState === 'on_the_way'){
+            $deliveryState = 'onTheWay';
+        }
+     
         return [
             'id' => $this->id,
             'orderId' => $this->order_id,
             'name' => $this->name,
             'phoneNumber' => $this->phone_number,
             'expectedDeliveryTime' => $this->expected_delivery_time,
-            'state' => $this->state
+            'state' => $deliveryState,
+            'order'=> $this->whenLoaded('order', $this->order),
         ];
     }
 }
