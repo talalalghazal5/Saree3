@@ -18,7 +18,7 @@ class DeliveryController extends Controller
         $validated = $request->validated();
 
         // Fetch the order to check its status
-        $order = Order::find($validated['order_id']);
+        $order = Order::find($validated['orderId']);
 
         if ($order->status !== 'pending') {
             return response()->json([
@@ -27,10 +27,10 @@ class DeliveryController extends Controller
         }
 
         $delivery = Delivery::create([
-            'order_id' => $validated['order_id'],
+            'order_id' => $validated['orderId'],
             'name' => $validated['name'],
-            'phone_number' => $validated['phone_number'],
-            'expected_delivery_time' => $validated['expected_delivery_time'],
+            'phone_number' => $validated['phoneNumber'],
+            'expected_delivery_time' => $validated['expectedDeliveryTime'],
             'state' => 'pending',
         ]);
 
