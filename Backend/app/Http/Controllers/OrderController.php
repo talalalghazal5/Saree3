@@ -209,7 +209,7 @@ class OrderController extends Controller
      */
     public function clearHistory(Request $request)
     {
-        $request->user()->orders()->where('closed_at', null)->update(['cleared_at' => now()]);
+        $request->user()->orders()->whereNot('closed_at', null)->update(['cleared_at' => now()]);
 
         return response()->json(['message' => 'Order history cleared successfully'], 200);
     }
