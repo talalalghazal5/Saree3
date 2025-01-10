@@ -6,7 +6,6 @@ import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class SignUpPage extends StatefulWidget {
-
   final void Function()? onTap;
 
   const SignUpPage({super.key, this.onTap});
@@ -145,20 +144,23 @@ class _SignUpPageState extends State<SignUpPage> {
                                       _confirmPasswordController.text,
                                 );
                                 if (registerData != {}) {
-                                  ScaffoldMessenger.of(context.mounted ? context : context).showSnackBar(
+                                  ScaffoldMessenger.of(
+                                          context.mounted ? context : context)
+                                      .showSnackBar(
                                     SnackBar(
                                       content: Text(registerData['message']),
                                     ),
                                   );
+                                  if (registerData['statusCode'] == 200) {
+                                    Navigator.push(
+                                        context.mounted ? context : context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return Otp(
+                                        phoneNumber: _phoneController.text,
+                                      );
+                                    }));
+                                  }
                                 }
-                                
-                                  Navigator.push(
-                                      context.mounted ? context : context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return Otp(
-                                      phoneNumber: _phoneController.text,
-                                    );
-                                  }));
                               }
                             } finally {
                               setState(() {

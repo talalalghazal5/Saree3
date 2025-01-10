@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/UI/pages/home_page.dart';
-import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class SignInPage extends StatefulWidget {
@@ -134,9 +133,13 @@ class _SignInPageState extends State<SignInPage> {
                                     context.mounted ? context : context)
                                 .showSnackBar(
                               SnackBar(
+                                elevation: 0,
+                                backgroundColor: signInData['statusCode'] != 200 ? Theme.of(context).colorScheme.error.withAlpha(200) : Theme.of(context).colorScheme.inverseSurface,
                                 content: Text(
                                   signInData['statusCode'] == 404
-                                      ? 'Account not found, please try registering or logging in with existing account'
+                                      ? signInData['persistentConnection'] == false
+                                          ? signInData['message']
+                                          : 'Account not found, please try registering or logging in with existing account'
                                       : signInData['statusCode'] == 403
                                           ? 'Incorrect phone number or password, try again'
                                           : signInData['message'],
@@ -145,9 +148,10 @@ class _SignInPageState extends State<SignInPage> {
                             );
                             if (signInData['statusCode'] == 200) {
                               Navigator.pushReplacement(
-                                context.mounted ? context : context,
-                                CupertinoPageRoute(builder: (context) => const HomePage(),)
-                              );
+                                  context.mounted ? context : context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => const HomePage(),
+                                  ));
                             }
                           }
                         }
