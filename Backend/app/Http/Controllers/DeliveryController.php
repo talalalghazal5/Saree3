@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDeliveryRequest;
+use App\Http\Resources\DeliveryResource;
 use App\Models\Delivery;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -34,8 +35,7 @@ class DeliveryController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Delivery created successfully.',
-            'delivery' => $delivery,
+            'message' => 'Delivery created successfully.'
         ], 201);
     }
 
@@ -59,8 +59,7 @@ class DeliveryController extends Controller
         $delivery->update(['state' => 'on_the_way']);
 
         return response()->json([
-            'message' => 'Delivery is on the way.',
-            'delivery' => $delivery,
+            'message' => 'Delivery is on the way.'
         ], 200);
     }
 
@@ -87,8 +86,7 @@ class DeliveryController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Delivery completed successfully.',
-            'delivery' => $delivery,
+            'message' => 'Delivery completed successfully.'
         ], 200);
     }
 
@@ -115,8 +113,7 @@ class DeliveryController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Delivery canceled successfully.',
-            'delivery' => $delivery,
+            'message' => 'Delivery canceled successfully.'
         ], 200);
     }
 
@@ -143,8 +140,7 @@ class DeliveryController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Delivery reset to pending successfully.',
-            'delivery' => $delivery,
+            'message' => 'Delivery reset to pending successfully.'
         ], 200);
     }
 
@@ -165,7 +161,7 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivery not found'], 404);
         }
 
-        return response()->json(['delivery' => $delivery], 200);
+        return new DeliveryResource($delivery);
     }
 
     /**
@@ -181,6 +177,6 @@ class DeliveryController extends Controller
             })
             ->get();
 
-        return response()->json(['deliveries' => $deliveries], 200);
+        return DeliveryResource::collection($deliveries);
     }
 }
