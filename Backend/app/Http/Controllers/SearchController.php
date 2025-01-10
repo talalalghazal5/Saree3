@@ -13,6 +13,12 @@ class SearchController extends Controller
     {
         $query = $request->input('searchQuery');
 
+        if ($query == "") {
+            return response()->json([
+                'message' => 'no search query provided'
+            ], 400);
+        }
+
         // Search products
         $products = Product::where('name', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
@@ -34,6 +40,6 @@ class SearchController extends Controller
                 'vendors' => $vendors,
                 'categories' => $categories,
             ]
-        ]);
+        ], 200);
     }
 }
