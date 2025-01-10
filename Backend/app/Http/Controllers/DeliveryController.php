@@ -85,7 +85,10 @@ class DeliveryController extends Controller
 
         // Update delivery and associated order state
         $delivery->update(['state' => 'delivered']);
-        $delivery->order->update(['status' => 'completed']);
+        $delivery->order->update([
+            'status' => 'completed',
+            'closed_at' => now()
+        ]);
 
         return response()->json([
             'message' => 'Delivery completed successfully.',
@@ -110,7 +113,10 @@ class DeliveryController extends Controller
 
         // Update delivery and associated order state
         $delivery->update(['state' => 'canceled']);
-        $delivery->order->update(['status' => 'canceled']);
+        $delivery->order->update([
+            'status' => 'canceled',
+            'closed_at' => now()
+        ]);
 
         return response()->json([
             'message' => 'Delivery canceled successfully.',
@@ -135,7 +141,10 @@ class DeliveryController extends Controller
 
         // Update delivery and associated order state
         $delivery->update(['state' => 'pending']);
-        $delivery->order->update(['status' => 'pending']);
+        $delivery->order->update([
+            'status' => 'pending',
+            'closed_at' => null
+        ]);
 
         return response()->json([
             'message' => 'Delivery reset to pending successfully.',
