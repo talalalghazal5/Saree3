@@ -72,11 +72,7 @@ class ProductCard extends StatelessWidget {
             ),
           ),
         ),
-        Divider(
-          indent: 20,
-          endIndent: 20,
-          color: Theme.of(context).colorScheme.inverseSurface,
-        )
+        
       ],
     );
   }

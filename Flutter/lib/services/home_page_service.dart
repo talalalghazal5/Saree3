@@ -5,7 +5,7 @@ import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/category.dart';
 
 class HomePageService {
-  final Uri baseUrl = Uri.parse('https://cee8-149-22-80-110.ngrok-free.app/api');
+  final Uri baseUrl = Uri.parse('http://26.30.106.26:1234/api');
 
   Future<List<Product>> getProducts() async {
     Uri productsUrl = Uri.parse('$baseUrl/products');
@@ -44,7 +44,7 @@ class HomePageService {
 
   Future<List<Product>> getProductsByCategory(int id) async {
     Uri productsUrl = Uri.parse(
-      '$baseUrl/products?category_id=$id',
+      '$baseUrl/products?categoryId=$id',
     );
     try {
       var response = await get(productsUrl);
