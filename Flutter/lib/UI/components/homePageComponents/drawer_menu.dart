@@ -75,7 +75,7 @@ class DrawerMenu extends StatelessWidget {
               ),
               onTap: () async {
                 await AuthServices().logout();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logged out successfully')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logged out successfully')));
                 Navigator.popAndPushNamed(context, '/loginPage');
               },
             ),

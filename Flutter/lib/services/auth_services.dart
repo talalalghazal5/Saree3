@@ -29,12 +29,20 @@ class AuthServices {
         headers: headers,
       );
       print("regiseterd user: ${response.body}");
-      var responseBody = jsonDecode(response.body);
+      if (response.statusCode != 404) {
+        var responseBody = jsonDecode(response.body);
       var responseData = {
         'message': responseBody['message'],
-        'statusCode ': response.statusCode
+        'statusCode ': response.statusCode,
+        'persistentConnection' : response.persistentConnection
       };
       return responseData;
+      }
+      return {
+        'message' : 'Connection error, please try again later',
+        'statusCode' : 404,
+        'persistentConnection' : false
+      };
     } on SocketException catch (e) {
       return {'message': e.message};
     }
@@ -55,16 +63,24 @@ class AuthServices {
       var response =
           await post(Uri.parse("$baseUrl/login"), body: body, headers: headers);
       print('---------------- Logging in: ${response.body} ------------------');
-      var responseBody = jsonDecode(response.body);
-      var token = responseBody['token'];
-      await preferences.setString('userToken', token ?? '');
-      var responseData = {
-        'message': responseBody['message'],
-        'statusCode': response.statusCode,
+      if (response.statusCode != 404) {
+        var responseBody = jsonDecode(response.body);
+        var token = responseBody['token'];
+        await preferences.setString('userToken', token ?? '');
+        var responseData = {
+          'message': responseBody['message'],
+          'statusCode': response.statusCode,
+          'persistentConnection' : response.persistentConnection
+        };
+        return responseData;
+      }
+      return {
+        'message' : 'Connection error, please try again later',
+        'statusCode' : 404,
+        'persistentConnection' : response.persistentConnection
       };
-      return responseData;
-    } on Exception catch (e) {
-      return {'message': e.toString()};
+    } on SocketException catch (_) {
+      return {'message': 'Failed to connect, please try again later'};
     }
   }
 
@@ -108,10 +124,10 @@ class AuthServices {
 
   Future<void> logout() async {
     try {
-  await post(Uri.parse('$baseUrl/logout'));
-  preferences.setString('userToken', '');
-} on Exception catch (e) {
-  print(e.toString());
-}
+      await post(Uri.parse('$baseUrl/logout'));
+      preferences.setString('userToken', '');
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 }
