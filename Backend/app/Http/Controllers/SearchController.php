@@ -11,7 +11,7 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        $query = $request->input('searchQuery');
+        $query = $request->has('searchQuery') ? $request->input('searchQuery') : "";
 
         if ($query == "") {
             return response()->json([
