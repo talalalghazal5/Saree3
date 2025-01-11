@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->boolean('phone_verified')->default(false);
             $table->string('password');
-            $table->rememberToken();
+            $table->string('profile_picture')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
 
