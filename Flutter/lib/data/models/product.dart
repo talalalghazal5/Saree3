@@ -11,8 +11,8 @@ class Product {
   int? totalReviewCount;
   String? vendorName;
   int? vendorId;
-
-  Product({this.id, this.name, this.description, this.price, this.categoryName, this.categoryId, this.rating, this.stockQuantity, this.totalReviewCount, this.vendorId, this.vendorName});
+  String? image;
+  Product({this.id, this.name, this.description, this.price, this.categoryName, this.categoryId, this.rating, this.stockQuantity, this.totalReviewCount, this.vendorId, this.vendorName , this.image});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -26,7 +26,8 @@ class Product {
       stockQuantity: json['stockQuantity'],
       totalReviewCount: json['totalReviewCount'],
       vendorId: json['vendorId'],
-      vendorName: json['vendorName']
+      vendorName: json['vendorName'],
+      image: json['imageUrl']
     );
   }
 }
