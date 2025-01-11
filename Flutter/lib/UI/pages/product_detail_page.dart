@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/controllers/cart_provider.dart';
+import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/data/models/product.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -15,9 +18,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController quantityController =
-        TextEditingController();
-        
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    final TextEditingController quantityController = TextEditingController();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -172,7 +175,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           content: TextField(
                             controller: quantityController,
                             keyboardType: TextInputType.number,
-                            onChanged: (value) => quantityController.text = value,
+                            onChanged: (value) =>
+                                quantityController.text = value,
                           ),
                           actions: [
                             TextButton(
@@ -229,7 +233,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 80 / 100,
                   child: PrimaryButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      cartProvider.addToCart(
+                        CartItem(
+                          product: widget.product,
+                          quantity: int.parse(quantity),
+                        ),
+                      );
+                    },
                     text: 'Add to Cart',
                   ),
                 ),

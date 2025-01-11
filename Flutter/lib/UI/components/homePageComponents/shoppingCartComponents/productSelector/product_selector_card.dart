@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector_button.dart';
+import 'package:saree3/controllers/cart_provider.dart';
+import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/data/models/product.dart';
 
 class ProductsSelectorCard extends StatelessWidget {
-  ProductsSelectorCard({super.key, required this.productSelector});
-  Product productSelector;
+  ProductsSelectorCard({super.key, required this.cartItem});
+  CartItem cartItem;
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
-        height: 150,
+        height: 200,
         width: 450,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
         ),
         child: Card(
-          color: Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
+          elevation: 0,
+          color: Theme.of(context).colorScheme.inverseSurface.withAlpha(50),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -28,7 +33,10 @@ class ProductsSelectorCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.white),
                   child: Center(
-                    child:  Text('This is a placeholder', style: Theme.of(context).textTheme.labelSmall,),
+                    child: Text(
+                      'This is a placeholder',
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
                   ),
                 ),
                 Padding(
@@ -39,17 +47,17 @@ class ProductsSelectorCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(productSelector.name!),
+                        Text(cartItem.product.name!),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(productSelector.categoryName!),
+                        Text(cartItem.product.categoryName!),
                         const SizedBox(
                           height: 20,
                         ),
                         const Text('total:'),
                         Text(
-                          r'$' '${productSelector.price.toString()}',
+                          r'$' '${cartItem.totalCost.toString()}',
                           style: const TextStyle(color: Color(0xff240CAA)),
                         )
                       ],
@@ -64,7 +72,9 @@ class ProductsSelectorCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            cartProvider.removeFromCart(cartItem);
+                          },
                           icon: const Icon(
                             Icons.delete,
                             color: Colors.red,

@@ -10,6 +10,7 @@ import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
+import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +29,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OnboardingController()),
         ChangeNotifierProvider(
           create: (context) => CategoryProvider(),
-        )
+        ),
+        ChangeNotifierProvider(create: (context) => CartProvider(),),
       ],
       child: const MyApp(),
     ),
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/homePage',
+      initialRoute: '/loginPage',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),
