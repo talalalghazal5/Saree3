@@ -60,9 +60,12 @@ class ShoppingCart extends StatelessWidget {
               child: Text('Total Cost: \$${cartProvider.totalCartCost}'),
             ),
           ),
-          PrimaryButton(onPressed: () {
-            orderService.placeNewOrder(cartProvider.cart);
-          }, text: 'Checkout'),
+          PrimaryButton(
+            onPressed: () {
+              orderService.placeNewOrder(cartProvider.cart);
+            },
+            text: 'Checkout',
+          ),
         ],
       ),
     );

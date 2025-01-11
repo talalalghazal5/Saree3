@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:saree3/main.dart';
 
 class AuthServices {
-  Uri baseUrl = Uri.parse('https://3eda-89-33-8-58.ngrok-free.app');
+  Uri baseUrl = Uri.parse('https://e4a4-169-150-218-18.ngrok-free.app');
 
   Future<Map<String, dynamic>> register({
     required String name,
@@ -39,7 +39,7 @@ class AuthServices {
       return responseData;
       }
       return {
-        'message' : 'Connection error, please try again later',
+        'message' : 'Connection error, please try again',
         'statusCode' : 404,
         'persistentConnection' : false
       };
