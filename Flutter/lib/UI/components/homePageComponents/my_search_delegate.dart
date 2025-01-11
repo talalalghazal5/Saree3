@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
 import 'package:saree3/UI/components/homePageComponents/product_card.dart';
 import 'package:saree3/UI/pages/product_detail_page.dart';
-import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/data/models/product.dart';
 import 'package:saree3/data/models/vendor.dart';
 import 'package:saree3/data/models/category.dart';
@@ -52,53 +54,8 @@ class MySearchDelegate extends SearchDelegate {
                 .bodyLarge!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
-          Expanded(
-              child: FutureBuilder(
-            future: HomePageService().search(query),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.data!.isEmpty) {
-                return const Center(
-                  child: Text('No data found'),
-                );
-              }
-              var searchResult = snapshot.data!;
-              List<Product> products = searchResult['products'];
-              if (products.isEmpty) {
-                return const Center(
-                  child: Text('no data found'),
-                );
-              }
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  return ProductCard(
-                    product: products[index],
-                    onTap: () => Navigator.pushReplacement(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ProductDetailPage(
-                          product: products[index],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          )),
-          Text(
-            'Vendors:',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          Expanded(
+          SizedBox(
+            height: 200,
             child: FutureBuilder(
               future: HomePageService().search(query),
               builder: (context, snapshot) {
@@ -106,26 +63,107 @@ class MySearchDelegate extends SearchDelegate {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (snapshot.data!.isEmpty) {
+                } else if (snapshot.error is SocketException ||
+                    snapshot.error is ClientException) {
+                  return const Center(
+                    child: Text('No internet connection, try again later'),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
                     child: Text('No data found'),
                   );
                 }
+
                 var searchResult = snapshot.data!;
-                List<Vendor> vendors = searchResult['vendors'];
-                if (vendors.isEmpty) {
+                List<Product> products = searchResult['products'] ?? [];
+
+                if (products.isEmpty) {
                   return const Center(
-                    child: Text('no data found'),
+                    child: Text('No products found'),
                   );
                 }
+
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 200,
+                      ), // Set a max width for each product card
+                      child: ProductCard(
+                        product: products[index],
+                        onTap: () => Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ProductDetailPage(
+                              product: products[index],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Text(
+            'Vendors:',
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 200,
+            child: FutureBuilder(
+              future: HomePageService().search(query),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.error is SocketException ||
+                    snapshot.error is ClientException) {
+                  return const Center(
+                    child: Text('No internet connection, try again later'),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text('No data found'),
+                  );
+                }
+
+                var searchResult = snapshot.data!;
+                List<Vendor> vendors = searchResult['vendors'] ?? [];
+
+                if (vendors.isEmpty) {
+                  return const Center(
+                    child: Text('No vendors found'),
+                  );
+                }
+
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: vendors.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(vendors[index].name!),
-                      subtitle:
-                          Text('Contact: ${vendors[index].contactNumber}'),
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth: 200), // Set a max width for each list tile
+                      child: ListTile(
+                        title: Text(vendors[index].name!),
+                        subtitle:
+                            Text('Contact: ${vendors[index].contactNumber}'),
+                      ),
                     );
                   },
                 );
@@ -139,7 +177,8 @@ class MySearchDelegate extends SearchDelegate {
                 .bodyLarge!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
-          Expanded(
+          SizedBox(
+            height: 200,
             child: FutureBuilder(
               future: HomePageService().search(query),
               builder: (context, snapshot) {
@@ -147,25 +186,42 @@ class MySearchDelegate extends SearchDelegate {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (snapshot.data!.isEmpty) {
+                } else if (snapshot.error is SocketException ||
+                    snapshot.error is ClientException) {
+                  return const Center(
+                    child: Text('No internet connection, try again later'),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
                     child: Text('No data found'),
                   );
                 }
+
                 var searchResult = snapshot.data!;
-                List<Category> categories = searchResult['categories'];
+                List<Category> categories = searchResult['categories'] ?? [];
+
                 if (categories.isEmpty) {
                   return const Center(
-                    child: Text('no data found'),
+                    child: Text('No categories found'),
                   );
                 }
+
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
-                    return FilterChip(
-                      label: Text(categories[index].name!),
-                      onSelected: (value) {},
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth:
+                              200), // Set a max width for each filter chip
+                      child: FilterChip(
+                        label: Text(categories[index].name!),
+                        onSelected: (value) {},
+                      ),
                     );
                   },
                 );
