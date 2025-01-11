@@ -43,9 +43,9 @@ class OrderController extends Controller
 
             $totalPrice = 0;
             foreach ($request->items as $item) {
-                $product = Product::find($item['product_id']);
+                $product = Product::find($item['productId']);
                 if (!$product) {
-                    throw new \Exception("Product with ID {$item['product_id']} not found.");
+                    throw new \Exception("Product with ID {$item['productId']} not found.");
                 }
 
                 if (!$this->validateSufficientStock($product, $item['quantity'])) {
@@ -185,7 +185,7 @@ class OrderController extends Controller
 
     private function addNewOrderItemToOrder(Order $order, array $item)
     {
-        $product = Product::find($item['product_id']);
+        $product = Product::find($item['productId']);
         $orderItem = new OrderItem([
             'order_id' => $order->id,
             'product_id' => $product->id,
