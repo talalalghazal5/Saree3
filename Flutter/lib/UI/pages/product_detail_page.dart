@@ -3,7 +3,7 @@ import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/data/models/product.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  ProductDetailPage({super.key, required this.product});
+  const ProductDetailPage({super.key, required this.product});
   final Product product;
 
   @override
