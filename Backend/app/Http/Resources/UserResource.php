@@ -22,7 +22,6 @@ class UserResource extends JsonResource
             "location" => $this->location,
             "profilePictureUrl" => $this->getProfilePictureUrl(), // Use the accessor for the picture URL
             "createdAt" => $this->created_at,
-            "updatedAt" => $this->updated_at,
         ];
     }
 }
