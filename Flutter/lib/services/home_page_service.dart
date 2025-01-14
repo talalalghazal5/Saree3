@@ -63,33 +63,7 @@ class HomePageService {
       return [];
     }
   }
-
-  Future<List<Product>> getProductsByMinPrice(double minPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$minPrice');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((product) => Product.fromJson(product))
-          .toList();
-    } else {
-      throw Exception('An error occurred');
-    }
-  }
-
-  Future<List<Product>> getProductsByMaxPrice(double maxPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$maxPrice');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((product) => Product.fromJson(product))
-          .toList();
-    } else {
-      throw Exception('An error occurred');
-    }
-  }
-
+  
   Future<Map<String, dynamic>> search(String query) async {
     Uri searchUrl = Uri.parse('$baseUrl/search?searchQuery=$query');
 
