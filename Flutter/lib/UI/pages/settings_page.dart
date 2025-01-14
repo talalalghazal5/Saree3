@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Theme.of(context)
                         .colorScheme
                         .inverseSurface
-                        .withAlpha(80),
+                        .withAlpha(40),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -160,14 +160,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Theme.of(context)
                         .colorScheme
                         .inverseSurface
-                        .withAlpha(80),
+                        .withAlpha(40),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Delivery Adress:',
+                        'Delivery Address:',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 14,
                               color: Theme.of(context)
@@ -176,16 +176,21 @@ class _SettingsPageState extends State<SettingsPage> {
                                   .withAlpha(200),
                             ),
                       ),
-                      Text(
-                       snapshot.data!.location!,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontSize: 14,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .inverseSurface
-                                  .withAlpha(255),
-                            ),
-                        overflow: TextOverflow.fade,
+                      const SizedBox(width: 20,),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Text(
+                         snapshot.data!.location!,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            overflow: TextOverflow.ellipsis,
+                                fontSize: 14,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inverseSurface
+                                    .withAlpha(255),
+                              ),
+                          overflow: TextOverflow.fade,
+                        ),
                       ),
                     ],
                   ),
