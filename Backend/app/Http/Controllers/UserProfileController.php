@@ -14,7 +14,7 @@ class UserProfileController extends Controller
      */
     public function show(Request $request)
     {
-        $user = $request->user(); // Get the authenticated user
+        $user = $request->user();
 
         return new UserResource($user);
     }
