@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:http/http.dart';
 import 'package:saree3/data/models/product.dart';
@@ -7,14 +8,13 @@ import 'package:saree3/data/models/vendor.dart';
 
 class HomePageService {
   final Uri baseUrl =
-      Uri.parse('https://8c85-169-150-218-19.ngrok-free.app/api');
+      Uri.parse('http://0.0.0.0:1234/api');
 
   Future<List<Product>> getProducts() async {
     Uri productsUrl = Uri.parse('$baseUrl/products');
     var response = await get(productsUrl);
     if (response.statusCode == 200) {
       List<dynamic> categoriesJson = jsonDecode(response.body);
-
       return categoriesJson
           .map((product) => Product.fromJson(product))
           .toList();

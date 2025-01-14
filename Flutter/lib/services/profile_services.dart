@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:saree3/data/models/user.dart';
 import 'package:saree3/main.dart';
 
 class ProfileServices {
-  Uri baseUrl = Uri.parse('https://81d2-169-150-218-135.ngrok-free.app');
+  Uri baseUrl = Uri.parse('http://192.168.144.230:1234/api/profile');
 
   Future<User> profile() async {
     var token = preferences.getString('userToken')!;
