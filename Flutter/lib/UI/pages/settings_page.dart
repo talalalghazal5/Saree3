@@ -46,8 +46,8 @@ class _SettingsPageState extends State<SettingsPage> {
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
-            } else if (User == null) {
-              return const Center(child: EmptySection());
+            } else if (snapshot.data == null) {
+              return const Center(child: Text('no data'));
             }
           return Center(
             child: Column(
