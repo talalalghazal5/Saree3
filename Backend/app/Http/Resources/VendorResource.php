@@ -19,7 +19,7 @@ class VendorResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'name' => $this->name,
             'description' => $this->description,
-            'totalRating' => $this->total_rating,
+            'totalRating' => convertRatingToMax5($this->total_rating),
             'totalReviewCount' => $this->total_review_count,
             'contactNumber' => $this->contact_number,
             'address' => $this->address,

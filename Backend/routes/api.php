@@ -7,11 +7,13 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware(['auth:sanctum']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [UserProfileController::class, 'show']);
+    Route::post('/profile', [UserProfileController::class, 'update']);
+});
 
 // Product
 Route::get('products', [ProductController::class, 'index']);

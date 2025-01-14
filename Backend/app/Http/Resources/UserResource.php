@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             "phoneNumber" => $this->phone_number,
             "phoneVerified" => $this->phone_verified,
             "location" => $this->location,
-            "profilePictureUrl" => $this->getProfilePictureUrl(), // Use the accessor for the picture URL
+            "profilePictureUrl" => $this->getProfilePictureUrl(),
             "createdAt" => $this->created_at,
         ];
     }

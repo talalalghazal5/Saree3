@@ -43,9 +43,9 @@ class OrderController extends Controller
 
             $totalPrice = 0;
             foreach ($request->items as $item) {
-                $product = Product::find($item['product_id']);
+                $product = Product::find($item['productId']);
                 if (!$product) {
-                    throw new \Exception("Product with ID {$item['product_id']} not found.");
+                    throw new \Exception("Product with ID {$item['productId']} not found.");
                 }
 
                 if (!$this->validateSufficientStock($product, $item['quantity'])) {
@@ -103,11 +103,11 @@ class OrderController extends Controller
 
         $totalPrice = 0;
         // Get the list of product IDs from the request
-        $updatedProductIds = collect($request->items)->pluck('product_id')->toArray();
+        $updatedProductIds = collect($request->items)->pluck('productId')->toArray();
 
         // Restore stock for items not in the updated list
         $order->orderItems()
-            ->whereNotIn('product_id', $updatedProductIds)
+            ->whereNotIn('productId', $updatedProductIds)
             ->get()
             ->each(function ($orderItem) {
                 $orderItem->product->increment('stock_quantity', $orderItem->quantity);
@@ -116,12 +116,12 @@ class OrderController extends Controller
 
         // Update or create order items
         foreach ($request->items as $item) {
-            $product = Product::find($item['product_id']);
+            $product = Product::find($item['productId']);
             if (!$product) {
-                return $this->productNotFoundResponse($item['product_id']);
+                return $this->productNotFoundResponse($item['productId']);
             }
 
-            $orderItem = $order->orderItems()->where('product_id', $item['product_id'])->first();
+            $orderItem = $order->orderItems()->where('productId', $item['productId'])->first();
 
             if ($orderItem) {
                 // Calculate the stock difference
@@ -185,7 +185,7 @@ class OrderController extends Controller
 
     private function addNewOrderItemToOrder(Order $order, array $item)
     {
-        $product = Product::find($item['product_id']);
+        $product = Product::find($item['productId']);
         $orderItem = new OrderItem([
             'order_id' => $order->id,
             'product_id' => $product->id,

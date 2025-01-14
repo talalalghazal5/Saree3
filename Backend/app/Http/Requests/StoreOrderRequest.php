@@ -23,7 +23,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'items' => 'required|array',
-            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.productId' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1'
         ];
     }
