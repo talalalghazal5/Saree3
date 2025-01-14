@@ -38,4 +38,34 @@ class ProfileServices {
       throw {'message': e.message};
     }
   }
+
+  Future<void> updateProfile(File? image, String name, String address) async {
+    var token = preferences.getString('userToken')!;
+    Map<String, String> headers = {
+      "accept": "application/json",
+      "Authorization": "Bearer $token"
+    };
+
+    Map<String, String> body = {
+      "name": name,
+      "location": address,
+    };
+
+    var request = MultipartRequest(
+      "POST",
+      baseUrl,
+    );
+    request.headers.addAll(headers);
+
+    request.fields.addAll(body);
+
+    if (image != null) {
+      request.files.add(MultipartFile(
+          'profilePicture', image.readAsBytes().asStream(), image.lengthSync(),
+          filename: image.path.split('/').last));
+    }
+
+    var response = await request.send();
+    print(response);
+  }
 }

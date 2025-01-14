@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:saree3/controllers/image_controller.dart';
 import 'package:saree3/services/profile_services.dart';
 
 class InfoEditing extends StatefulWidget {
@@ -16,7 +15,8 @@ class _InfoEditingState extends State<InfoEditing> {
   late TextEditingController nameController;
   late TextEditingController locationController;
   late GlobalKey<FormState> formKey;
-  File? selectedImage;
+  String name = '';
+  String location = '';
   @override
   void initState() {
     super.initState();
@@ -24,24 +24,22 @@ class _InfoEditingState extends State<InfoEditing> {
     formKey = GlobalKey<FormState>();
   }
 
-  Future _pickImageFromGallery() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        selectedImage = File(image.path);
-      });
-    } else {
-      return;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    ImageController imageProvider = Provider.of<ImageController>(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              nameController.text = name;
+              locationController.text = location;
+              ProfileServices().updateProfile(
+                imageProvider.selectedImage,
+                nameController.text,
+                locationController.text,
+              );
+            },
             icon: FaIcon(
               FontAwesomeIcons.check,
               color: Theme.of(context).colorScheme.onSurface,
@@ -62,7 +60,6 @@ class _InfoEditingState extends State<InfoEditing> {
             nameController = TextEditingController(text: snapshot.data!.name);
             locationController =
                 TextEditingController(text: snapshot.data!.location);
-
             return Column(
               children: [
                 Stack(
@@ -71,8 +68,8 @@ class _InfoEditingState extends State<InfoEditing> {
                     CircleAvatar(
                       backgroundColor:
                           Theme.of(context).colorScheme.inverseSurface,
-                      foregroundImage: selectedImage != null
-                          ? FileImage(selectedImage!)
+                      foregroundImage: imageProvider.selectedImage != null
+                          ? FileImage(imageProvider.selectedImage!)
                           : NetworkImage(snapshot.data!.profilePictureUrl!),
                       radius: 70,
                     ),
@@ -86,8 +83,7 @@ class _InfoEditingState extends State<InfoEditing> {
                               width: 2)),
                       child: IconButton.filled(
                           onPressed: () {
-                            //TODO: ADD AN IMAGE PICKER TO CHOOSE AN IMAGE.
-                            _pickImageFromGallery();
+                            imageProvider.pickImageFromGallery();
                           },
                           icon: const FaIcon(
                             FontAwesomeIcons.pencil,
@@ -117,6 +113,9 @@ class _InfoEditingState extends State<InfoEditing> {
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
                           controller: nameController,
+                          onChanged: (value) {
+                            name = value;
+                          },
                           decoration: InputDecoration(
                             alignLabelWithHint: false,
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -157,6 +156,9 @@ class _InfoEditingState extends State<InfoEditing> {
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
                           controller: locationController,
+                          onChanged: (value) {
+                            location = value;
+                          },
                           decoration: InputDecoration(
                             alignLabelWithHint: false,
                             floatingLabelBehavior: FloatingLabelBehavior.always,
