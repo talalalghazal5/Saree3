@@ -35,6 +35,8 @@ class Product extends Model
 
     public function getImageUrl()
     {
-        return $this->image_path ? Storage::url($this->image_path) : null;
+        return $this->image_path
+            ? asset('storage/' . $this->image_path)
+            : null;
     }
 }

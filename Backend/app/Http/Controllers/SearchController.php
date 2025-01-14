@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\VendorResource;
 use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Category;
@@ -22,23 +25,23 @@ class SearchController extends Controller
         // Search products
         $products = Product::where('name', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
-            ->get(['id', 'name', 'description', 'price', 'total_rating as rating']);
+            ->get();
 
         // Search vendors
         $vendors = Vendor::where('name', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
-            ->get(['id', 'name', 'description', 'total_rating as rating']);
+            ->get();
 
         // Search categories
         $categories = Category::where('name', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
-            ->get(['id', 'name', 'description']);
+            ->get();
 
         return response()->json([
-            'searchResult' => [
-                'products' => $products,
-                'vendors' => $vendors,
-                'categories' => $categories,
+            'data' => [
+                'products' => ProductResource::collection($products),
+                'vendors' => VendorResource::collection($vendors),
+                'categories' => CategoryResource::collection($categories),
             ]
         ], 200);
     }

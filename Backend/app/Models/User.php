@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,7 +21,9 @@ class User extends Authenticatable
         'name',
         'password',
         'phone_number',
-        'phone_verified'
+        'phone_verified',
+        'profile_picture',
+        'location',
     ];
 
     /**
@@ -46,6 +47,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Retrieve the URL for the profile picture.
+     *
+     * @return string|null
+     */
+    public function getProfilePictureUrl(): ?string
+    {
+        return $this->profile_picture 
+            ? asset('storage/' . $this->profile_picture) 
+            : null;
     }
 
     public function vendor()
