@@ -15,8 +15,8 @@ class _InfoEditingState extends State<InfoEditing> {
   late TextEditingController nameController;
   late TextEditingController locationController;
   late GlobalKey<FormState> formKey;
-  String name = '';
-  String location = '';
+  late String name;
+  late String location;
   @override
   void initState() {
     super.initState();
