@@ -16,7 +16,6 @@ import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/category.dart';
 import 'package:saree3/data/models/product.dart';
-import 'package:saree3/data/models/user.dart';
 import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,7 +91,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
-      drawer: DrawerMenu(),
+      drawer: const DrawerMenu(),
       body: NestedScrollView(
         controller: _scrollController,
         floatHeaderSlivers: false,

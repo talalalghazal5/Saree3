@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/controllers/image_controller.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/services/auth_services.dart';
@@ -40,7 +40,8 @@ class _InfoEditingState extends State<InfoEditing> {
   void _updateProfile() async {
     ImageController imageProvider =
         Provider.of<ImageController>(context, listen: false);
-    UserController userController = Provider.of<UserController>(context, listen: false);
+    UserController userController =
+        Provider.of<UserController>(context, listen: false);
     try {
       setState(() {
         _isLoading = true;
@@ -50,7 +51,13 @@ class _InfoEditingState extends State<InfoEditing> {
         nameController.text,
         locationController.text,
       );
-      userController.user = await ProfileServices().profile(); 
+      userController.user = await ProfileServices().profile();
+    } on TimeoutException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message!),
+        ),
+      );
     } catch (e) {
       print(e.toString());
     } finally {
@@ -59,7 +66,7 @@ class _InfoEditingState extends State<InfoEditing> {
       });
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Information updated')));
-      Navigator.popAndPushNamed(context, '/settingsPage' );
+      Navigator.popAndPushNamed(context, '/settingsPage');
     }
   }
 
@@ -68,7 +75,13 @@ class _InfoEditingState extends State<InfoEditing> {
     ImageController imageProvider = Provider.of<ImageController>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () => Navigator.pushReplacementNamed(context, '/settingsPage'), icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface,)),
+        leading: IconButton(
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, '/settingsPage'),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.onSurface,
+            )),
         actions: [
           IconButton(
             onPressed: () {

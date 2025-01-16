@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/loading_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
-import 'package:saree3/data/models/user.dart';
 import 'package:saree3/main.dart';
-import 'package:saree3/services/profile_services.dart';
 
 class LoginOrRegister extends StatefulWidget {
   const LoginOrRegister({super.key});
@@ -25,7 +22,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
 
   @override
   Widget build(BuildContext context) {
-    if (preferences.getString('userToken') == '') {
+    if (preferences.getString('userToken') == '' || preferences.getString('userToken') == null) {
       if (showLoginPage) {
         return SignInPage(
           onTap: togglePages,

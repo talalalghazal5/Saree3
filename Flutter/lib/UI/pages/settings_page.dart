@@ -1,12 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/user_controller.dart';
-import 'package:saree3/data/models/user.dart';
 import 'package:saree3/services/auth_services.dart';
 import 'package:saree3/services/profile_services.dart';
 
@@ -26,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
     AuthServices().logout();
     Navigator.pushReplacementNamed(context, '/loginOrRegister');
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Logged out successfully')));
+        .showSnackBar(const SnackBar(content: Text('Logged out successfully')));
   }
 
   @override
