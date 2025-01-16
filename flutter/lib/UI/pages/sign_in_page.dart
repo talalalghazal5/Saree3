@@ -137,7 +137,8 @@ class _SignInPageState extends State<SignInPage> {
                                 backgroundColor: signInData['statusCode'] != 200 ? Theme.of(context).colorScheme.error.withAlpha(200) : Theme.of(context).colorScheme.inverseSurface,
                                 content: Text(
                                   signInData['statusCode'] == 404
-                                      ? signInData['persistentConnection'] == false
+                                      ? signInData['persistentConnection'] ==
+                                              false
                                           ? signInData['message']
                                           : 'Account not found, please try registering or logging in with existing account'
                                       : signInData['statusCode'] == 403
@@ -147,7 +148,7 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                             );
                             if (signInData['statusCode'] == 200) {
-                              Navigator.pushNamed(
+                              Navigator.pushReplacement(
                                   context.mounted ? context : context,
                                   CupertinoPageRoute(
                                     builder: (context) => const HomePage(),

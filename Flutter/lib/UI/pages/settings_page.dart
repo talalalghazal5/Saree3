@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:saree3/UI/components/homePageComponents/empty_section.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
+import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/user.dart';
+import 'package:saree3/services/auth_services.dart';
 import 'package:saree3/services/profile_services.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -20,52 +21,81 @@ class _SettingsPageState extends State<SettingsPage> {
   String? location = 'As Suwayda';
   String? selectedLanguage = 'en';
   ProfileServices profileServices = ProfileServices();
-  List<User>? user = [];
+
+  void logout() {
+    AuthServices().logout();
+    Navigator.pushReplacementNamed(context, '/loginOrRegister');
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Logged out successfully')));
+  }
+
   @override
   void initState() {
     super.initState();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    UserController userController = Provider.of<UserController>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FutureBuilder(
-              future: profileServices.profile(),
-              builder: (BuildContext context, snapshot) {
-                if (snapshot.hasError) {
-                  if (snapshot.error is SocketException ||
-                      snapshot.error is ClientException) {
-                    return Text(
-                      'Connection failed, please try again later or check you internet connection',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    );
-                  }
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: LinearProgressIndicator());
-                } else if (snapshot.data == null) {
-                  return const Center(child: Text('no data'));
-                }
-                return Center(
+            // FutureBuilder(
+            //   future: profileServices.profile(),
+            //   builder: (BuildContext context, snapshot) {
+            //     if (snapshot.hasError) {
+            //       if (snapshot.error is SocketException ||
+            //           snapshot.error is ClientException) {
+            //         return Text(
+            //           'Connection failed, please try again later or check you internet connection',
+            //           style: Theme.of(context).textTheme.bodySmall,
+            //         );
+            //       } else {
+            //         WidgetsBinding.instance.addPostFrameCallback((_) {
+            //           showDialog(
+            //             context: context,
+            //             builder: (context) => AlertDialog(
+            //               content: const Text(
+            //                 'Your session has expired, please logout and then login again',
+            //               ),
+            //               actions: [
+            //                 TextButton(
+            //                   onPressed: () => logout(),
+            //                   child: const Text('Logout'),
+            //                 )
+            //               ],
+            //             ),
+            //           );
+            //         });
+            //       }
+            //     }
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: LinearProgressIndicator());
+            //     } else if (snapshot.data == null) {
+            //       return const Center(child: Text('no data'));
+            //     }
+                
+            //   },
+            // ),
+            Center(
                   child: Column(
                     children: [
                       CircleAvatar(
                         backgroundColor:
                             Theme.of(context).colorScheme.inverseSurface,
                         foregroundImage:
-                            NetworkImage('${snapshot.data?.profilePictureUrl}'),
+                            NetworkImage(userController.user.profilePictureUrl!),
                         radius: 70,
                       ),
                       const SizedBox(
                         height: 30,
                       ),
                       Text(
-                        snapshot.data!.name!,
+                        userController.user.name!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const SizedBox(
@@ -152,7 +182,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                             ),
                             Text(
-                              snapshot.data!.phone_number!,
+                              userController.user.phone_number!,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -203,7 +233,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             Flexible(
                               fit: FlexFit.loose,
                               child: Text(
-                                snapshot.data!.location!,
+                                userController.user.location! == '' ? 'Not specified' :  userController.user.location!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -226,13 +256,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ],
                   ),
-                );
-              },
-            ),
-            SizedBox(
+                ),
+            const SizedBox(
               height: 20,
             ),
-
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
