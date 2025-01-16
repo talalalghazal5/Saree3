@@ -36,6 +36,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       keyboardType: widget.textInputType,
       obscureText: isPasswordField ? isObscure : false,
+      onSaved: (newValue) => widget.controller.text = newValue!,
       onChanged: (value) => widget.controller.text = value,
       decoration: InputDecoration(
         label: Text(widget.hint),
