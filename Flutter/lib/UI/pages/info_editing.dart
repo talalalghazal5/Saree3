@@ -59,7 +59,7 @@ class _InfoEditingState extends State<InfoEditing> {
       });
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Information updated')));
-      Navigator.pushNamedAndRemoveUntil(context, '/settingsPage',(route) => false, );
+      Navigator.popAndPushNamed(context, '/settingsPage' );
     }
   }
 
@@ -68,6 +68,7 @@ class _InfoEditingState extends State<InfoEditing> {
     ImageController imageProvider = Provider.of<ImageController>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: () => Navigator.pushReplacementNamed(context, '/settingsPage'), icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface,)),
         actions: [
           IconButton(
             onPressed: () {

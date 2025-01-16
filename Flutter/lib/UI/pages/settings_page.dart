@@ -103,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       MaterialButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/infoEditingPage');
+                          Navigator.pushReplacementNamed(context, '/infoEditingPage');
                         },
                         color: themeProvider.isDarkMode
                             ? Theme.of(context)
