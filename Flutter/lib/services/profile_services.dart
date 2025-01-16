@@ -6,7 +6,8 @@ import 'package:saree3/data/models/user.dart';
 import 'package:saree3/main.dart';
 
 class ProfileServices {
-  Uri baseUrl = Uri.parse('https://81d2-169-150-218-135.ngrok-free.app');
+  Uri baseUrl =
+      Uri.parse('https://3682-169-150-218-59.ngrok-free.app/api/profile');
 
   Future<User> profile() async {
     var token = preferences.getString('userToken')!;
@@ -32,14 +33,20 @@ class ProfileServices {
         };
         return User.fromJson(responseBody['data']);
       }
-      print(User().name);
+      if (response.statusCode == 401) {
+        preferences.setString('userToken', '');
+        throw Exception();
+      }
+
       return User();
     } on SocketException catch (e) {
       throw {'message': e.message};
+    } catch (e) {
+      throw {'message': 'Unauthenticated'};
     }
   }
 
-  Future<void> updateProfile(File? image, String name, String address) async {
+  Future<int> updateProfile(File? image, String name, String address) async {
     var token = preferences.getString('userToken')!;
     Map<String, String> headers = {
       "accept": "application/json",
@@ -60,12 +67,19 @@ class ProfileServices {
     request.fields.addAll(body);
 
     if (image != null) {
-      request.files.add(MultipartFile(
-          'profilePicture', image.readAsBytes().asStream(), image.lengthSync(),
-          filename: image.path.split('/').last));
+      request.files.add(
+        MultipartFile(
+          'profilePicture',
+          image.readAsBytes().asStream(),
+          image.lengthSync(),
+          filename: image.path.split('/').last,
+        ),
+      );
     }
 
     var response = await request.send();
+    int statusCode = response.statusCode;
     print(response);
+    return statusCode;
   }
 }
