@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -77,7 +78,7 @@ class ProfileServices {
       );
     }
 
-    var response = await request.send();
+    var response = await request.send().timeout(const Duration(minutes: 5), onTimeout: () => throw TimeoutException('Connection timed out please try again'),);
     int statusCode = response.statusCode;
     print(response);
     return statusCode;
