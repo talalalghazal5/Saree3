@@ -63,7 +63,7 @@ class ProductCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      'https://placehold.co/500x500.png',
+                      '${product.image}',
                       width: 100,
                     ),
                   ),

@@ -30,7 +30,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
               child: Image.network(
-                'https://placehold.co/500x500.png',
+                widget.product.image!,
                 height: 400,
                 width: double.infinity,
               ),
