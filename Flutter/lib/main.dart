@@ -12,6 +12,7 @@ import 'package:saree3/UI/pages/signin_check.dart';
 import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/controllers/category_provider.dart';
+import 'package:saree3/controllers/image_controller.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,7 @@ void main() async {
           create: (context) => CategoryProvider(),
         ),
         ChangeNotifierProvider(create: (context) => CartProvider(),),
+        ChangeNotifierProvider(create: (context) => ImageController(),)
       ],
       child: const MyApp(),
     ),

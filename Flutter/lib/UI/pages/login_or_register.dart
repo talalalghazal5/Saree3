@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/loading_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
 import 'package:saree3/main.dart';
@@ -22,7 +22,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
 
   @override
   Widget build(BuildContext context) {
-    if (preferences.getString('userToken') == '') {
+    if (preferences.getString('userToken') == '' || preferences.getString('userToken') == null) {
       if (showLoginPage) {
         return SignInPage(
           onTap: togglePages,
@@ -34,6 +34,8 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
       }
     }
     print(preferences.getString('userToken'));
-    return const HomePage();
+    
+    return const LoadingPage();
   }
+
 }

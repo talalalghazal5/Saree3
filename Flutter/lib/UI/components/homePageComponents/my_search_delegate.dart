@@ -157,7 +157,7 @@ class MySearchDelegate extends SearchDelegate {
                   itemCount: vendors.length,
                   itemBuilder: (context, index) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                           maxWidth: 200), // Set a max width for each list tile
                       child: ListTile(
                         title: Text(vendors[index].name!),
@@ -215,7 +215,7 @@ class MySearchDelegate extends SearchDelegate {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                           maxWidth:
                               200), // Set a max width for each filter chip
                       child: FilterChip(

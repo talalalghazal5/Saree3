@@ -13,13 +13,15 @@ import 'package:saree3/UI/components/homePageComponents/my_tab_bar.dart';
 import 'package:saree3/UI/components/homePageComponents/product_card.dart';
 import 'package:saree3/UI/pages/product_detail_page.dart';
 import 'package:saree3/controllers/category_provider.dart';
+import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/category.dart';
 import 'package:saree3/data/models/product.dart';
 import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  const HomePage({
+    super.key,
+  });
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -100,12 +102,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               tabController: _tabController,
               categories: categoryProvider!.categories,
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyCurrentLocation(),
-                SizedBox(height: 8),
-                MyDescriptionBox(),
+                MyCurrentLocation(
+                  userLocation: Provider.of<UserController>(context, listen: false).user.location!,
+                ),
+                const SizedBox(height: 8),
+                const MyDescriptionBox(),
               ],
             ),
           ),
@@ -113,9 +117,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Consumer<CategoryProvider>(
           builder: (context, categories, child) {
             return TabBarView(
-              controller: _tabController,
-              children: _getProductsInThisCategory(categories.categories)
-            );
+                controller: _tabController,
+                children: _getProductsInThisCategory(categories.categories));
           },
         ),
       ),
