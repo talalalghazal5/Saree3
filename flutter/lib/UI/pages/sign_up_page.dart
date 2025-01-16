@@ -152,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ),
                                   );
                                   if (registerData['statusCode'] == 200) {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                         context.mounted ? context : context,
                                         MaterialPageRoute(builder: (context) {
                                       return Otp(
