@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/controllers/user_controller.dart';
-import 'package:saree3/data/models/user.dart';
 import 'package:saree3/services/profile_services.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -43,16 +41,22 @@ class _LoadingPageState extends State<LoadingPage> {
             } else if (snapshot.hasError) {
               return Column(
                 children: [
-                  Text(
-                    'Error occured',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Error occured',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          child: const Text('Retry'),
+                        )
+                      ],
+                    ),
                   ),
-                  MaterialButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Text('Retry'),
-                  )
                 ],
               );
             }
