@@ -13,6 +13,7 @@ import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/image_controller.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
+import 'package:saree3/controllers/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences preferences;
@@ -30,7 +31,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => CategoryProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => ImageController(),)
+        ChangeNotifierProvider(create: (context) => ImageController(),),
+        ChangeNotifierProvider(create: (context) => UserController(),)
       ],
       child: const MyApp(),
     ),
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/homePage',
+      initialRoute: '/loginOrRegister',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),
