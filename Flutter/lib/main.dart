@@ -51,11 +51,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-<<<<<<< HEAD
-      initialRoute: '/loginPage',
-=======
       initialRoute: '/loginOrRegister',
->>>>>>> 4799fea7658a3f41834ffabef2ad79863124634b
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),
