@@ -151,7 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       content: Text(registerData['message']),
                                     ),
                                   );
-                                  if (registerData['statusCode'] == 201) {
+                                  if (registerData['statusCode'] == 200) {
                                     Navigator.pushReplacement(
                                         context.mounted ? context : context,
                                         MaterialPageRoute(builder: (context) {

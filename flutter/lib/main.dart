@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
@@ -14,7 +13,6 @@ import 'package:saree3/UI/themes/theme_provider.dart';
 import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/image_controller.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
-import 'package:saree3/controllers/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences preferences;
@@ -32,8 +30,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => CategoryProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => ImageController(),),
-        ChangeNotifierProvider(create: (context) => UserController(),),
+        ChangeNotifierProvider(create: (context) => ImageController(),)
       ],
       child: const MyApp(),
     ),
@@ -50,13 +47,13 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/loginOrRegister',
+      initialRoute: '/homePage',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),
         '/signupPage': (context) => const SignUpPage(),
         '/otpPage': (context) => Otp(),
-        // '/homePage': (context) => const HomePage(),
+        '/homePage': (context) => const HomePage(),
         '/settingsPage': (context) => const SettingsPage(),
         '/infoEditingPage': (context) => const InfoEditing(),
         '/signinCheck' : (context) => const SigninCheck(),
