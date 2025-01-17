@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
@@ -21,8 +22,24 @@ class UserSeeder extends Seeder
             'password' => password_hash("password", M_1_PI)
         ]);
 
-        Order::factory(8)->create(['user_id' => $user->id])->each(function ($order) {
+        Order::factory(4)->create(['user_id' => $user->id])->each(function ($order) {
             OrderItem::factory()->count(random_int(1, 15))->create(['order_id' => $order->id,]);
+        });
+
+        Order::factory(4)->create(['user_id' => $user->id])->each(function ($order) {
+            if ($order->status === 'pending') {
+                rand(0, 1) > 0.5 ? $deliveryStatus = $order->status : $deliveryStatus = 'on_the_way';
+            } else if ($order->status === 'completed') {
+                $deliveryStatus = 'delivered';
+            } else {
+                $deliveryStatus = $order->status;
+            }
+
+            OrderItem::factory()->count(random_int(1, 15))->create(['order_id' => $order->id,]);
+            Delivery::factory()->count(1)->create([
+                'order_id' => $order->id,
+                'status' => $deliveryStatus,
+            ]);
         });
     }
 }

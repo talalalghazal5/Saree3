@@ -19,9 +19,15 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = $request->user()->orders()->with('orderItems.product')
-            ->where('cleared_at', null)
-            ->get();
+        $query = $request->user()->orders()->with('orderItems.product')
+            ->with('delivery')
+            ->where('cleared_at', null);
+
+        if ($request->has('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $orders = $query->get();
 
         return response()->json(OrderResource::collection($orders));
     }
@@ -93,7 +99,8 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, $id)
     {
-        $order = $request->user()->orders()->with('orderItems.product')->find($id);
+        $order = $request->user()->orders()->with('orderItems.product')
+            ->with('delivery')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -161,7 +168,7 @@ class OrderController extends Controller
      */
     public function cancel(Request $request, $id)
     {
-        $order = $request->user()->orders()->with('orderItems.product')->find($id);
+        $order = $request->user()->orders()->with('orderItems.product')->with('delivery')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }

@@ -20,6 +20,7 @@ class OrderFactory extends Factory
     {
         $status = $this->faker->randomElement(['pending', 'completed', 'canceled']);
         $closed_at = $status === 'pending' ? null : $this->faker->dateTimeThisYear();
+
         return [
             'user_id' => User::factory(),
             'total_price' => convertPriceToCents($this->faker->randomFloat(2, 10, 1000)),

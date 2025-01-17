@@ -29,7 +29,7 @@ class UserProfileController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'profilePicture' => 'image|max:2048',
+            'profilePicture' => 'file|max:2048',
         ]);
 
         if ($request->hasFile('profilePicture')) {

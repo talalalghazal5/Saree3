@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('name');
             $table->string('phone_number');
             $table->timestamp('expected_delivery_time');
-            $table->enum('state', ['pending', 'on_the_way', 'delivered', 'canceled'])->default('pending');
-            
+            $table->enum('status', ['pending', 'on_the_way', 'delivered', 'canceled'])->default('pending');
+
             $table->timestamps();
         });
     }
