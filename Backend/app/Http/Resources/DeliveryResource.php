@@ -14,9 +14,9 @@ class DeliveryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $deliveryState = $this->state;
-        if($deliveryState === 'on_the_way'){
-            $deliveryState = 'onTheWay';
+        $deliveryStatus = $this->status;
+        if($deliveryStatus === 'on_the_way'){
+            $deliveryStatus = 'onTheWay';
         }
      
         return [
@@ -25,7 +25,7 @@ class DeliveryResource extends JsonResource
             'name' => $this->name,
             'phoneNumber' => $this->phone_number,
             'expectedDeliveryTime' => $this->expected_delivery_time,
-            'state' => $deliveryState,
+            'status' => $deliveryStatus,
             'order'=> $this->whenLoaded('order', $this->order),
         ];
     }

@@ -14,7 +14,7 @@ class Delivery extends Model
         'name',
         'phone_number',
         'expected_delivery_time',
-        'state'
+        'status'
     ];
 
     public function order()
