@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/controllers/user_controller.dart';
@@ -31,7 +34,9 @@ class _LoadingPageState extends State<LoadingPage> {
                           width: 200,
                           child: LinearProgressIndicator(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Text('Just a moment please')
                       ],
                     ),
@@ -39,37 +44,66 @@ class _LoadingPageState extends State<LoadingPage> {
                 ],
               );
             } else if (snapshot.hasError) {
-              return Column(
-                children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Error occured',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        MaterialButton(
-                          onPressed: () {
-                            setState(() {});
-                          },
-                          child: const Text('Retry'),
-                        )
-                      ],
+              if (snapshot.error is SocketException ||
+                  snapshot.error is ClientException) {
+                print(snapshot.error.toString());
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Error occured',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: const Text('Retry'),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              } else {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Column(
+                        children: [
+                          Text(snapshot.error.toString(), style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.error.withAlpha(150)),),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: Text('Try again', style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).colorScheme.onSurface),),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              }
             }
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Provider.of<UserController>(context, listen: false).user =
-                  snapshot.data!;
-              Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const HomePage(),
-                ),
-              );
-            });
+            if (!snapshot.hasError) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Provider.of<UserController>(context, listen: false).user =
+                    snapshot.data!;
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              });
+            }
             return Container();
           }),
     );
