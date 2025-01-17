@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector_button.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/data/models/cart_item.dart';
-import 'package:saree3/data/models/product.dart';
 
 class ProductsSelectorCard extends StatelessWidget {
   ProductsSelectorCard({super.key, required this.cartItem});
