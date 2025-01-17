@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
@@ -21,8 +22,15 @@ class UserSeeder extends Seeder
             'password' => password_hash("password", M_1_PI)
         ]);
 
-        Order::factory(8)->create(['user_id' => $user->id])->each(function ($order) {
+        Order::factory(4)->create(['user_id' => $user->id])->each(function ($order) {
             OrderItem::factory()->count(random_int(1, 15))->create(['order_id' => $order->id,]);
+        });
+
+        Order::factory(4)->create(['user_id' => $user->id])->each(function ($order) {
+            OrderItem::factory()->count(random_int(1, 15))->create(['order_id' => $order->id,]);
+            Delivery::factory()->count(1)->create([
+                'order_id' => $order->id,
+            ]);
         });
     }
 }
