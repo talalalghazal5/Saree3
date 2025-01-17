@@ -62,7 +62,19 @@ class ShoppingCart extends StatelessWidget {
           ),
           PrimaryButton(
             onPressed: () {
-              orderService.placeNewOrder(cartProvider.cart);
+              try {
+                orderService.placeNewOrder(cartProvider.cart);
+              } on Exception catch (e) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
+              }
+              if (cartProvider.cart.isNotEmpty) {
+                Navigator.pushNamed(context, '/orderDetails');
+              }
+              if (cartProvider.cart.isEmpty) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(const SnackBar(content: Text('Your cart is empty, order some products first')));
+              }
             },
             text: 'Checkout',
           ),
