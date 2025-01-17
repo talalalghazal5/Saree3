@@ -13,7 +13,18 @@ class Order {
       userId: json['userId'],
       totalPrice: json['totalPrice'],
       orderStatus: json['orderStatus'],
-      orderDate: json['createdAt'],
+      orderDate: DateTime.parse(json['createdAt'] as String),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['userId'] = userId;
+    data['totalPrice'] = totalPrice;
+    data['orderStatus'] = orderStatus;
+    data['orderDate'] = orderDate;
+
+    return data;
   }
 }
