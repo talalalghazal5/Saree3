@@ -4,11 +4,12 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/data/models/order.dart';
+import 'package:saree3/data/models/user.dart';
 import 'package:saree3/main.dart';
 
 class OrderService {
   Uri baseUrl =
-      Uri.parse('https://3682-169-150-218-59.ngrok-free.app/api/myorders');
+      Uri.parse('https://4da1-149-34-244-137.ngrok-free.app/api/myorders');
   Future<Order> placeNewOrder(List<CartItem> order) async {
     try {
       if (order.isEmpty) {
@@ -49,17 +50,17 @@ class OrderService {
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         var orderInJson = jsonDecode(response.body);
         Order placedOrder = Order.fromJson(orderInJson);
 
         return placedOrder;
       }
-      return Order();
+      throw Exception('An Error Occured while getting order details');
     } on SocketException catch (e) {
       throw e.message;
     } on Exception catch (e) {
-      throw e.toString();
+      rethrow;
     }
   }
 }
