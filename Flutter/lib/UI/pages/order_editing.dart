@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
+import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/services/order_service.dart';
@@ -145,48 +147,14 @@ class _OrderEditingState extends State<OrderEditing> {
                                 itemBuilder: (context, index) {
                                   CartItem cartItem =
                                       snapshot.data!.orderItems![index];
-                                  return ListTile(
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 5, right: 10, bottom: 5, top: 5),
-                                    tileColor: Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface
-                                        .withAlpha(30),
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            width: 1,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10))),
-                                    leading: Image.network(
-                                      cartItem.product.image!,
-                                      width: 50,
-                                    ),
-                                    title: Text(
-                                      cartItem.product.name!,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                    subtitle: Text(
-                                      'Price: ${cartItem.product.price}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .inverseSurface,
-                                          ),
-                                    ),
-                                    trailing: Text(
-                                      'QTY: ${cartItem.quantity}',
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                  );
+                                  return ProductsSelectorCard(
+                                      cartItem: cartItem);
                                 },
                               )),
+                          Spacer(),
+                          PrimaryButton(
+                              onPressed: () => print('The new order is: ${snapshot.data!.orderItems!} ================='),
+                              text: 'Save'),
                         ],
                       ),
                     ),
