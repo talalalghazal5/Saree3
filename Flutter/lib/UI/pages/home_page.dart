@@ -16,6 +16,7 @@ import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/category.dart';
 import 'package:saree3/data/models/product.dart';
+import 'package:saree3/main.dart';
 import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,6 +89,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     categoryProvider = Provider.of<CategoryProvider>(context);
+    print('+++ ${preferences.getString('userToken')}');
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
