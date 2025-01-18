@@ -51,10 +51,7 @@ class _LoadingPageState extends State<LoadingPage> {
                       content: const Text('Session expired, please login again'),
                       actions: [
                         TextButton(
-                          onPressed: () {
-                            AuthServices().logout();
-                            Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginOrRegister(),));
-                          },
+                          onPressed: () => AuthServices().logout(),
                           child: const Text('Logout'),
                         )
                       ],
