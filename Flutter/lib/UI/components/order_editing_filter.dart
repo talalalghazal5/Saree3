@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:saree3/UI/pages/order_details.dart';
+import 'package:saree3/UI/pages/order_editing.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/order.dart';
 import 'package:saree3/services/order_service.dart';
@@ -51,7 +54,7 @@ class OrderEditingFilter extends SearchDelegate {
             itemBuilder: (context, index) {
               Order order = snapshot.data![index];
               return GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/orderDetails'),
+                onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => OrderEditing(id: order.id),)),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
