@@ -5,6 +5,7 @@ import 'package:saree3/UI/pages/info_editing.dart';
 import 'package:saree3/UI/pages/login_or_register.dart';
 import 'package:saree3/UI/pages/onboarding/onboarding_page.dart';
 import 'package:saree3/UI/pages/order_details.dart';
+import 'package:saree3/UI/pages/order_history.dart';
 import 'package:saree3/UI/pages/otp.dart';
 import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         '/signinCheck' : (context) => const SigninCheck(),
         '/loginOrRegister' : (context) => const LoginOrRegister(),
         '/orderDetails' : (context) => const OrderDetails(),
+        '/orderHistory' : (context) => const OrderHistory()
       },
     );
   }
