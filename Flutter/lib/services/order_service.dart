@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -9,7 +10,7 @@ import 'package:saree3/main.dart';
 
 class OrderService {
   Uri baseUrl =
-      Uri.parse('https://4da1-149-34-244-137.ngrok-free.app/api/myorders');
+      Uri.parse('https://b363-169-150-218-58.ngrok-free.app/api/myorders');
   Future<Order> placeNewOrder(List<CartItem> order) async {
     try {
       if (order.isEmpty) {
@@ -61,6 +62,101 @@ class OrderService {
       throw e.message;
     } on Exception catch (e) {
       rethrow;
+    }
+  }
+
+  Future<List<Order>> getOrders() async {
+    try {
+      var token = preferences.getString('userToken');
+      if (token == null) {
+        print('Token is null');
+        throw Exception('session expired, please login again');
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response = await get(baseUrl, headers: headers);
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        List<dynamic> responseBody = jsonDecode(response.body);
+        List<Order> orderList = responseBody
+            .map(
+              (order) => Order.fromJson(order),
+            )
+            .toList();
+        return orderList;
+      } else {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<List<Order>> getOrdersByStatus(String status) async {
+    try {
+      var token = preferences.getString('userToken');
+      if (token == null) {
+        print('Token is null');
+        throw Exception('session expired, please login again');
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response =
+          await get(Uri.parse('$baseUrl?status=$status'), headers: headers)
+              .timeout(Duration(minutes: 5));
+
+      if (response.statusCode == 200) {
+        List<dynamic> responseBody = jsonDecode(response.body);
+        List<Order> orderList = responseBody
+            .map(
+              (order) => Order.fromJson(order),
+            )
+            .toList();
+        return orderList;
+      } else {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<Order> getOrderById(int id) async {
+    try {
+      var token = preferences.getString('userToken');
+      if (token == null) {
+        print('Token is null');
+        throw Exception('session expired, please login again');
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+      var response =
+          await get(Uri.parse('$baseUrl/id'), headers: headers)
+              .timeout(Duration(minutes: 5));
+
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        Order order = Order.fromJson(responseBody);
+        return order;
+      } else {
+        print(response.reasonPhrase);
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
