@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/login_or_register.dart';
 import 'package:saree3/controllers/user_controller.dart';
+import 'package:saree3/services/auth_services.dart';
 import 'package:saree3/services/profile_services.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -31,7 +33,9 @@ class _LoadingPageState extends State<LoadingPage> {
                           width: 200,
                           child: LinearProgressIndicator(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Text('Just a moment please')
                       ],
                     ),
@@ -39,6 +43,25 @@ class _LoadingPageState extends State<LoadingPage> {
                 ],
               );
             } else if (snapshot.hasError) {
+              if (snapshot.error.toString() == 'Unauthenticated') {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: const Text('Session expired, please login again'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            AuthServices().logout();
+                            Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginOrRegister(),));
+                          },
+                          child: const Text('Logout'),
+                        )
+                      ],
+                    ),
+                  );
+                });
+              }
               return Column(
                 children: [
                   Center(
