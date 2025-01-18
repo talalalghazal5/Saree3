@@ -42,7 +42,7 @@ class ProfileServices {
     } on ClientException catch (e) {
       throw Exception('Client error: ${e.message}');
     } catch (e) {
-      rethrow;
+      throw {'message': 'Unauthenticated'};
     }
   }
 
