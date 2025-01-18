@@ -34,6 +34,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           minVerticalPadding: 50,
           leading: CircleAvatar(
             radius: 30,
+            backgroundImage: AssetImage('assets/images/500x500.png'),
             foregroundImage: NetworkImage(Provider.of<UserController>(context).user.profilePictureUrl!),
           ),
           title: Text(
@@ -72,7 +73,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '/orderHistory');
           },
         ),
         ListTile(
