@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:saree3/data/models/cart_item.dart';
-import 'package:saree3/data/models/product.dart';
 
 class CartProvider extends ChangeNotifier {
-  List<CartItem> _cart = [
-    CartItem(product: Product(id: 1, name: 'Awesome phone', categoryName: 'phone', categoryId: 3, price: 100.99), quantity: 2),
+  final List<CartItem> _cart = [
   ];
 
   List<CartItem> get cart => _cart;
@@ -35,7 +33,7 @@ class CartProvider extends ChangeNotifier {
   double get totalCartCost {
     double cost = 0.0;
     for (var cartItem in cart) {
-      cost += cartItem.quantity;
+      cost += cartItem.product.price! * cartItem.quantity;
     }
     return double.parse(cost.toStringAsFixed(2));
   }

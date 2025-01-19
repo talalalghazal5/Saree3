@@ -134,7 +134,7 @@ class _OtpState extends State<Otp> {
                                 if (verificationData['statusCode'] == 200) {
                                   Navigator.popAndPushNamed(
                                     context.mounted ? context : context,
-                                    '/loginPage',
+                                    '/loginOrRegister',
                                   );
                                 }
                               }

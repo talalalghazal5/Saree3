@@ -33,7 +33,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
               child: Image.network(
-                'https://placehold.co/500x500.png',
+                widget.product.image!,
                 height: 400,
                 width: double.infinity,
               ),
@@ -45,7 +45,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               children: [
                 Text(
                   widget.product.name!,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.headlineSmall,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -59,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               },
               child: Text(
                 widget.product.vendorName!,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                       decoration: TextDecoration.underline,
                       decorationColor: Theme.of(context).colorScheme.primary,
@@ -120,21 +120,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               onSelected: (value) {},
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             Text(
               'About this product:',
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 19),
+                  .copyWith(fontWeight: FontWeight.w500, fontSize: 15),
             ),
             const SizedBox(
               height: 10,
             ),
             Text(
               widget.product.description!,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: Theme.of(context).colorScheme.surfaceContainer),
             ),
 
@@ -238,6 +238,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         CartItem(
                           product: widget.product,
                           quantity: int.parse(quantity),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Item added to Cart'),
                         ),
                       );
                     },

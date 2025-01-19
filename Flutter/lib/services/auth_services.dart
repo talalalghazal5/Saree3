@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:saree3/main.dart';
 
 class AuthServices {
-  Uri baseUrl = Uri.parse('https://e4a4-169-150-218-18.ngrok-free.app');
+  Uri baseUrl = Uri.parse('https://b363-169-150-218-58.ngrok-free.app');
 
   Future<Map<String, dynamic>> register({
     required String name,
