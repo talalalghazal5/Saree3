@@ -60,7 +60,7 @@ class OrderService {
     } on SocketException catch (e) {
       throw e.message;
     } on Exception catch (e) {
-      rethrow;
+      throw e;
     }
   }
 
@@ -143,7 +143,7 @@ class OrderService {
         'Authorization': 'Bearer $token',
       };
       var response =
-          await get(Uri.parse('$baseUrl/id'), headers: headers)
+          await get(Uri.parse('$baseUrl/$id'), headers: headers)
               .timeout(Duration(minutes: 5));
 
       if (response.statusCode == 200) {
@@ -155,6 +155,55 @@ class OrderService {
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
+      throw e;
+    }
+  }
+  Future<void> updateOrder(int orderId, List<CartItem> orderItems) async {
+    try {
+
+      var orders = orderItems.map((item) => item.toJson()).toList();
+      print('Orders List: $orders');
+
+      Object body = {
+        'items': orders,
+      };
+
+      print('Request Body Before JSON Encoding: $body');
+
+      var token = preferences.getString('userToken');
+      if (token == null) {
+        print('Token is null');
+        throw Exception('session expired, please login again');
+      }
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      var jsfiedBody = jsonEncode(body);
+      print('JSON Body: $jsfiedBody');
+
+      var response = await put(
+        Uri.parse('$baseUrl/$orderId'),
+        body: jsfiedBody,
+        headers: headers,
+      );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        var orderInJson = jsonDecode(response.body);
+        Order placedOrder = Order.fromJson(orderInJson);
+        print('==---==---===${placedOrder}');
+        return;
+      }
+      throw Exception('An Error Occured while getting order details');
+    } on SocketException catch (e) {
+      throw e.message;
+    } on Exception catch (e) {
       throw e;
     }
   }

@@ -15,7 +15,7 @@ class Order {
       
       id: json['id'],
       userId: json['userId'],
-      totalPrice: json['totalPrice'],
+      totalPrice: (json['totalPrice'] as num).toDouble(),
       orderStatus: json['orderStatus'],
       orderDate: DateTime.parse(json['createdAt'] as String),
       orderItems: (json['orderItems'] as List<dynamic>).map((item) => CartItem.fromJson(item as Map<String, dynamic>)).toList(),

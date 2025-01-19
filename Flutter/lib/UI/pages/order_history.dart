@@ -67,7 +67,7 @@ class _OrderHistoryState extends State<OrderHistory> {
               itemBuilder: (context, index) {
                 Order order = snapshot.data![index];
                 return GestureDetector(
-                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => OrderDetails(),)),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => OrderDetails(id: order.id,),)),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(

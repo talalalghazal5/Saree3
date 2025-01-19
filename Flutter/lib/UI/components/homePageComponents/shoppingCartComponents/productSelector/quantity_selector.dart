@@ -26,7 +26,7 @@ class QuantitySelector extends StatelessWidget {
         children: [
           InkWell(
             onTap:onDecrement,
-            child: Icon(CupertinoIcons.minus, color: Theme.of(context).colorScheme.inversePrimary,),
+            child: Icon(CupertinoIcons.minus, color: Theme.of(context).colorScheme.inverseSurface,),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -39,7 +39,7 @@ class QuantitySelector extends StatelessWidget {
           ),
           InkWell(
             onTap: onIncrement,
-            child: Icon(CupertinoIcons.add, color: Theme.of(context).colorScheme.inversePrimary,),
+            child: Icon(CupertinoIcons.add, color: Theme.of(context).colorScheme.inverseSurface,),
           ),
         ],
       ),

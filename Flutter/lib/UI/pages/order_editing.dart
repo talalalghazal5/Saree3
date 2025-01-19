@@ -151,9 +151,18 @@ class _OrderEditingState extends State<OrderEditing> {
                                       cartItem: cartItem);
                                 },
                               )),
-                          Spacer(),
+                          // Spacer(),
+                          MaterialButton(
+                            onPressed: () =>
+                                snapshot.data!.orderItems!.removeAt(0),
+                            child: Text('remove'),
+                          ),
                           PrimaryButton(
-                              onPressed: () => print('The new order is: ${snapshot.data!.orderItems!} ================='),
+                              onPressed: () {
+                                print(
+                                    'The new order is: ${snapshot.data!.orderItems!} =================');
+                                    OrderService().updateOrder(snapshot.data!.id, snapshot.data!.orderItems!);
+                              },
                               text: 'Save'),
                         ],
                       ),

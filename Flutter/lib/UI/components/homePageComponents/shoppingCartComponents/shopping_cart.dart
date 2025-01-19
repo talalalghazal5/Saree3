@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/UI/pages/order_details.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/data/models/cart_item.dart';
+import 'package:saree3/data/models/order.dart';
 import 'package:saree3/services/order_service.dart';
 
 class ShoppingCart extends StatelessWidget {
@@ -61,19 +64,25 @@ class ShoppingCart extends StatelessWidget {
             ),
           ),
           PrimaryButton(
-            onPressed: () {
+            onPressed: () async {
+              Order order;
               try {
-                orderService.placeNewOrder(cartProvider.cart);
+                order = await OrderService().placeNewOrder(cartProvider.cart);
+                if (cartProvider.cart.isNotEmpty) {
+                  Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => OrderDetails(id: order.id),
+                      ));
+                }
+                if (cartProvider.cart.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                          'Your cart is empty, order some products first')));
+                }
               } on Exception catch (e) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(e.toString())));
-              }
-              if (cartProvider.cart.isNotEmpty) {
-                Navigator.pushNamed(context, '/orderDetails');
-              }
-              if (cartProvider.cart.isEmpty) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(content: Text('Your cart is empty, order some products first')));
               }
             },
             text: 'Checkout',

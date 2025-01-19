@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         '/infoEditingPage': (context) => const InfoEditing(),
         '/signinCheck' : (context) => const SigninCheck(),
         '/loginOrRegister' : (context) => const LoginOrRegister(),
-        '/orderDetails' : (context) => const OrderDetails(),
+        // '/orderDetails' : (context) => const OrderDetails(),
         '/orderHistory' : (context) => const OrderHistory()
       },
     );

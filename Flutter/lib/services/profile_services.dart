@@ -8,7 +8,7 @@ import 'package:saree3/main.dart';
 
 class ProfileServices {
   Uri baseUrl =
-      Uri.parse('https://4da1-149-34-244-137.ngrok-free.app/api/profile');
+      Uri.parse('https://b363-169-150-218-58.ngrok-free.app/api/profile');
 
   Future<User> profile() async {
     var token = preferences.getString('userToken')!;
@@ -21,7 +21,7 @@ class ProfileServices {
       var response = await get(
         baseUrl,
         headers: headers,
-      );
+      ).timeout(Duration(minutes: 5));
       print("profile user: ${response.body}");
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
