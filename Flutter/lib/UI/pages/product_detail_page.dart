@@ -34,7 +34,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
               child: Image.network(
                 widget.product.image!,
-                height: 400,
+                height: 300,
                 width: double.infinity,
               ),
             ),
@@ -80,28 +80,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
                 Row(
                   children: [
-                    const Text(
-                      '4.7 ',
+                    Text(
+                      '${widget.product.rating! * 10}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
                     ),
                     Icon(
                       Icons.star,
