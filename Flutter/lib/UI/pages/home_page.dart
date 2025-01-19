@@ -40,6 +40,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(length: 5, vsync: this);
   }
 
+  Future<void> _refresh() async {
+    setState(() {
+      
+    });
+  }
+
   List<Widget> _getProductsInThisCategory(List<Category> categories) {
     return categories.map(
       (category) {
@@ -94,34 +100,37 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       drawer: const DrawerMenu(),
-      body: NestedScrollView(
-        controller: _scrollController,
-        floatHeaderSlivers: false,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          MySliverAppBar(
-            scaffoldKey: scaffoldKey,
-            title: MyTabBar(
-              tabController: _tabController,
-              categories: categoryProvider!.categories,
+      body: RefreshIndicator(
+        onRefresh: () => _refresh(),
+        child: NestedScrollView(
+          controller: _scrollController,
+          floatHeaderSlivers: false,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            MySliverAppBar(
+              scaffoldKey: scaffoldKey,
+              title: MyTabBar(
+                tabController: _tabController,
+                categories: categoryProvider!.categories,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MyCurrentLocation(
+                    userLocation: Provider.of<UserController>(context, listen: false).user.location!,
+                  ),
+                  const SizedBox(height: 8),
+                  const MyDescriptionBox(),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                MyCurrentLocation(
-                  userLocation: Provider.of<UserController>(context, listen: false).user.location!,
-                ),
-                const SizedBox(height: 8),
-                const MyDescriptionBox(),
-              ],
-            ),
+          ],
+          body: Consumer<CategoryProvider>(
+            builder: (context, categories, child) {
+              return TabBarView(
+                  controller: _tabController,
+                  children: _getProductsInThisCategory(categories.categories));
+            },
           ),
-        ],
-        body: Consumer<CategoryProvider>(
-          builder: (context, categories, child) {
-            return TabBarView(
-                controller: _tabController,
-                children: _getProductsInThisCategory(categories.categories));
-          },
         ),
       ),
     );
