@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/order_details.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/data/models/cart_item.dart';
@@ -37,11 +38,12 @@ class _PaymentPageState extends State<PaymentPage> {
       // Add your payment processing logic here
       try {
         Order order = await OrderService().placeNewOrder(items);
+        order = await OrderService().getOrderById(order.id);
         if (items.isNotEmpty) {
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
-                builder: (context) => OrderDetails(id: order.id),
+                builder: (context) => HomePage(),
               ));
           showDialog(
             context: context,
@@ -128,9 +130,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
                 keyboardType: TextInputType.datetime,
                 validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !RegExp(r'^(0[1-9]|1[0-2])\/(\d{2})$').hasMatch(value)) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter a valid expiry date';
                   }
                   return null;
@@ -161,7 +161,6 @@ class _PaymentPageState extends State<PaymentPage> {
               PrimaryButton(
                 onPressed: () {
                   _processPayment(cartProvider.cart);
-                  cartProvider.cart.clear();
                 },
                 text: 'Pay Now',
               ),
