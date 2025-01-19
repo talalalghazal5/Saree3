@@ -81,7 +81,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Row(
                   children: [
                     Text(
-                      '${widget.product.rating! * 10}',
+                      '${widget.product.rating!}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
