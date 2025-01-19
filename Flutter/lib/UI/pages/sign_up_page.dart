@@ -122,6 +122,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     },
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   AuthTextField(
                     textInputType: TextInputType.streetAddress,
                     controller: _locationController,
