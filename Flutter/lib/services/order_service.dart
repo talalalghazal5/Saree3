@@ -9,7 +9,7 @@ import 'package:saree3/main.dart';
 
 class OrderService {
   Uri baseUrl =
-      Uri.parse('https://b363-169-150-218-58.ngrok-free.app/api/myorders');
+      Uri.parse('http://192.168.219.230:1234/api/myorders');
   Future<Order> placeNewOrder(List<CartItem> order) async {
     try {
       if (order.isEmpty) {
