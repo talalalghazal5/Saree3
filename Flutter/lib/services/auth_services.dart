@@ -12,6 +12,7 @@ class AuthServices {
     required String phone_number,
     required String password,
     required String password_confirmation,
+    required String location,
   }) async {
     Map<String, String> headers = {"accept": "application/json"};
 
@@ -20,6 +21,7 @@ class AuthServices {
       "phone_number": phone_number,
       "password": password,
       "password_confirmation": password_confirmation,
+      "location": location,
     };
 
     try {
