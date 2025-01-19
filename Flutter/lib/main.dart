@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/paymentPage',
+      initialRoute: preferences.getBool('isSkipped') == null ? '/onboarding' : preferences.getBool('isSkipped')! ?'/loginOrRegister'  : '/signupPage',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),

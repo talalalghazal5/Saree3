@@ -7,6 +7,7 @@ import 'package:saree3/UI/pages/onboarding/page_one.dart';
 import 'package:saree3/UI/pages/onboarding/page_three.dart';
 import 'package:saree3/UI/pages/onboarding/page_two.dart';
 import 'package:saree3/controllers/onboarding_controller.dart';
+import 'package:saree3/main.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -39,6 +40,7 @@ class OnboardingPage extends StatelessWidget {
             child: PrimaryButton(
               onPressed: () {
                 if (controller.isLastPage) {
+                  preferences.setBool('isSkipped', true);
                   Navigator.pushReplacementNamed(context, '/loginPage');
                 }
                 if (controller.currentPage < 3) {
@@ -53,6 +55,8 @@ class OnboardingPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.8,
               child: TextButton(
                 onPressed: () {
+                  preferences.setBool('isSkipped', true);
+                  print(preferences.getBool('isSkipped'));
                   Navigator.pushReplacementNamed(context, '/loginPage');
                 },
                 child: Text(
