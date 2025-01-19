@@ -95,18 +95,6 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(
                     height: 13,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'Forgot Password?',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
-                    ),
-                  ),
                 ],
               ),
             ),
