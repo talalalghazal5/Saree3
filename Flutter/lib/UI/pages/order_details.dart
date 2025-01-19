@@ -7,7 +7,8 @@ import 'package:saree3/services/order_service.dart';
 import 'package:intl/intl.dart';
 
 class OrderDetails extends StatefulWidget {
-  const OrderDetails({super.key});
+  const OrderDetails({super.key, required this.id});
+  final int id;
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
 }
@@ -30,7 +31,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           children: [
             FutureBuilder(
               future: OrderService()
-                  .placeNewOrder(Provider.of<CartProvider>(context).cart),
+                  .getOrderById(widget.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Column(
