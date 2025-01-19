@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector_button.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/data/models/cart_item.dart';
 
 class ProductsSelectorCard extends StatefulWidget {
-  ProductsSelectorCard({super.key, required this.cartItem});
+  ProductsSelectorCard({super.key, required this.cartItem, required this.onDeletePressed});
   CartItem cartItem;
-
+  final VoidCallback onDeletePressed;
   @override
   State<ProductsSelectorCard> createState() => _ProductsSelectorCardState();
 }
@@ -45,7 +44,7 @@ class _ProductsSelectorCardState extends State<ProductsSelectorCard> {
                     textAlign: TextAlign.left,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: widget.onDeletePressed,
                     icon: FaIcon(
                       FontAwesomeIcons.trash,
                       color: Theme.of(context).colorScheme.error.withAlpha(150),

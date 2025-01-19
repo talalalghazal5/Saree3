@@ -4,9 +4,9 @@ import 'package:saree3/UI/pages/home_page.dart';
 import 'package:saree3/UI/pages/info_editing.dart';
 import 'package:saree3/UI/pages/login_or_register.dart';
 import 'package:saree3/UI/pages/onboarding/onboarding_page.dart';
-import 'package:saree3/UI/pages/order_details.dart';
 import 'package:saree3/UI/pages/order_history.dart';
 import 'package:saree3/UI/pages/otp.dart';
+import 'package:saree3/UI/pages/payment_page.dart';
 import 'package:saree3/UI/pages/settings_page.dart';
 import 'package:saree3/UI/pages/sign_in_page.dart';
 import 'package:saree3/UI/pages/sign_up_page.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       title: 'Saree3',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/loginOrRegister',
+      initialRoute: '/paymentPage',
       routes: {
         '/onboarding': (context) => const OnboardingPage(),
         '/loginPage': (context) => const SignInPage(),
@@ -65,7 +65,8 @@ class MyApp extends StatelessWidget {
         '/signinCheck' : (context) => const SigninCheck(),
         '/loginOrRegister' : (context) => const LoginOrRegister(),
         // '/orderDetails' : (context) => const OrderDetails(),
-        '/orderHistory' : (context) => const OrderHistory()
+        '/orderHistory' : (context) => const OrderHistory(),
+        '/paymentPage' : (context) => PaymentPage(),
       },
     );
   }

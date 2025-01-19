@@ -53,16 +53,16 @@ class _OrderHistoryState extends State<OrderHistory> {
         future: orderService.getOrders(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No orders found'),
             );
           } else if (snapshot.hasError) {
-            return Text('Could not get orders');
+            return const Text('Could not get orders');
           } else {
             return ListView.separated(
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) => const Divider(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 Order order = snapshot.data![index];
@@ -97,7 +97,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Delivery Address:'),
+                            const Text('Delivery Address:'),
                             Text(userController.user.location!),
                           ],
                         ),
@@ -116,7 +116,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Order Status:'),
+                            const Text('Order Status:'),
                             Text(order.orderStatus),
                           ],
                         ),
@@ -135,7 +135,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total Cost:'),
+                            const Text('Total Cost:'),
                             Text('\$${order.totalPrice}'),
                           ],
                         ),

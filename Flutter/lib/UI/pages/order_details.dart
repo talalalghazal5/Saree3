@@ -76,7 +76,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Delivery Address'),
+                              const Text('Delivery Address'),
                               Text(userController.user.location!),
                             ],
                           ),
@@ -95,7 +95,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Order Status:'),
+                              const Text('Order Status:'),
                               Text(snapshot.data!.orderStatus),
                             ],
                           ),
@@ -114,7 +114,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Total Cost:'),
+                              const Text('Total Cost:'),
                               Text('\$${snapshot.data!.totalPrice}'),
                             ],
                           ),
@@ -143,7 +143,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                           SizedBox(
                               height: 450,
-                              child: ListView.builder(
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) => const SizedBox(height: 13,),
                                 itemCount: snapshot.data!.orderItems!.length,
                                 itemBuilder: (context, index) {
                                   // CartItem cartItem = cartProvider.cart[index];
@@ -164,7 +165,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSurface),
-                                      borderRadius: BorderRadius.all(
+                                      borderRadius: const BorderRadius.all(
                                         Radius.circular(10),
                                       ),
                                     ),
@@ -205,7 +206,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Error Occured'),
+                      const Text('Error Occured'),
                       MaterialButton(
                         onPressed: () {
                           setState(() {});

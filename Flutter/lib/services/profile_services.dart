@@ -21,7 +21,7 @@ class ProfileServices {
       var response = await get(
         baseUrl,
         headers: headers,
-      ).timeout(Duration(minutes: 5));
+      ).timeout(const Duration(minutes: 5));
       print("profile user: ${response.body}");
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);

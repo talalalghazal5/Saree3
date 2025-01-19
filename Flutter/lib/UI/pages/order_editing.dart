@@ -75,7 +75,7 @@ class _OrderEditingState extends State<OrderEditing> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Delivery Address'),
+                              const Text('Delivery Address'),
                               Text(userController.user.location!),
                             ],
                           ),
@@ -148,20 +148,20 @@ class _OrderEditingState extends State<OrderEditing> {
                                   CartItem cartItem =
                                       snapshot.data!.orderItems![index];
                                   return ProductsSelectorCard(
-                                      cartItem: cartItem);
+                                    cartItem: cartItem,
+                                    onDeletePressed: () => snapshot
+                                        .data!.orderItems!
+                                        .remove(cartItem),
+                                  );
                                 },
                               )),
                           // Spacer(),
-                          MaterialButton(
-                            onPressed: () =>
-                                snapshot.data!.orderItems!.removeAt(0),
-                            child: Text('remove'),
-                          ),
                           PrimaryButton(
                               onPressed: () {
                                 print(
                                     'The new order is: ${snapshot.data!.orderItems!} =================');
-                                    OrderService().updateOrder(snapshot.data!.id, snapshot.data!.orderItems!);
+                                OrderService().updateOrder(snapshot.data!.id,
+                                    snapshot.data!.orderItems!);
                               },
                               text: 'Save'),
                         ],

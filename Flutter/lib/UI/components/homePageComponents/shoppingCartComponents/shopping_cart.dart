@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/product_selector_card.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
 import 'package:saree3/UI/pages/order_details.dart';
+import 'package:saree3/UI/pages/payment_page.dart';
 import 'package:saree3/controllers/cart_provider.dart';
 import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/data/models/order.dart';
@@ -53,7 +54,7 @@ class ShoppingCart extends StatelessWidget {
               itemCount: cartProvider.cart.length,
               itemBuilder: (context, index) {
                 CartItem cartItem = cartProvider.cart[index];
-                return ProductsSelectorCard(cartItem: cartItem);
+                return ProductsSelectorCard(cartItem: cartItem, onDeletePressed: () => cartProvider.removeFromCart(cartItem),);
               },
             ),
           ),
@@ -64,26 +65,8 @@ class ShoppingCart extends StatelessWidget {
             ),
           ),
           PrimaryButton(
-            onPressed: () async {
-              Order order;
-              try {
-                order = await OrderService().placeNewOrder(cartProvider.cart);
-                if (cartProvider.cart.isNotEmpty) {
-                  Navigator.pushReplacement(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => OrderDetails(id: order.id),
-                      ));
-                }
-                if (cartProvider.cart.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'Your cart is empty, order some products first')));
-                }
-              } on Exception catch (e) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(e.toString())));
-              }
+            onPressed: () {
+              Navigator.pushNamed(context, '/paymentPage');
             },
             text: 'Checkout',
           ),

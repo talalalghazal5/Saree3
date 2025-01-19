@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:saree3/data/models/cart_item.dart';
-import 'package:saree3/data/models/product.dart';
 
 class CartProvider extends ChangeNotifier {
   final List<CartItem> _cart = [

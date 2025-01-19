@@ -34,7 +34,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           minVerticalPadding: 50,
           leading: CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage('assets/images/500x500.png'),
+            backgroundImage: const AssetImage('assets/images/500x500.png'),
             foregroundImage: NetworkImage(Provider.of<UserController>(context).user.profilePictureUrl!),
           ),
           title: Text(

@@ -60,7 +60,7 @@ class OrderService {
     } on SocketException catch (e) {
       throw e.message;
     } on Exception catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -111,7 +111,7 @@ class OrderService {
       };
       var response =
           await get(Uri.parse('$baseUrl?status=$status'), headers: headers)
-              .timeout(Duration(minutes: 5));
+              .timeout(const Duration(minutes: 5));
 
       if (response.statusCode == 200) {
         List<dynamic> responseBody = jsonDecode(response.body);
@@ -125,7 +125,7 @@ class OrderService {
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -144,7 +144,7 @@ class OrderService {
       };
       var response =
           await get(Uri.parse('$baseUrl/$id'), headers: headers)
-              .timeout(Duration(minutes: 5));
+              .timeout(const Duration(minutes: 5));
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -155,7 +155,7 @@ class OrderService {
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
   Future<void> updateOrder(int orderId, List<CartItem> orderItems) async {
@@ -197,14 +197,14 @@ class OrderService {
       if (response.statusCode == 200) {
         var orderInJson = jsonDecode(response.body);
         Order placedOrder = Order.fromJson(orderInJson);
-        print('==---==---===${placedOrder}');
+        print('==---==---===$placedOrder');
         return;
       }
       throw Exception('An Error Occured while getting order details');
     } on SocketException catch (e) {
       throw e.message;
     } on Exception catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
