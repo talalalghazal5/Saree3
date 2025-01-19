@@ -58,12 +58,6 @@ class ShoppingCart extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
-            height: 50,
-            child: Center(
-              child: Text('Total Cost: \$${cartProvider.totalCartCost}'),
-            ),
-          ),
           PrimaryButton(
             onPressed: () {
               Navigator.pushNamed(context, '/paymentPage');
