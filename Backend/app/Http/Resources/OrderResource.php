@@ -19,9 +19,10 @@ class OrderResource extends JsonResource
             'userId' => $this->user_id,
             'totalPrice' => convertPriceToDollars($this->total_price),
             'orderStatus' => $this->status,
-            'createdAt'=> $this->created_at,
+            'createdAt' => $this->created_at,
             'closedAt' => $this->closed_at,
-            'orderItems' => OrderItemResource::collection($this->whenLoaded('orderItems'))
+            'orderItems' => OrderItemResource::collection($this->whenLoaded('orderItems')),
+            'delivery' => $this->delivery == null ? null : new DeliveryResource($this->whenLoaded('delivery')),
         ];
     }
 }

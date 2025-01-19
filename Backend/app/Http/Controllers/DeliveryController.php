@@ -31,7 +31,7 @@ class DeliveryController extends Controller
             'name' => $validated['name'],
             'phone_number' => $validated['phoneNumber'],
             'expected_delivery_time' => $validated['expectedDeliveryTime'],
-            'state' => 'pending',
+            'status' => 'pending',
         ]);
 
         return response()->json([
@@ -51,12 +51,12 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivery not found'], 404);
         }
 
-        if ($delivery->state !== 'pending') {
+        if ($delivery->status !== 'pending') {
             return response()->json(['message' => 'Delivery must be pending to mark as on the way.'], 400);
         }
 
-        // Update delivery and associated order state
-        $delivery->update(['state' => 'on_the_way']);
+        // Update delivery and associated order status
+        $delivery->update(['status' => 'on_the_way']);
 
         return response()->json([
             'message' => 'Delivery is on the way.'
@@ -74,12 +74,12 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivery not found'], 404);
         }
 
-        if ($delivery->state !== 'on_the_way') {
+        if ($delivery->status !== 'on_the_way') {
             return response()->json(['message' => 'Delivery must be on the way to complete.'], 400);
         }
 
-        // Update delivery and associated order state
-        $delivery->update(['state' => 'delivered']);
+        // Update delivery and associated order status
+        $delivery->update(['status' => 'delivered']);
         $delivery->order->update([
             'status' => 'completed',
             'closed_at' => now()
@@ -101,7 +101,7 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivery not found'], 404);
         }
 
-        if ($delivery->state === 'delivered') {
+        if ($delivery->status === 'delivered') {
             return response()->json(['message' => 'Delivered delivery cannot be canceled.'], 400);
         }
 
@@ -117,8 +117,8 @@ class DeliveryController extends Controller
         $response = $orderController->cancel(request(), $order->id);
 
         if ($response->getStatusCode() === 200) {
-            // Update delivery state after order cancellation
-            $delivery->update(['state' => 'canceled']);
+            // Update delivery status after order cancellation
+            $delivery->update(['status' => 'canceled']);
             return response()->json([
                 'message' => 'Delivery and associated order canceled successfully.',
             ], 200);
@@ -141,12 +141,12 @@ class DeliveryController extends Controller
             return response()->json(['message' => 'Delivery not found'], 404);
         }
 
-        if ($delivery->state === 'delivered') {
+        if ($delivery->status === 'delivered') {
             return response()->json(['message' => 'Delivered delivery cannot be reset to pending.'], 400);
         }
 
-        // Update delivery and associated order state
-        $delivery->update(['state' => 'pending']);
+        // Update delivery and associated order status
+        $delivery->update(['status' => 'pending']);
         $delivery->order->update([
             'status' => 'pending',
             'closed_at' => null
@@ -162,7 +162,8 @@ class DeliveryController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $userId = $request->user()->id;
+        $user = $request->user();
+        $userId = $user->id;
 
         $delivery = Delivery::with('order')
             ->whereHas('order', function ($query) use ($userId) {
