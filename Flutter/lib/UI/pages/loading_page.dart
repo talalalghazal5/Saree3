@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/login_or_register.dart';
 import 'package:saree3/controllers/user_controller.dart';
+import 'package:saree3/services/auth_services.dart';
 import 'package:saree3/services/profile_services.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -48,26 +50,61 @@ class _LoadingPageState extends State<LoadingPage> {
                   snapshot.error is ClientException) {
                 print(snapshot.error.toString());
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Error occured',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              setState(() {});
-                            },
-                            child: const Text('Retry'),
-                          )
-                        ],
-                      ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Error occured',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                setState(() {});
+                              },
+                              child: const Text('Retry'),
+                            )
+                          ],
+                        ),
+                      )
+                    ]);
+              }
+
+              if (snapshot.error.toString() == 'Unauthenticated') {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content:
+                          const Text('Session expired, please login again'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => AuthServices().logout(),
+                          child: const Text('Logout'),
+                        )
+                      ],
                     ),
-                  ],
-                );
+                  );
+                });
+                return Column(children: [
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Error occured',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          child: const Text('Retry'),
+                        )
+                      ],
+                    ),
+                  )
+                ]);
               } else {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +112,17 @@ class _LoadingPageState extends State<LoadingPage> {
                     Center(
                       child: Column(
                         children: [
-                          Text(snapshot.error.toString(), style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.error.withAlpha(150)),),
+                          Text(
+                            snapshot.error.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .error
+                                        .withAlpha(150)),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -83,7 +130,16 @@ class _LoadingPageState extends State<LoadingPage> {
                             onPressed: () {
                               setState(() {});
                             },
-                            child: Text('Try again', style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).colorScheme.onSurface),),
+                            child: Text(
+                              'Try again',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                            ),
                           ),
                         ],
                       ),
