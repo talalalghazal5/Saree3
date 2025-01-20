@@ -7,7 +7,7 @@ import 'package:saree3/data/models/vendor.dart';
 
 class HomePageService {
   final Uri baseUrl =
-      Uri.parse('https://3682-169-150-218-59.ngrok-free.app/api');
+      Uri.parse('http://192.168.219.230:1234/api');
 
   Future<List<Product>> getProducts() async {
     Uri productsUrl = Uri.parse('$baseUrl/products');
@@ -63,33 +63,7 @@ class HomePageService {
       return [];
     }
   }
-
-  Future<List<Product>> getProductsByMinPrice(double minPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$minPrice');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((product) => Product.fromJson(product))
-          .toList();
-    } else {
-      throw Exception('An error occurred');
-    }
-  }
-
-  Future<List<Product>> getProductsByMaxPrice(double maxPrice) async {
-    Uri productsUrl = Uri.parse('https://api.example.com/products/$maxPrice');
-    var response = await get(productsUrl);
-    if (response.statusCode == 200) {
-      List<dynamic> categoriesJson = jsonDecode(response.body);
-      return categoriesJson
-          .map((product) => Product.fromJson(product))
-          .toList();
-    } else {
-      throw Exception('An error occurred');
-    }
-  }
-
+  
   Future<Map<String, dynamic>> search(String query) async {
     Uri searchUrl = Uri.parse('$baseUrl/search?searchQuery=$query');
 

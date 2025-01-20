@@ -40,7 +40,7 @@ class MySliverAppBar extends StatelessWidget {
         IconButton(
           onPressed: () {
             scaffoldKey.currentState!.showBottomSheet(
-              (context) => const ShoppingCart(),
+              (context) => ShoppingCart(),
               showDragHandle: true,
               enableDrag: true,
               sheetAnimationStyle: AnimationStyle(

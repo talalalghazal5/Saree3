@@ -16,6 +16,7 @@ import 'package:saree3/controllers/category_provider.dart';
 import 'package:saree3/controllers/user_controller.dart';
 import 'package:saree3/data/models/category.dart';
 import 'package:saree3/data/models/product.dart';
+import 'package:saree3/main.dart';
 import 'package:saree3/services/home_page_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,6 +38,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     _scrollController = ScrollController();
     _tabController = TabController(length: 5, vsync: this);
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      
+    });
   }
 
   List<Widget> _getProductsInThisCategory(List<Category> categories) {
@@ -88,38 +95,42 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     categoryProvider = Provider.of<CategoryProvider>(context);
+    print('+++ ${preferences.getString('userToken')}');
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       drawer: const DrawerMenu(),
-      body: NestedScrollView(
-        controller: _scrollController,
-        floatHeaderSlivers: false,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          MySliverAppBar(
-            scaffoldKey: scaffoldKey,
-            title: MyTabBar(
-              tabController: _tabController,
-              categories: categoryProvider!.categories,
+      body: RefreshIndicator(
+        onRefresh: () => _refresh(),
+        child: NestedScrollView(
+          controller: _scrollController,
+          floatHeaderSlivers: false,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            MySliverAppBar(
+              scaffoldKey: scaffoldKey,
+              title: MyTabBar(
+                tabController: _tabController,
+                categories: categoryProvider!.categories,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MyCurrentLocation(
+                    userLocation: Provider.of<UserController>(context, listen: false).user.location!,
+                  ),
+                  const SizedBox(height: 8),
+                  const MyDescriptionBox(),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                MyCurrentLocation(
-                  userLocation: Provider.of<UserController>(context, listen: false).user.location!,
-                ),
-                const SizedBox(height: 8),
-                const MyDescriptionBox(),
-              ],
-            ),
+          ],
+          body: Consumer<CategoryProvider>(
+            builder: (context, categories, child) {
+              return TabBarView(
+                  controller: _tabController,
+                  children: _getProductsInThisCategory(categories.categories));
+            },
           ),
-        ],
-        body: Consumer<CategoryProvider>(
-          builder: (context, categories, child) {
-            return TabBarView(
-                controller: _tabController,
-                children: _getProductsInThisCategory(categories.categories));
-          },
         ),
       ),
     );

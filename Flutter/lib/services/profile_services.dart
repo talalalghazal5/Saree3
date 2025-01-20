@@ -8,7 +8,7 @@ import 'package:saree3/main.dart';
 
 class ProfileServices {
   Uri baseUrl =
-      Uri.parse('https://3682-169-150-218-59.ngrok-free.app/api/profile');
+      Uri.parse('http://192.168.219.230:1234/api/profile');
 
   Future<User> profile() async {
     var token = preferences.getString('userToken')!;
@@ -21,27 +21,26 @@ class ProfileServices {
       var response = await get(
         baseUrl,
         headers: headers,
-      );
+      ).timeout(const Duration(minutes: 5));
       print("profile user: ${response.body}");
-      if (response.statusCode != 404) {
+      if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-        // print("profile user: ${response.body}");
         print(responseBody);
-        var responseData = {
-          'message': responseBody['message'],
-          'statusCode ': response.statusCode,
-          'persistentConnection': response.persistentConnection
-        };
         return User.fromJson(responseBody['data']);
-      }
-      if (response.statusCode == 401) {
+      } else if (response.statusCode == 404) {
+        throw Exception('Error Occured');
+      } else if (response.statusCode == 401) {
         preferences.setString('userToken', '');
-        throw Exception();
+        throw Exception('Unauthorized access.');
+      } else {
+        throw Exception('Unexpected server error.');
       }
-
-      return User();
-    } on SocketException catch (e) {
-      throw {'message': e.message};
+    } on SocketException {
+      throw Exception(
+        'Failed to connect to the server. Please check your internet connection.',
+      );
+    } on ClientException catch (e) {
+      throw Exception('Client error: ${e.message}');
     } catch (e) {
       throw {'message': 'Unauthenticated'};
     }
@@ -78,7 +77,11 @@ class ProfileServices {
       );
     }
 
-    var response = await request.send().timeout(const Duration(minutes: 5), onTimeout: () => throw TimeoutException('Connection timed out please try again'),);
+    var response = await request.send().timeout(
+          const Duration(minutes: 5),
+          onTimeout: () =>
+              throw TimeoutException('Connection timed out please try again'),
+        );
     int statusCode = response.statusCode;
     print(response);
     return statusCode;

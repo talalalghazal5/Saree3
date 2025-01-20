@@ -20,6 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
 
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -122,6 +123,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   ),
                   const SizedBox(
+                    height: 15,
+                  ),
+                  AuthTextField(
+                    textInputType: TextInputType.streetAddress,
+                    controller: _locationController,
+                    hint: 'Location',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your location';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
                     height: 30,
                   ),
                   isLoading
@@ -142,6 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   password: _passwordController.text,
                                   password_confirmation:
                                       _confirmPasswordController.text,
+                                  location: _locationController.text
                                 );
                                 if (registerData != {}) {
                                   ScaffoldMessenger.of(

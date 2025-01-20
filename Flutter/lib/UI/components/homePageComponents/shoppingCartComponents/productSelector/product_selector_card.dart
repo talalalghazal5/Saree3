@@ -1,82 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector_button.dart';
-import 'package:saree3/data/models/product.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:saree3/UI/components/homePageComponents/shoppingCartComponents/productSelector/quantity_selector.dart';
+import 'package:saree3/controllers/cart_provider.dart';
+import 'package:saree3/data/models/cart_item.dart';
 
-class ProductsSelectorCard extends StatelessWidget {
-  ProductsSelectorCard({super.key, required this.productSelector});
-  Product productSelector;
+class ProductsSelectorCard extends StatefulWidget {
+  ProductsSelectorCard({super.key, required this.cartItem, required this.onDeletePressed});
+  CartItem cartItem;
+  final VoidCallback onDeletePressed;
+  @override
+  State<ProductsSelectorCard> createState() => _ProductsSelectorCardState();
+}
+
+class _ProductsSelectorCardState extends State<ProductsSelectorCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Container(
-        height: 150,
-        width: 450,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Card(
-          color: Theme.of(context).colorScheme.inverseSurface.withAlpha(100),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Container(
-                  height: 134,
-                  width: 125,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white),
-                  child: Center(
-                    child:  Text('This is a placeholder', style: Theme.of(context).textTheme.labelSmall,),
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.inverseSurface.withAlpha(40),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              Image.network(
+                widget.cartItem.product.image!,
+                width: 100,
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.cartItem.product.name!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.left,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: SizedBox(
-                    height: 134,
-                    width: 100,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(productSelector.name!),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(productSelector.categoryName!),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text('total:'),
-                        Text(
-                          r'$' '${productSelector.price.toString()}',
-                          style: const TextStyle(color: Color(0xff240CAA)),
-                        )
-                      ],
+                  IconButton(
+                    onPressed: widget.onDeletePressed,
+                    icon: FaIcon(
+                      FontAwesomeIcons.trash,
+                      color: Theme.of(context).colorScheme.error.withAlpha(150),
+                      size: 20,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 134,
-                  width: 70,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          )),
-                      const QuantitySelectorButton()
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
+                ],
+              ),
+              
+              Text(widget.cartItem.product.categoryName!),
+              QuantitySelector(
+                  quantity: widget.cartItem.quantity,
+                  onDecrement: () {
+                    if (widget.cartItem.quantity > 1) {
+                      setState(() {
+                        widget.cartItem.quantity--;
+                        print('====== ${widget.cartItem.quantity}');
+                      });
+                    }
+                  },
+                  onIncrement: () => setState(() {
+                        widget.cartItem.quantity++;
+                        print('====== ${widget.cartItem.quantity}');
+                      }),
+                  product: widget.cartItem.product)
+            ],
+          )
+        ],
       ),
     );
   }

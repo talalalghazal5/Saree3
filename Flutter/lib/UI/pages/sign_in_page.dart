@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:saree3/UI/components/auth/otp/auth_text_field.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
-import 'package:saree3/UI/pages/home_page.dart';
+import 'package:saree3/UI/pages/loading_page.dart';
 import 'package:saree3/services/auth_services.dart';
 
 class SignInPage extends StatefulWidget {
@@ -19,6 +19,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _phoneController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -95,18 +96,6 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(
                     height: 13,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'Forgot Password?',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -150,7 +139,7 @@ class _SignInPageState extends State<SignInPage> {
                               Navigator.pushReplacement(
                                   context.mounted ? context : context,
                                   CupertinoPageRoute(
-                                    builder: (context) => const HomePage(),
+                                    builder: (context) => const LoadingPage(),
                                   ));
                             }
                           }

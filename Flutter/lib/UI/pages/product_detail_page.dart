@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saree3/UI/components/misc/primary_button.dart';
+import 'package:saree3/controllers/cart_provider.dart';
+import 'package:saree3/data/models/cart_item.dart';
 import 'package:saree3/data/models/product.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -15,9 +18,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController quantityController =
-        TextEditingController();
-        
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    final TextEditingController quantityController = TextEditingController();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -31,7 +34,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
               child: Image.network(
                 widget.product.image!,
-                height: 400,
+                height: 300,
                 width: double.infinity,
               ),
             ),
@@ -42,7 +45,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               children: [
                 Text(
                   widget.product.name!,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.headlineSmall,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -56,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               },
               child: Text(
                 widget.product.vendorName!,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                       decoration: TextDecoration.underline,
                       decorationColor: Theme.of(context).colorScheme.primary,
@@ -77,28 +80,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
                 Row(
                   children: [
-                    const Text(
-                      '4.7 ',
+                    Text(
+                      '${widget.product.rating!}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                    ),
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.inverseSurface,
                     ),
                     Icon(
                       Icons.star,
@@ -117,21 +104,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               onSelected: (value) {},
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             Text(
               'About this product:',
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 19),
+                  .copyWith(fontWeight: FontWeight.w500, fontSize: 15),
             ),
             const SizedBox(
               height: 10,
             ),
             Text(
               widget.product.description!,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: Theme.of(context).colorScheme.surfaceContainer),
             ),
 
@@ -172,7 +159,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           content: TextField(
                             controller: quantityController,
                             keyboardType: TextInputType.number,
-                            onChanged: (value) => quantityController.text = value,
+                            onChanged: (value) =>
+                                quantityController.text = value,
                           ),
                           actions: [
                             TextButton(
@@ -229,7 +217,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 80 / 100,
                   child: PrimaryButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      cartProvider.addToCart(
+                        CartItem(
+                          product: widget.product,
+                          quantity: int.parse(quantity),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Item added to Cart'),
+                        ),
+                      );
+                    },
                     text: 'Add to Cart',
                   ),
                 ),
